@@ -1,0 +1,21 @@
+{
+  "name": "noBot",
+  "version": "0.0.0",
+  "description": "node.js IRC bot using IRC library",
+  "main": "bot.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@bitbucket.org/palid/nobot.git"
+  },
+  "author": "Dariusz 'Palid' Niemczyk",
+  "license": "ISC",
+  "dependencies": {
+    "irc": "~0.3.6",
+    "winston": "~0.7.2",
+    "express": "~3.4.8",
+    "winston-config": "~0.4.2"
+  }
+}

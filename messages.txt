@@ -1,0 +1,18 @@
+{"level":"info","message":"winston log test","timestamp":"2014-01-26T18:48:48.908Z"}
+{"level":"info","message":"winston log test","timestamp":"2014-01-26T18:51:12.994Z"}
+{"level":"info","message":"palid => #ruchacze.teoretycy: asd","timestamp":"2014-01-26T18:52:03.223Z"}
+{"level":"info","message":"palid => #ruchacze.teoretycy: o jezu, ale te logi brzydkie","timestamp":"2014-01-26T18:52:11.767Z"}
+{"level":"info","message":"zuzia => #ruchacze.teoretycy: http://i.imgur.com/Y4SATGD.png","timestamp":"2014-01-26T18:52:25.638Z"}
+{"level":"info","message":"kozak127 => #ruchacze.teoretycy: zuzia: okej. a teraz porównaj nasze screeny","timestamp":"2014-01-26T18:52:53.657Z"}
+{"level":"info","message":"kozak127 => #ruchacze.teoretycy: czym się różnią","timestamp":"2014-01-26T18:52:57.372Z"}
+{"level":"info","message":"zuzia => #ruchacze.teoretycy: ok, już, dziekuję :)","timestamp":"2014-01-26T18:54:18.952Z"}
+{"level":"info","message":"kozak127 => #ruchacze.teoretycy: brawo XD","timestamp":"2014-01-26T18:54:21.444Z"}
+{"level":"info","message":"kozak127 => #ruchacze.teoretycy: also, nie ustawiaj nickserv w xchacie","timestamp":"2014-01-26T18:54:39.933Z"}
+{"level":"info","message":"kozak127 => #ruchacze.teoretycy: tylko w module znc","timestamp":"2014-01-26T18:54:44.014Z"}
+{"level":"info","message":"kozak127 => #ruchacze.teoretycy: w webadminie","timestamp":"2014-01-26T18:54:48.494Z"}
+{"level":"info","message":"kozak127 => #ruchacze.teoretycy: <kozak127> also, nie ustawiaj nickserv w xchacie","timestamp":"2014-01-26T18:54:57.705Z"}
+{"level":"info","message":"kozak127 => #ruchacze.teoretycy: <kozak127> tylko w module znc","timestamp":"2014-01-26T18:54:59.981Z"}
+{"level":"info","message":"kozak127 => #ruchacze.teoretycy: <kozak127> w webadminie","timestamp":"2014-01-26T18:55:02.073Z"}
+{"level":"info","message":"palid => #ruchacze.teoretycy: kozak127: zrob na irca instrukcje","timestamp":"2014-01-26T18:55:32.792Z"}
+{"level":"info","message":"kozak127 => #ruchacze.teoretycy: palid: robię","timestamp":"2014-01-26T18:55:37.518Z"}
+{"level":"info","message":"kozak127 => #ruchacze.teoretycy: razem z nickserv zrobię","timestamp":"2014-01-26T18:55:48.596Z"}

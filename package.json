@@ -16,6 +16,7 @@
     "irc": "~0.3.6",
     "winston": "~0.7.2",
     "express": "~3.4.8",
-    "winston-config": "~0.4.2"
+    "winston-config": "~0.4.2",
+    "lodash": "~2.4.1"
   }
 }

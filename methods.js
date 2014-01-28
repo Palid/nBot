@@ -1,7 +1,16 @@
 var _ = require('lodash'),
 	irc = require('irc'),
+    google = require('google'),
+    cluster = require('cluster'),
 	client = require('./config.js'),
 	winston = require('winston');
+
+
+cluster.setupMaster({
+  exec : "eval.js",
+  args : process.argv.slice(2),
+  silent : false
+});
 
 var methods = {
     topic : function(channel, topic){
@@ -31,15 +40,81 @@ var methods = {
     },
     shout : function(channel, arguments){
         return client.say(channel, arguments.toUpperCase());
-<<<<<<< HEAD
     },
-    list : function(channel){
-        for (property in methods){
-            console.log(property);
+    google : function(channel, arguments){
+        google.resultsPerPage = 2;
+
+        google(arguments, function(err, next, links){
+          if (err) console.error(err);
+
+            var nextCounter = 0,
+                length = links.length,
+                Arr = [];
+
+          for (var i = 0; i < length; ++i) {
+            var title =  links[i].title.substring(0, 125) + "...",
+                link = links[i].link,
+                description = links[i].description.substring(0, 250) + "...";
+
+                if (_.isString(title)) client.say(channel, title);
+                    // Arr.push(title); 
+                if (_.isString(link)) client.say(channel, link);
+                    // Arr.push(link);
+                if (_.isString(description)) client.say(channel, description);
+                    // Arr.push(description);
+          }
+
+          // if (nextCounter < 2) {
+          //   nextCounter += 1;
+          //   if (next) next();
+          // }
+
+        });
+    },
+    list : function(channel, object){
+        for (property in object){
+            client.say(channel, property);
         }
-=======
->>>>>>> 657436d45afca0f0e7bfc53e87aba9d446e9a8d5
+    },
+    eval : function(channel, evaluation){
+
+        var arr = [];
+        arr[0] = channel;
+        arr[1] = evaluation;
+
+        client.say(channel, "Trying to evaluate " + evaluation);
+
+        //This will be fired when the forked process becomes online
+        cluster.on( "online", function(worker) {
+
+            worker.on( "message", function(msg) {
+                clearTimeout(timer); //The worker responded in under 5 seconds, clear the timeout
+                worker.destroy(); //Don't leave him hanging 
+
+            });
+            var timer = setTimeout( function() {
+                worker.destroy(); //Give it 1 second to run, then abort it
+                client.say(channel, "Evaluation failed");
+            }, 5000);
+
+            worker.send( arr ); //Send the code to run for the worker
+
+            process.on('uncaughtException', function (err) {
+              process.send( "finished" ); //Send the finished message to the parent process
+            });
+
+        });
+        cluster.fork();
+
+        
     }
+    // TODO
+    // msg : function(nick, arguments){
+    //     if (nick.substring(_.indexOf(nick), '#') !== -1){
+    //         return client.say()
+    //     }
+    //     return client.say(nick, arguments);
+    // },
 
     // TODO:
     // Create serious aliases system

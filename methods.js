@@ -31,11 +31,14 @@ var methods = {
     },
     shout : function(channel, arguments){
         return client.say(channel, arguments.toUpperCase());
+<<<<<<< HEAD
     },
     list : function(channel){
         for (property in methods){
             console.log(property);
         }
+=======
+>>>>>>> 657436d45afca0f0e7bfc53e87aba9d446e9a8d5
     }
 
     // TODO:

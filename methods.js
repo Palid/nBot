@@ -1,3 +1,4 @@
+"use strict";
 var _ = require('lodash'),
 	irc = require('irc'),
     google = require('google'),
@@ -5,12 +6,30 @@ var _ = require('lodash'),
 	client = require('./config.js'),
 	winston = require('winston');
 
-var commandCharacter = ',';
-
 cluster.setupMaster({
   exec : "eval.js",
   args : process.argv.slice(2),
   silent : false
+});
+
+//This will be fired when the forked process becomes online
+cluster.on( "online", function(worker) {
+
+    worker.on( "message", function(msg) {
+        clearTimeout(timer); //The worker responded in under 5 seconds, clear the timeout
+        worker.destroy(); //Don't leave him hanging 
+        client.say(msg[0], msg[1]);
+
+    });
+
+    var timer = setTimeout( function() {
+        worker.destroy(); //Give it 1 second to run, then abort it
+        // client.say(channel, "Evaluation failed");
+        console.log("Eval fail");
+    }, 1000);
+
+    // worker.send( arr ); //Send the code to run for the worker
+
 });
 
 var methods = {
@@ -18,14 +37,14 @@ var methods = {
         client.say(channel + ' topic changed to ' + topic);
         return client.send("TOPIC", channel, topic);       
     },
-	kick : function(arguments, commandGiver, channel){
+	kick : function(data, commandGiver, channel){
         // Goddamn linter
         // It really is okay, dammit.
-        if (_.isUndefined(arguments)) var arguments = "";
+        if (_.isUndefined(data)) var data = "";
 
-        var firstWhitespace = _.indexOf(arguments, ' '),
-            body = arguments.substring(firstWhitespace+1),
-            nick = arguments.substring(0, firstWhitespace);
+        var firstWhitespace = _.indexOf(data, ' '),
+            body = data.substring(firstWhitespace+1),
+            nick = data.substring(0, firstWhitespace);
 
         console.log(nick);
 
@@ -36,16 +55,16 @@ var methods = {
 			return client.send("KICK", channel, nick, body);
 		}
     },
-    say : function(channel, arguments){
-        return client.say(channel, arguments);
+    say : function(channel, data){
+        return client.say(channel, data);
     },
-    shout : function(channel, arguments){
-        return client.say(channel, arguments.toUpperCase());
+    shout : function(channel, data){
+        return client.say(channel, data.toUpperCase());
     },
-    google : function(channel, arguments){
+    google : function(channel, data){
         google.resultsPerPage = 2;
 
-        google(arguments, function(err, next, links){
+        google(data, function(err, next, links){
           if (err) console.error(err);
 
             var nextCounter = 0,
@@ -74,47 +93,27 @@ var methods = {
     },
     list : function(channel, object){
         for (property in object){
-            client.say(channel, commandCharacter + property);
+            client.say(channel, client.commandCharacter + property);
         }
     },
     eval : function(channel, evaluation){
 
-        var arr = [];
+        var arr = [],
+            worker = cluster.fork();
         arr[0] = channel;
         arr[1] = evaluation;
 
         client.say(channel, "Trying to evaluate " + evaluation);
 
-        //This will be fired when the forked process becomes online
-        cluster.on( "online", function(worker) {
-
-            worker.on( "message", function(msg) {
-                clearTimeout(timer); //The worker responded in under 5 seconds, clear the timeout
-                worker.destroy(); //Don't leave him hanging 
-
-            });
-            var timer = setTimeout( function() {
-                worker.destroy(); //Give it 1 second to run, then abort it
-                client.say(channel, "Evaluation failed");
-            }, 5000);
-
-            worker.send( arr ); //Send the code to run for the worker
-
-            process.on('uncaughtException', function (err) {
-              process.send( "finished" ); //Send the finished message to the parent process
-            });
-
-        });
-        cluster.fork();
-
-        
+        worker.send(arr);
+    
     }
     // TODO
-    // msg : function(nick, arguments){
+    // msg : function(nick, data){
     //     if (nick.substring(_.indexOf(nick), '#') !== -1){
     //         return client.say()
     //     }
-    //     return client.say(nick, arguments);
+    //     return client.say(nick, data);
     // },
 
     // TODO:

@@ -1,3 +1,4 @@
+"use strict";
 var _ = require('lodash'),
 	winston = require('winston'),
 	irc = require('irc'),
@@ -6,21 +7,21 @@ var _ = require('lodash'),
 
 var aliases = {
 	//ESPECIALLY FOR KENBO <3
-	kkk : function(arguments, nick, channel){
+	kkk : function(data, nick, channel){
 		return methods.kick("kenbo", "kenbo", channel);
 	},
 	// kick
-	kick : function(arguments, nick, channel){
-	    return methods.kick(arguments, nick, channel);
+	kick : function(data, nick, channel){
+	    return methods.kick(data, nick, channel);
 	},
-	sage : function(arguments, nick, channel){
-	    return methods.kick(arguments, nick, channel);
+	sage : function(data, nick, channel){
+	    return methods.kick(data, nick, channel);
 	},
-	kenbo : function(arguments, nick, channel){
-	    return methods.kick(arguments, nick, channel);
+	kenbo : function(data, nick, channel){
+	    return methods.kick(data, nick, channel);
 	},
-	wypierdalaj: function(arguments, nick, channel){
-	    return methods.kick(arguments, nick, channel);
+	wypierdalaj: function(data, nick, channel){
+	    return methods.kick(data, nick, channel);
 	},
 	// topic
 	topic : function(topic, from, channel){
@@ -30,41 +31,41 @@ var aliases = {
 	    return methods.topic(channel, topic);
 	},
 	// say
-	say : function(arguments, nick, channel){
-		return methods.say(channel, arguments);
+	say : function(data, nick, channel){
+		return methods.say(channel, data);
 	},
-	mow : function(arguments, nick, channel){
-		return methods.say(channel, arguments);
+	mow : function(data, nick, channel){
+		return methods.say(channel, data);
 	},
 	// shout
-	shout : function(arguments, nick, channel){
-		return methods.shout(channel, arguments);
+	shout : function(data, nick, channel){
+		return methods.shout(channel, data);
 	},
-	krzycz : function(arguments, nick, channel){
-		return methods.shout(channel, arguments);
+	krzycz : function(data, nick, channel){
+		return methods.shout(channel, data);
 	},
 	//google search
-	google : function(arguments, nick, channel){
-		return methods.google(channel, arguments);
+	google : function(data, nick, channel){
+		return methods.google(channel, data);
 	},
-	g : function(arguments, nick, channel){
-		return methods.google(channel, arguments);
+	g : function(data, nick, channel){
+		return methods.google(channel, data);
 	},
 	// command list
-	alias : function(arguments, nick, channel){
+	alias : function(data, nick, channel){
 		return methods.list(channel, this);
 	},
-	list : function(arguments, nick, channel){
+	list : function(data, nick, channel){
 		return methods.list(channel, methods);
-	}
+	},
 	// TO FIX:
-	// eval : function(arguments, nick, channel){
-	// 	return methods.eval(channel, arguments);
-	// }
+	eval : function(data, nick, channel){
+		return methods.eval(channel, data);
+	}
 
 	// TODO
-	// msg : function(arguments, nick, channel){
-	// 	return methods.msg(channel, nick, arguments);
+	// msg : function(data, nick, channel){
+	// 	return methods.msg(channel, nick, data);
 	// },
 };
 

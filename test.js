@@ -1,3 +1,4 @@
+"use strict";
 var cluster = require('cluster');
 
 cluster.setupMaster({

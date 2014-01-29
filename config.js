@@ -1,3 +1,4 @@
+"use strict";
 var irc = require('irc');
 
 var client = new irc.Client('chat.freenode.net', 'chomis', {
@@ -9,7 +10,7 @@ var client = new irc.Client('chat.freenode.net', 'chomis', {
     messageSplit: 512
 });
 
-var commandCharacter = ',';
+client.commandCharacter = ',';
 
 var login = "chomis",
 	password = "ILikeTrains";

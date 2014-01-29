@@ -17,7 +17,7 @@ var aliases = {
 	    return methods.kick(arguments, nick, channel);
 	},
 	kenbo : function(arguments, nick, channel){
-	    return methods.kick("Boys like it when you do this, right?", nick, channel);
+	    return methods.kick(arguments, nick, channel);
 	},
 	wypierdalaj: function(arguments, nick, channel){
 	    return methods.kick(arguments, nick, channel);
@@ -61,7 +61,7 @@ var aliases = {
 	// eval : function(arguments, nick, channel){
 	// 	return methods.eval(channel, arguments);
 	// }
-	
+
 	// TODO
 	// msg : function(arguments, nick, channel){
 	// 	return methods.msg(channel, nick, arguments);

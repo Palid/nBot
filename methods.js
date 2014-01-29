@@ -5,6 +5,7 @@ var _ = require('lodash'),
 	client = require('./config.js'),
 	winston = require('winston');
 
+var commandCharacter = ',';
 
 cluster.setupMaster({
   exec : "eval.js",
@@ -73,7 +74,7 @@ var methods = {
     },
     list : function(channel, object){
         for (property in object){
-            client.say(channel, property);
+            client.say(channel, commandCharacter + property);
         }
     },
     eval : function(channel, evaluation){

@@ -57,10 +57,10 @@ var aliases = {
 	},
 	// command list
 	alias : function(data, nick, channel){
-		return methods.list(channel, this);
+		return methods.list(channel, data);
 	},
 	list : function(data, nick, channel){
-		return methods.list(channel, methods);
+		return methods.list(channel, data);
 	},
 	// Eval for maths
 	eval : function(data, nick, channel){

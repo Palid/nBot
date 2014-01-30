@@ -23,6 +23,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-nodemon');
 
-  grunt.registerTask('default', ['watch', 'nodemon']);
+  grunt.registerTask('default', ['nodemon', 'watch']);
 
 };

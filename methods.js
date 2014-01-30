@@ -3,8 +3,7 @@ var _ = require('lodash'),
 	irc = require('irc'),
     google = require('google'),
     cluster = require('cluster'),
-	client = require('./config/bot.js'),
-	winston = require('winston');
+	client = require('./config/bot.js');
 
 cluster.setupMaster({
   exec : "eval.js",

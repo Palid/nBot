@@ -38,9 +38,6 @@ var methods = {
         return client.send("TOPIC", channel, topic);       
     },
 	kick : function(data, commandGiver, channel){
-        // Goddamn linter
-        // It really is okay, dammit.
-        if (_.isUndefined(data)) var data = "";
 
         var firstWhitespace = _.indexOf(data, ' '),
             body = data.substring(firstWhitespace+1),
@@ -77,11 +74,11 @@ var methods = {
                 description = links[i].description.substring(0, 250) + "...";
 
                 if (_.isString(title)) client.say(channel, title);
-                    // Arr.push(title); 
+
                 if (_.isString(link)) client.say(channel, link);
-                    // Arr.push(link);
+
                 if (_.isString(description)) client.say(channel, description);
-                    // Arr.push(description);
+
           }
 
           // if (nextCounter < 2) {
@@ -91,10 +88,15 @@ var methods = {
 
         });
     },
-    list : function(channel, object){
-        for (property in object){
-            client.say(channel, client.commandCharacter + property);
+    list : function(channel, data){
+        var list = "";
+
+        for (var property in data){
+
+            list = list + (client.commandCharacter + property + " ");
         }
+
+        return client.say(channel, list);
     },
     evaluate : function(channel, evaluation){
 
@@ -109,18 +111,12 @@ var methods = {
     },
     // TODO
     msg : function(channel, data){
-        console.log("MSG START");
-
-        console.log(data.substring(0, 1));
 
         if (data.substring(0, 1) !== '#'){
 
         var firstWhitespace = _.indexOf(data, ' '),
             body = data.substring(firstWhitespace+1),
             nick = data.substring(0, firstWhitespace);
-
-        console.log(body);
-        console.log(nick);
 
             return client.say(nick, body);
         }

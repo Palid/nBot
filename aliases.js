@@ -2,7 +2,7 @@
 var _ = require('lodash'),
 	winston = require('winston'),
 	irc = require('irc'),
-	client = require('./config.js'),
+	client = require('config/bot.js'),
 	methods = require('./methods.js');
 
 var aliases = {

@@ -5,7 +5,9 @@ process.on('message', function( arr ) {
 
     var vm = require('vm');
 
-    var obj = {},
+    var obj = {
+        math : Math
+    },
     channel = arr[0],
     evaluation = arr[1],
     ctx = vm.createContext(obj),

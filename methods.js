@@ -96,7 +96,7 @@ var methods = {
             client.say(channel, client.commandCharacter + property);
         }
     },
-    eval : function(channel, evaluation){
+    evaluate : function(channel, evaluation){
 
         var arr = [],
             worker = cluster.fork();
@@ -106,15 +106,30 @@ var methods = {
         client.say(channel, "Trying to evaluate " + evaluation);
 
         worker.send(arr);
-    
-    }
+    },
     // TODO
-    // msg : function(nick, data){
-    //     if (nick.substring(_.indexOf(nick), '#') !== -1){
-    //         return client.say()
-    //     }
-    //     return client.say(nick, data);
-    // },
+    msg : function(channel, data){
+        console.log("MSG START");
+
+        console.log(data.substring(0, 1));
+
+        if (data.substring(0, 1) !== '#'){
+
+        var firstWhitespace = _.indexOf(data, ' '),
+            body = data.substring(firstWhitespace+1),
+            nick = data.substring(0, firstWhitespace);
+
+        console.log(body);
+        console.log(nick);
+
+            return client.say(nick, body);
+        }
+        return client.say(channel, "Couldn't send text message.");
+    },
+    dice : function(channel, data){
+        // TODO
+        return client.say(channel, data);
+    }
 
     // TODO:
     // Create serious aliases system
@@ -123,9 +138,6 @@ var methods = {
     // REALLY.
     // TODO:
     // ban
-    // google search
-    // maths
-    // maybe eval, but I'm not that crazy I think.
 };
 
 module.exports = methods;

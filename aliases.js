@@ -44,6 +44,13 @@ var aliases = {
 	krzycz : function(data, nick, channel){
 		return methods.shout(channel, data);
 	},
+	// Message
+	msg : function(data, nick, channel){
+		return methods.msg(channel, data);
+	},
+	to : function(data, nick, channel){
+		return methods.msg(channel, data);
+	},
 	//google search
 	google : function(data, nick, channel){
 		return methods.google(channel, data);
@@ -58,15 +65,18 @@ var aliases = {
 	list : function(data, nick, channel){
 		return methods.list(channel, methods);
 	},
-	// TO FIX:
+	// Eval for maths
 	eval : function(data, nick, channel){
-		return methods.eval(channel, data);
+		return methods.evaluate(channel, data);
+	},
+	maths : function(data, nick, channel){
+		return methods.evaluate(channel, data);
 	}
-
-	// TODO
-	// msg : function(data, nick, channel){
-	// 	return methods.msg(channel, nick, data);
-	// },
+	// TODO: 
+	// // Dice roll
+	// dice: function(data, nick, channel){
+	// 	return methods.dice(channel, data);
+	// }
 };
 
 module.exports = aliases;

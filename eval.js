@@ -14,7 +14,6 @@ process.on('message', function( arr ) {
     script = vm.createScript(arr[1]);
 
     arr[1] = script.runInNewContext(ctx);
-    console.log(arr[1]);
 
 
     process.send( arr ); //Send the finished message to the parent process

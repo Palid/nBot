@@ -16,19 +16,27 @@ cluster.setupMaster({
 cluster.on( "online", function(worker) {
 
     worker.on( "message", function(msg) {
+        
         clearTimeout(timer); //The worker responded in under 5 seconds, clear the timeout
         worker.destroy(); //Don't leave him hanging 
-        client.say(msg[0], msg[1]);
+        console.log(msg[1]);
+
+        if (msg[1] === null) {
+            return client.say(msg[0], "Eval is null.");
+        } else if (msg[1] === undefined){
+            return client.say(msg[0], "Eval is undefined");
+        } else {
+            return client.say(msg[0], msg[1]);
+        }
+
 
     });
 
     var timer = setTimeout( function() {
         worker.destroy(); //Give it 1 second to run, then abort it
         // client.say(channel, "Evaluation failed");
-        console.log("Eval fail");
+        return console.log("Eval fail");
     }, 1000);
-
-    // worker.send( arr ); //Send the code to run for the worker
 
 });
 

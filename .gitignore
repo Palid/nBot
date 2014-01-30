@@ -3,3 +3,4 @@ logs/*
 *.sublime*
 *.log
 config/bot.js
+config/privateAliases.js

@@ -29,7 +29,6 @@ cluster.on( "online", function(worker) {
             return client.say(msg[0], msg[1]);
         }
 
-
     });
 
     var timer = setTimeout( function() {

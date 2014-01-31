@@ -1,9 +1,10 @@
 "use strict";
-var irc = require('irc');
+var irc = require('irc'),
+    fs = require('fs');
 
 var client = new irc.Client('chat.freenode.net', 'exampleNick', {
-	userName: 'nBot',
-	realName: "Palid's IRC bot",
+    userName: 'nBot',
+    realName: "Palid's IRC bot",
     channels: ['#example.channel'],
     floodProtection: true,
     floodProtectionDelay: 500,
@@ -13,6 +14,31 @@ var client = new irc.Client('chat.freenode.net', 'exampleNick', {
 client.commandCharacter = ',';
 client.login = "login";
 client.password = "password";
+client.log = function(name, data) {
+
+    function timestamp() {
+
+        var currentTime = new Date(),
+            hours = currentTime.getHours(),
+            minutes = currentTime.getMinutes(),
+            seconds = currentTime.getSeconds();
+
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+        return "[" + hours + ":" + minutes + ":" + seconds + "]";
+    }
+
+    var time = timestamp();
+
+    fs.appendFile("logs/" + name + ".log", time + " " + data, function(err) {
+        if (err) console.log(err);
+    });
+};
 
 
 module.exports = client;

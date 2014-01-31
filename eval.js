@@ -1,21 +1,21 @@
 "use strict";
 var _ = require('lodash');
 //The runner.js is ran in a separate process and just listens for the message which contains code to be executed
-process.on('message', function( arr ) {
+process.on('message', function clusterData(arr) {
 
     var vm = require('vm');
 
     var obj = {
-        math : Math
+        math: Math
     },
-    channel = arr[0],
-    evaluation = arr[1],
-    ctx = vm.createContext(obj),
-    script = vm.createScript(arr[1]);
+        channel = arr[0],
+        evaluation = arr[1],
+        ctx = vm.createContext(obj),
+        script = vm.createScript(arr[1]);
 
     arr[1] = script.runInNewContext(ctx);
 
 
-    process.send( arr ); //Send the finished message to the parent process
+    process.send(arr); //Send the finished message to the parent process
 
 });

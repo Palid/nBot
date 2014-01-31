@@ -1,28 +1,28 @@
 "use strict";
 var _ = require('lodash'),
-	irc = require('irc'),
     google = require('google'),
+    irc = require('irc'),
     cluster = require('cluster'),
-	client = require('./config/bot.js');
+    client = require('./config/bot.js');
 
 cluster.setupMaster({
-  exec : "eval.js",
-  args : process.argv.slice(2),
-  silent : false
+    exec: "eval.js",
+    args: process.argv.slice(2),
+    silent: false
 });
 
 //This will be fired when the forked process becomes online
-cluster.on( "online", function(worker) {
+cluster.on("online", function(worker) {
 
-    worker.on( "message", function(msg) {
-        
+    worker.on("message", function(msg) {
+
         clearTimeout(timer); //The worker responded in under 5 seconds, clear the timeout
         worker.destroy(); //Don't leave him hanging 
         console.log(msg[1]);
 
         if (msg[1] === null) {
             return client.say(msg[0], "Eval is null.");
-        } else if (msg[1] === undefined){
+        } else if (msg[1] === undefined) {
             return client.say(msg[0], "Eval is undefined");
         } else {
             return client.say(msg[0], msg[1]);
@@ -30,7 +30,7 @@ cluster.on( "online", function(worker) {
 
     });
 
-    var timer = setTimeout( function() {
+    var timer = setTimeout(function() {
         worker.destroy(); //Give it 1 second to run, then abort it
         // client.say(channel, "Evaluation failed");
         return console.log("Eval fail");
@@ -39,45 +39,45 @@ cluster.on( "online", function(worker) {
 });
 
 var methods = {
-    topic : function(channel, topic){
+    topic: function(channel, topic) {
         client.say(channel + ' topic changed to ' + topic);
-        return client.send("TOPIC", channel, topic);       
+        return client.send("TOPIC", channel, topic);
     },
-	kick : function(data, commandGiver, channel){
+    kick: function(data, commandGiver, channel) {
 
         var firstWhitespace = _.indexOf(data, ' '),
-            body = data.substring(firstWhitespace+1),
+            body = data.substring(firstWhitespace + 1),
             nick = data.substring(0, firstWhitespace);
 
         console.log(nick);
 
-		if (nick === "chomis" || body === "chomis"){
+        if (nick === "chomis" || body === "chomis") {
 
-			return client.send("KICK", channel, commandGiver, "Czemu chcesz wykopać chomika? ;_;");
-		} else {
-			return client.send("KICK", channel, nick, body);
-		}
+            return client.send("KICK", channel, commandGiver, "Czemu chcesz wykopać chomika? ;_;");
+        } else {
+            return client.send("KICK", channel, nick, body);
+        }
     },
-    say : function(channel, data){
+    say: function(channel, data) {
         return client.say(channel, data);
     },
-    shout : function(channel, data){
+    shout: function(channel, data) {
         return client.say(channel, data.toUpperCase());
     },
-    google : function(channel, data){
+    google: function(channel, data) {
         google.resultsPerPage = 2;
 
-        google(data, function(err, next, links){
-          if (err) console.error(err);
+        google(data, function(err, next, links) {
+            if (err) console.error(err);
 
             var nextCounter = 0,
                 length = links.length,
                 Arr = [];
 
-          for (var i = 0; i < length; ++i) {
-            var title =  links[i].title.substring(0, 125) + "...",
-                link = links[i].link,
-                description = links[i].description.substring(0, 250) + "...";
+            for (var i = 0; i < length; ++i) {
+                var title = links[i].title.substring(0, 125) + "...",
+                    link = links[i].link,
+                    description = links[i].description.substring(0, 250) + "...";
 
                 if (_.isString(title)) client.say(channel, title);
 
@@ -85,26 +85,26 @@ var methods = {
 
                 if (_.isString(description)) client.say(channel, description);
 
-          }
+            }
 
-          // if (nextCounter < 2) {
-          //   nextCounter += 1;
-          //   if (next) next();
-          // }
+            // if (nextCounter < 2) {
+            //   nextCounter += 1;
+            //   if (next) next();
+            // }
 
         });
     },
-    list : function(channel, data){
+    list: function(channel, data) {
         var list = "";
 
-        for (var property in data){
+        for (var property in data) {
 
             list = list + (client.commandCharacter + property + " ");
         }
 
         return client.say(channel, list);
     },
-    evaluate : function(channel, evaluation){
+    evaluate: function(channel, evaluation) {
 
         var arr = [],
             worker = cluster.fork();
@@ -116,19 +116,19 @@ var methods = {
         worker.send(arr);
     },
     // TODO
-    msg : function(channel, data){
+    msg: function(channel, data) {
 
-        if (data.substring(0, 1) !== '#'){
+        if (data.substring(0, 1) !== '#') {
 
-        var firstWhitespace = _.indexOf(data, ' '),
-            body = data.substring(firstWhitespace+1),
-            nick = data.substring(0, firstWhitespace);
+            var firstWhitespace = _.indexOf(data, ' '),
+                body = data.substring(firstWhitespace + 1),
+                nick = data.substring(0, firstWhitespace);
 
             return client.say(nick, body);
         }
         return client.say(channel, "Couldn't send text message.");
     },
-    dice : function(channel, data){
+    dice: function(channel, data) {
         // TODO
         return client.say(channel, data);
     }

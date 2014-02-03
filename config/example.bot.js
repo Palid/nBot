@@ -9,9 +9,9 @@ var client = new irc.Client('chat.freenode.net', 'exampleNick', {
     floodProtection: true,
     floodProtectionDelay: 500,
     messageSplit: 512
-    // sasl : true
-    // login: "bot",
-    // password: "saslPassword"
+    sasl: true
+    login: "bot",
+    password: "saslPassword"
 });
 
 client.commandCharacter = ',';

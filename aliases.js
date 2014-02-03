@@ -8,8 +8,14 @@ var aliases = {
     kick: function(data, nick, channel) {
         return methods.kick(data, nick, channel);
     },
+    k: function(data, nick, channel) {
+        return methods.kick(data, nick, channel);
+    },
     // topic
     topic: function(topic, from, channel) {
+        return methods.topic(channel, topic);
+    },
+    t: function(topic, from, channel) {
         return methods.topic(channel, topic);
     },
     // say

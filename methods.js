@@ -15,17 +15,18 @@ cluster.setupMaster({
 cluster.on("online", function(worker) {
 
     worker.on("message", function(msg) {
+        var channel = msg[0],
+            stringedEval = msg[1];
 
         clearTimeout(timer); //The worker responded in under 5 seconds, clear the timeout
         worker.destroy(); //Don't leave him hanging 
-        console.log(msg[1]);
 
-        if (msg[1] === null) {
-            return client.say(msg[0], "Eval is null.");
-        } else if (msg[1] === undefined) {
-            return client.say(msg[0], "Eval is undefined");
+        if (stringedEval === null) {
+            return client.say(channel, "null");
+        } else if (stringedEval === undefined) {
+            return client.say(channel, "undefined");
         } else {
-            return client.say(msg[0], msg[1]);
+            return client.say(channel, stringedEval);
         }
 
     });
@@ -46,8 +47,8 @@ var methods = {
     kick: function(data, commandGiver, channel) {
 
         var firstWhitespace = _.indexOf(data, ' '),
-            body = data.substring(firstWhitespace + 1),
-            nick = data.substring(0, firstWhitespace);
+            nick = data.substring(0, firstWhitespace),
+            body = data.substring(firstWhitespace + 1);
 
         console.log(nick);
 
@@ -65,32 +66,32 @@ var methods = {
         return client.say(channel, data.toUpperCase());
     },
     google: function(channel, data) {
-        google.resultsPerPage = 2;
+        // Links amount to display
+        // per search
+        google.resultsPerPage = 1;
 
         google(data, function(err, next, links) {
             if (err) console.error(err);
 
-            var nextCounter = 0,
-                length = links.length,
-                Arr = [];
+            var length = links.length;
 
             for (var i = 0; i < length; ++i) {
-                var title = links[i].title.substring(0, 125) + "...",
+                var title = links[i].title.substring(0, 100) + "...",
                     link = links[i].link,
-                    description = links[i].description.substring(0, 250) + "...";
+                    description = links[i].description.substring(0, 200) + "...",
+                    searchResult = "";
 
-                if (_.isString(title)) client.say(channel, title);
+                if (_.isString(link)) searchResult += link + " --- ";
 
-                if (_.isString(link)) client.say(channel, link);
+                if (_.isString(title)) searchResult += title + " ";
 
-                if (_.isString(description)) client.say(channel, description);
+                if (_.isString(description)) searchResult += "\r\n" + description;
+
+                console.log(searchResult);
+
+                client.say(channel, searchResult);
 
             }
-
-            // if (nextCounter < 2) {
-            //   nextCounter += 1;
-            //   if (next) next();
-            // }
 
         });
     },
@@ -115,22 +116,48 @@ var methods = {
 
         worker.send(arr);
     },
-    // TODO
     msg: function(channel, data) {
 
         if (data.substring(0, 1) !== '#') {
 
             var firstWhitespace = _.indexOf(data, ' '),
-                body = data.substring(firstWhitespace + 1),
-                nick = data.substring(0, firstWhitespace);
+                nick = data.substring(0, firstWhitespace),
+                body = data.substring(firstWhitespace + 1);
 
             return client.say(nick, body);
         }
         return client.say(channel, "Couldn't send text message.");
     },
     dice: function(channel, data) {
-        // TODO
-        return client.say(channel, data);
+
+        var firstWhitespace = _.indexOf(data, ' '),
+            d = _.indexOf(data, 'd'),
+            diceThrows = parseInt(data.substring(firstWhitespace, d), 10),
+            dices = parseInt(data.substring(d + 1, data.length), 10),
+            finalResult = null,
+            resultsList = "";
+
+        if (!_.isNaN(dices) && !_.isNaN(diceThrows)) {
+            console.log(_.isNumber(dices));
+            console.log(_.isNumber(diceThrows));
+
+            for (var i = 0; i < diceThrows; i++) {
+                var x = Math.floor(Math.random() * dices + 1);
+                finalResult += x;
+                resultsList += x.toString() + ", ";
+            }
+
+            return client.say(channel, "Throw results for " + data + ": " + resultsList + "with final result of: " + finalResult);
+        } else {
+            return client.say(channel, "Throw result is not a number. Example of valid dice throw: 2d10");
+
+        }
+
+    },
+    invite: function(channel, data) {
+        console.log(channel);
+        console.log(data);
+        return client.send("INVITE", data, channel);
     }
 
     // TODO:

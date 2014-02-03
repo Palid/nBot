@@ -47,12 +47,16 @@ var aliases = {
     },
     maths: function(data, nick, channel) {
         return methods.evaluate(channel, data);
+    },
+    invite: function(data, nick, channel) {
+        return methods.invite(channel, data);
+    },
+    dice: function(data, nick, channel) {
+        return methods.dice(channel, data);
+    },
+    d: function(data, nick, channel) {
+        return methods.dice(channel, data);
     }
-    // TODO: 
-    // // Dice roll
-    // dice: function(data, nick, channel){
-    // 	return methods.dice(channel, data);
-    // }
 };
 
 aliases.__proto__ = privateAliases;

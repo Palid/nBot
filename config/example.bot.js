@@ -3,12 +3,15 @@ var irc = require('irc'),
     fs = require('fs');
 
 var client = new irc.Client('chat.freenode.net', 'exampleNick', {
-    userName: 'nBot',
-    realName: "Palid's IRC bot",
+    userName: "aBot",
+    realName: "That is my real name",
     channels: ['#example.channel'],
     floodProtection: true,
     floodProtectionDelay: 500,
     messageSplit: 512
+    // sasl : true
+    // login: "bot",
+    // password: "saslPassword"
 });
 
 client.commandCharacter = ',';

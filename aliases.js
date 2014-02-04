@@ -1,7 +1,8 @@
 "use strict";
-var _ = require('lodash'),
-    privateAliases = require('./config/privateAliases.js'),
-    methods = require('./methods.js');
+const _ = require('lodash'),
+privateAliases = require('./config/privateAliases.js'),
+methods = require('./methods.js');
+
 
 var aliases = {
     // kick
@@ -33,6 +34,7 @@ var aliases = {
     to: function(data, nick, channel) {
         return methods.msg(channel, data);
     },
+    //
     //google search
     google: function(data, nick, channel) {
         return methods.google(channel, data);

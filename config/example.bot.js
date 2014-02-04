@@ -1,6 +1,6 @@
 "use strict";
-var irc = require('irc'),
-    fs = require('fs');
+const irc = require('irc'),
+fs = require('fs');
 
 var client = new irc.Client('chat.freenode.net', 'exampleNick', {
     userName: "aBot",
@@ -8,8 +8,8 @@ var client = new irc.Client('chat.freenode.net', 'exampleNick', {
     channels: ['#example.channel'],
     floodProtection: true,
     floodProtectionDelay: 500,
-    messageSplit: 512
-    sasl: true
+    messageSplit: 512,
+    sasl: true,
     login: "bot",
     password: "saslPassword"
 });

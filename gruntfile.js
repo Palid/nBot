@@ -1,3 +1,4 @@
+"use strict";
 module.exports = function(grunt) {
 
     grunt.initConfig({
@@ -15,7 +16,10 @@ module.exports = function(grunt) {
         },
         nodemon: {
             dev: {
-                script: 'bot.js'
+                script: 'bot.js',
+                options: {
+                    nodeArgs: ['--harmony']
+                }
             }
         }
     });

@@ -2,5 +2,3 @@ node_modules/
 logs/*
 *.sublime*
 *.log
-config/bot.js
-config/privateAliases.js

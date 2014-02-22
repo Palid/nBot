@@ -8,10 +8,10 @@ var _ = require('lodash'),
 var aliases = {
     // kick
     kick: function (data, nick, channel) {
-        return methods.kick(data, nick, channel);
+        return methods.kick(channel, data, nick);
     },
     k: function (data, nick, channel) {
-        return methods.kick(data, nick, channel);
+        return methods.kick(channel, data, nick);
     },
     // topic
     topic: function (topic, from, channel) {

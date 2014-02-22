@@ -47,7 +47,7 @@ var methods = {
         client.say(channel + ' topic changed to ' + topic);
         return client.send("TOPIC", channel, topic);
     },
-    kick: function (data, commandGiver, channel) {
+    kick: function (channel, data, commandGiver) {
 
         var firstWhitespace = _.indexOf(data, ' '),
             nick = data.substring(0, firstWhitespace),

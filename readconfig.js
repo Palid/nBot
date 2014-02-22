@@ -36,26 +36,24 @@ function readConfig(callback) {
         parsed = JSON.parse(data);
 
 
-        var test = _.pick(parsed, {});
+        _.forEach(parsed, function (element, index, collection) {
+            // console.log(element);
+            // aliasesList[element] = [];
+            // aliasesList[element].push(element);
+            // _.forEach(element, function (subAlias) {
+            //     aliasesList[subAlias] = element;
+            // });
+            // console.log(element);
+            // console.log(index);
+            // console.log(parsed[index]);
+            aliasesList[element] = collection[index];
 
-        console.log(test);
-
-
-        // _.forEach(parsed, function (alias) {
-        //     _.forEach(alias.aliases, function (row) {
-        //         // console.log(row);
-        //         aliasesList[row] = prop.toString();
-        //         console.log(aliasesList[row]);
-        //     });
-        //     // aliasesList[alias] = [];
-        //     // aliasesList[alias].push.apply(aliasesList, alias.aliases);
-        //     // console.log(aliasesList[alias]);
+        });
+        console.log(aliasesList);
+        // console.log(aliasesList);
+        // _.forEach(aliasesList, function (alias) {
+        //     console.log(alias);
         // });
-
-        // if (_.isFunction(callback)) {
-        //     callback();
-        // }
-
     });
 }
 

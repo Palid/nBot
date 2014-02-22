@@ -1,3 +1,4 @@
+/*jslint node: true */
 "use strict";
 var _ = require('lodash'),
     google = require('google'),
@@ -12,9 +13,9 @@ cluster.setupMaster({
 });
 
 //This will be fired when the forked process becomes online
-cluster.on("online", function(worker) {
+cluster.on("online", function (worker) {
 
-    worker.on("message", function(msg) {
+    worker.on("message", function (msg) {
         var channel = msg[0],
             stringedEval = msg[1];
 
@@ -31,7 +32,8 @@ cluster.on("online", function(worker) {
 
     });
 
-    var timer = setTimeout(function() {
+
+    var timer = setTimeout(function () {
         worker.destroy(); //Give it 1 second to run, then abort it
         // client.say(channel, "Evaluation failed");
         return console.log("Eval fail");
@@ -39,12 +41,13 @@ cluster.on("online", function(worker) {
 
 });
 
+
 var methods = {
-    topic: function(channel, topic) {
+    topic: function (channel, topic) {
         client.say(channel + ' topic changed to ' + topic);
         return client.send("TOPIC", channel, topic);
     },
-    kick: function(data, commandGiver, channel) {
+    kick: function (data, commandGiver, channel) {
 
         var firstWhitespace = _.indexOf(data, ' '),
             nick = data.substring(0, firstWhitespace),
@@ -59,18 +62,18 @@ var methods = {
             return client.send("KICK", channel, nick, body);
         }
     },
-    say: function(channel, data) {
+    say: function (channel, data) {
         return client.say(channel, data);
     },
-    shout: function(channel, data) {
+    shout: function (channel, data) {
         return client.say(channel, data.toUpperCase());
     },
-    google: function(channel, data) {
+    google: function (channel, data) {
         // Links amount to display
         // per search
         google.resultsPerPage = 1;
 
-        google(data, function(err, next, links) {
+        google(data, function (err, next, links) {
             if (err) console.error(err);
 
             var length = links.length;
@@ -95,7 +98,7 @@ var methods = {
 
         });
     },
-    list: function(channel, data) {
+    list: function (channel, data) {
         var list = "";
 
         for (var property in data) {
@@ -105,7 +108,7 @@ var methods = {
 
         return client.say(channel, list);
     },
-    evaluate: function(channel, evaluation) {
+    evaluate: function (channel, evaluation) {
 
         var arr = [],
             worker = cluster.fork();
@@ -116,7 +119,7 @@ var methods = {
 
         worker.send(arr);
     },
-    msg: function(channel, data) {
+    msg: function (channel, data) {
 
         if (data.substring(0, 1) !== '#') {
 
@@ -128,7 +131,7 @@ var methods = {
         }
         return client.say(channel, "Couldn't send text message.");
     },
-    dice: function(channel, data) {
+    dice: function (channel, data) {
 
         var firstWhitespace = _.indexOf(data, ' '),
             d = _.indexOf(data, 'd'),
@@ -154,7 +157,7 @@ var methods = {
         }
 
     },
-    invite: function(channel, data) {
+    invite: function (channel, data) {
         console.log(channel);
         console.log(data);
         return client.send("INVITE", data, channel);

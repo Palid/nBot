@@ -1,8 +1,9 @@
+/*jslint node: true */
 "use strict";
 const methods = require('../methods.js');
 
 var aliases = {
-    gtfo: function(data, nick, channel) {
+    gtfo: function (data, nick, channel) {
         return methods.kick(data, nick, channel);
     }
 };

@@ -1,5 +1,6 @@
+/*jslint node: true */
 "use strict";
-const _ = require('lodash');
+var _ = require('lodash');
 
 //The runner.js is ran in a separate process and just listens for the message which contains code to be executed
 process.on('message', function clusterData(arr) {

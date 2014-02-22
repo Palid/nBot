@@ -1,0 +1,88 @@
+{
+	"kick": {
+		"aliases": [
+			"sage",
+			"k",
+			"wypierdalaj"
+		],
+		"description": {
+			"eng": "",
+			"pl": ""
+		}
+	},
+	"topic": {
+		"aliases": [
+			"temat"
+		],
+		"description": {
+
+		}
+	},
+	"say": {
+		"aliases": [
+			"mow"
+		],
+		"description": {
+
+		}
+	},
+	"shout": {
+		"aliases": [
+			"krzycz"
+		],
+		"description": {
+
+		}
+	},
+	"msg": {
+		"aliases": [
+			"to"
+		],
+		"description": {
+
+		}
+	},
+	"google": {
+		"aliases": [
+			"g"
+		],
+		"description": {
+
+		}
+	},
+	"list": {
+		"aliases": [
+			"commands"
+		],
+		"description": {
+
+		}
+	},
+	"evaluate": {
+		"aliases": [
+			"eval",
+			"e",
+			"maths"
+		],
+		"description": {
+
+		}
+	},
+	"dice": {
+		"aliases": [
+			"d",
+			"k"
+		],
+		"description": {
+
+		}
+	},
+	"invite": {
+		"aliases": [
+			"inv"
+		],
+		"description": {
+
+		}
+	}
+}

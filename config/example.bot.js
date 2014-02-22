@@ -1,3 +1,4 @@
+/*jslint node: true */
 "use strict";
 const irc = require('irc'),
 fs = require('fs');
@@ -17,7 +18,7 @@ var client = new irc.Client('chat.freenode.net', 'exampleNick', {
 client.commandCharacter = ',';
 client.login = "login";
 client.password = "password";
-client.log = function(name, data) {
+client.log = function (name, data) {
 
     function timestamp() {
 
@@ -38,7 +39,7 @@ client.log = function(name, data) {
 
     var time = timestamp();
 
-    fs.appendFile("logs/" + name + ".log", time + " " + data, function(err) {
+    fs.appendFile("logs/" + name + ".log", time + " " + data, function (err) {
         if (err) console.log(err);
     });
 };

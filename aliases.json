@@ -1,5 +1,5 @@
 {
-	"kick": {
+    {"kick": {
 		"aliases": [
 			"sage",
 			"k",
@@ -9,56 +9,56 @@
 			"eng": "",
 			"pl": ""
 		}
-	},
-	"topic": {
+	}},
+{	"topic": {
 		"aliases": [
 			"temat"
 		],
 		"description": {
 
 		}
-	},
-	"say": {
+	}},
+{	"say": {
 		"aliases": [
 			"mow"
 		],
 		"description": {
 
 		}
-	},
-	"shout": {
+	},}
+{	"shout": {
 		"aliases": [
 			"krzycz"
 		],
 		"description": {
 
 		}
-	},
-	"msg": {
+	},}
+{	"msg": {
 		"aliases": [
 			"to"
 		],
 		"description": {
 
 		}
-	},
-	"google": {
+	},}
+{	"google": {
 		"aliases": [
 			"g"
 		],
 		"description": {
 
 		}
-	},
-	"list": {
+	},}
+{	"list": {
 		"aliases": [
 			"commands"
 		],
 		"description": {
 
 		}
-	},
-	"evaluate": {
+	},}
+{	"evaluate": {
 		"aliases": [
 			"eval",
 			"e",
@@ -67,8 +67,8 @@
 		"description": {
 
 		}
-	},
-	"dice": {
+	},}
+{	"dice": {
 		"aliases": [
 			"d",
 			"k"
@@ -76,13 +76,15 @@
 		"description": {
 
 		}
-	},
-	"invite": {
-		"aliases": [
-			"inv"
-		],
-		"description": {
+	},}
+{
+    "invite": {
+        "aliases": [
+   "inv"
+  ],
+        "description": {
 
-		}
-	}
+        }
+    }
+}
 }

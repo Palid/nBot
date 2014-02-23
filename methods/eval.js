@@ -6,7 +6,7 @@ var _ = require('lodash'),
     client = require('../config/bot.js');
 
 cluster.setupMaster({
-    exec: "../cluster/eval.js",
+    exec: "cluster/eval.js",
     args: process.argv.slice(2),
     silent: false
 });
@@ -20,7 +20,9 @@ var method = function (channel, evaluation) {
 
             clearTimeout(timer); //The worker responded in under 5 seconds, clear the timeout
             worker.destroy(); //Don't leave him hanging 
-            cluster.removeListener('online'); // Remove listener from cluster
+            cluster.removeListener('online', function (err) {
+                if (err) console.log(err);
+            }); // Remove listener from cluster
 
             if (_.isNull(evaledString)) {
                 return client.say(channel, "null");
@@ -35,9 +37,12 @@ var method = function (channel, evaluation) {
 
         var timer = setTimeout(function () {
             worker.destroy();
-            cluster.removeListener('online'); // Remove listener from cluster
+            cluster.removeListener('online', function (err) {
+                if (err) console.log(err);
+            }); // Remove listener from cluster
+
             return client.say(channel, "undefined");
-        }, 10);
+        }, 200);
 
     });
 

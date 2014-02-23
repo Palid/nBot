@@ -10,7 +10,6 @@ var initialize = function (data) {
     for (property in methods) {
 
         if (!_.has(parsed, property)) {
-            console.log("Nima :(");
             parsed[property] = {
                 aliases: methods[property].defaults.aliases,
                 description: methods[property].defaults.description

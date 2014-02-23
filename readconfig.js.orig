@@ -21,7 +21,14 @@ var parseConfig = function (data) {
 
 };
 
-var aliases = fs.readFileSync('./aliases.json', 'utf8');
-var aliasList = parseConfig(aliases);
+var readFile = fs.readFile('./aliases.json', 'utf8', function (err, data) {
 
-module.exports = aliasList;
+    if (err) {
+        console.log('Error: ' + err);
+        return;
+    }
+
+    module.exports = parseConfig(data);
+
+
+});

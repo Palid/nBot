@@ -46,4 +46,19 @@ var method = function (channel, evaluation) {
     worker.send(evaluation);
 };
 
-module.exports = method;
+var defaults = {
+    description: {
+        pl: "Wyświetla listę komend.",
+        eng: "Lists all commands."
+    },
+    aliases: [
+        "help",
+        "commands"
+    ]
+};
+
+
+module.exports = {
+    method: method,
+    defaults: defaults
+};

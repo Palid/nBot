@@ -8,4 +8,18 @@ var method = function (channel, data) {
     return client.say(channel, data);
 };
 
-module.exports = method;
+var defaults = {
+    description: {
+        pl: ",say [string] - Bot wypowiada [string].",
+        eng: ",say [string] - Bot says [string]."
+    },
+    aliases: [
+        "s"
+    ]
+};
+
+
+module.exports = {
+    method: method,
+    defaults: defaults
+};

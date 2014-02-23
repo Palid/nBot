@@ -18,4 +18,18 @@ var method = function (channel, data, commandGiver) {
     }
 };
 
-module.exports = method;
+var defaults = {
+    description: {
+        pl: ",kick [użytkownik] [powód] - Wykopuje [użytkownika] z kanału z [powodem].",
+        eng: ",kick [user] [reason] - Kicks [user] with [reason]"
+    },
+    aliases: [
+        "k"
+    ]
+};
+
+
+module.exports = {
+    method: method,
+    defaults: defaults
+};

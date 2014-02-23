@@ -32,4 +32,19 @@ var method = function (channel, data) {
 
 };
 
-module.exports = method;
+var defaults = {
+    description: {
+        pl: ",dice [i]d[n] - Rzuca [n] koścmi [i] razy.",
+        eng: ",dice [i]d[n] - Throws [n] dices [i] times."
+    },
+    aliases: [
+        "d",
+        "roll"
+    ]
+};
+
+
+module.exports = {
+    method: method,
+    defaults: defaults
+};

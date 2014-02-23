@@ -4,9 +4,8 @@ var fs = require('fs'),
     _ = require('lodash'),
     irc = require('irc'),
     client = require('./config/bot.js'),
-    methods = require('./methods.js'),
-    aliases = require('./readconfig.js'),
-    methodsConf = fs.readFileSync('./aliases.json', 'utf-8');
+    methods = require('./methods/'),
+    aliases = require('./index.js');
 
 // from = messaging user
 // to = channel OR bot
@@ -30,7 +29,7 @@ client.addListener('message', function (from, to, message) {
         if (_.isUndefined(aliases[command])) {
             return client.say(to, "Command " + command + " not found", command);
         } else {
-            return methods[command](to, body, from);
+            return aliases[command](to, body, from);
         }
 
     }

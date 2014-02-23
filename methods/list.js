@@ -15,4 +15,19 @@ var method = function (channel, data) {
     return client.say(channel, list);
 };
 
-module.exports = method;
+var defaults = {
+    description: {
+        pl: ",list - Wyświetla listę komend.",
+        eng: ",list - Lists all commands."
+    },
+    aliases: [
+        "help",
+        "commands"
+    ]
+};
+
+
+module.exports = {
+    method: method,
+    defaults: defaults
+};

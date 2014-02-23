@@ -37,4 +37,19 @@ var method = function (channel, data) {
     });
 };
 
-module.exports = method;
+var defaults = {
+    description: {
+        pl: ",google [string] - Wyświetla wynik wyszukiwania [string]",
+        eng: ",google [string] - Shows search result of [string]"
+    },
+    aliases: [
+        "g",
+        "szukaj"
+    ]
+};
+
+
+module.exports = {
+    method: method,
+    defaults: defaults
+};

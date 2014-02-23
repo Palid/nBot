@@ -8,4 +8,18 @@ var method = function (channel, topic) {
     return client.send("TOPIC", channel, topic);
 };
 
-module.exports = method;
+var defaults = {
+    description: {
+        pl: ",topic [string] - Zmienia temat kanału na [string].",
+        eng: ",topic [string] - Changes channel topic to [string]."
+    },
+    aliases: [
+        "t"
+    ]
+};
+
+
+module.exports = {
+    method: method,
+    defaults: defaults
+};

@@ -8,4 +8,18 @@ var method = function (channel, data) {
     return client.send("INVITE", data, channel);
 };
 
-module.exports = method;
+var defaults = {
+    description: {
+        pl: ",invite [użytkownik] [kanał] - Zaprasza [użytkownika] na [kanał].",
+        eng: ",invite [user] [channel] - Invites [user] on [channel]."
+    },
+    aliases: [
+        "inv"
+    ]
+};
+
+
+module.exports = {
+    method: method,
+    defaults: defaults
+};

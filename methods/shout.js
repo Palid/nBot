@@ -8,4 +8,16 @@ var method = function (channel, data) {
     return client.say(channel, data.toUpperCase());
 };
 
-module.exports = method;
+var defaults = {
+    description: {
+        pl: ",shout [string] - Bot wykrzykuje [string].",
+        eng: ",shout [string] - Bot shouts [string]."
+    },
+    aliases: []
+};
+
+
+module.exports = {
+    method: method,
+    defaults: defaults
+};

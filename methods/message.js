@@ -18,4 +18,19 @@ var method = function (channel, data) {
     return client.say(channel, "Couldn't send text message.");
 };
 
-module.exports = method;
+var defaults = {
+    description: {
+        pl: ",message [użytkownik] [wiadomość] - Wysyła [wiadomość] do [użytkownika].",
+        eng: ",message [user] [message] - Sends [message] to [user]."
+    },
+    aliases: [
+        "msg",
+        "send"
+    ]
+};
+
+
+module.exports = {
+    method: method,
+    defaults: defaults
+};

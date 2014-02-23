@@ -7,7 +7,7 @@ var fs = require('fs'),
 
 var initialize = function (data) {
 
-    for (property in methods) {
+    for (var property in methods) {
 
         if (!_.has(parsed, property)) {
             parsed[property] = {
@@ -20,7 +20,7 @@ var initialize = function (data) {
     var stringify = JSON.stringify(parsed, null, 4);
 
     fs.writeFile(configDir, stringify, function (err) {
-        if (err) throw err;
+        if (err) console.log(err);
     });
 };
 
@@ -31,7 +31,7 @@ var createList = function (data) {
         return el.aliases;
     });
 
-    for (property in collection) {
+    for (var property in collection) {
 
         aliasesList[property] = methods[property].method;
 

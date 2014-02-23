@@ -1,18 +1,16 @@
 /*jslint node: true */
 "use strict";
 var irc = require('irc'),
-    client = require('../config/bot.js');
+    client = require('../config/bot.js'),
+    methods = require('./index.js');
 
-
-var method = function (channel, data) {
+var method = function (channel) {
     var list = "";
 
-    for (var property in data) {
-
+    for (var property in methods) {
         list = list + (client.commandCharacter + property + " ");
     }
-
-    return client.say(channel, list);
+    return client.say(channel, "Available commands: " + list);
 };
 
 var defaults = {
@@ -21,7 +19,6 @@ var defaults = {
         eng: ",list - Lists all commands."
     },
     aliases: [
-        "help",
         "commands"
     ]
 };

@@ -20,9 +20,7 @@ var method = function (channel, evaluation) {
 
             clearTimeout(timer); //The worker responded in under 5 seconds, clear the timeout
             worker.destroy(); //Don't leave him hanging 
-            cluster.removeListener('online', function (err) {
-                if (err) console.log(err);
-            }); // Remove listener from cluster
+            cluster.removeAllListeners();
 
             if (_.isNull(evaledString)) {
                 return client.say(channel, "null");
@@ -36,11 +34,8 @@ var method = function (channel, evaluation) {
 
 
         var timer = setTimeout(function () {
+            cluster.removeAllListeners();
             worker.destroy();
-            cluster.removeListener('online', function (err) {
-                if (err) console.log(err);
-            }); // Remove listener from cluster
-
             return client.say(channel, "undefined");
         }, 200);
 
@@ -53,12 +48,15 @@ var method = function (channel, evaluation) {
 
 var defaults = {
     description: {
-        pl: "Wyświetla listę komend.",
-        eng: "Lists all commands."
+        pl: ",eval [argumenty] - Ewaluuje wyrażenie. Dostępny JSowy obiekt Math.",
+        eng: ",eval [arguments] - Evaluates the expression. Object Math is allowed."
     },
     aliases: [
-        "help",
-        "commands"
+        'maths',
+        'math',
+        'evaluate',
+        'e',
+        'count'
     ]
 };
 

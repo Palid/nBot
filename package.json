@@ -1,11 +1,9 @@
 {
     "name": "noBot",
-    "version": "0.0.0",
+    "version": "0.1.0",
     "description": "node.js IRC bot using IRC library",
     "main": "bot.js",
-    "scripts": {
-        "test": "test"
-    },
+    "scripts": {},
     "repository": {
         "type": "git",
         "url": "ssh://git@bitbucket.org/palid/nobot.git"

@@ -1,8 +1,10 @@
 /*jslint node: true */
 var fs = require('fs'),
     _ = require('lodash'),
-    methods = require('./methods/'),
-    configDir = './config/aliases.json';
+    path = require('path'),
+    methods = require('./publicMethods/'),
+    bot = require('./privateMethods/'),
+    configDir = path.resolve(__dirname, "./config/aliases.json");
 
 
 var initialize = function (data) {
@@ -45,8 +47,21 @@ var createList = function (data) {
 var checkIfExists = function (dir) {
 
     if (fs.existsSync(dir)) {
-        var aliases = fs.readFileSync(dir, 'utf8'),
-            parsed = JSON.parse(aliases);
+
+        try {
+            var parsed = bot.readConfig;
+        } catch (e) {
+            fs.unlink(dir, function (err) {
+                if (err) console.log(err);
+            });
+            return {};
+        }
+        if (!_.isObject(parsed)) {
+            fs.unlink(dir, function (err) {
+                if (err) console.log(err);
+            });
+            return {};
+        }
 
         return parsed;
     } else {

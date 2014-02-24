@@ -5,13 +5,12 @@ var _ = require('lodash'),
     path = require('path'),
     irc = require('irc'),
     client = require('../config/bot.js'),
-    configDir = '../config/aliases.json';
+    bot = require('../privateMethods/');
 
 var method = function (channel, data) {
     // Gotta require it in method, otherwise it's loaded globally.
     // Bad, bad things happen then...
-    var read = fs.readFileSync(path.resolve(__dirname, configDir), 'utf8'),
-        parsed = JSON.parse(read);
+    var parsed = bot.readConfig;
 
     if (_.has(parsed, data)) {
         var list = "";

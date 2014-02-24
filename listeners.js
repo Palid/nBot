@@ -4,7 +4,8 @@ var fs = require('fs'),
     _ = require('lodash'),
     irc = require('irc'),
     client = require('./config/bot.js'),
-    methods = require('./methods/'),
+    methods = require('./publicMethods/'),
+    bot = require('./privateMethods/'),
     aliases = require('./index.js');
 
 // from = messaging user
@@ -13,7 +14,7 @@ var fs = require('fs'),
 
 client.addListener('message', function (from, to, message) {
 
-    client.log(to, '<' + from + '> ' + message + '\r\n');
+    bot.log(true, to, '<' + from + '> ' + message + '\r\n');
 
     if (message.charAt(0) === client.commandCharacter) {
         message = message.replace(client.commandCharacter, '');
@@ -58,16 +59,16 @@ client.addListener('kick', function (channel, who, by, reason) {
 
 client.addListener('error', function (message) {
     console.log(message);
-    client.log('error', message + '\r\n');
+    bot.log(true, 'error', message + '\r\n');
 });
 
 client.addListener('ircError', function (message) {
     console.log(message);
-    client.log('ircError', message + '\r\n');
+    bot.log(true, 'ircError', message + '\r\n');
 });
 
 client.addListener('raw', function (message) {
-    client.log('raw', JSON.stringify(message) + '\r\n');
+    bot.log(true, 'raw', JSON.stringify(message) + '\r\n');
 });
 
 console.info('nBot start');

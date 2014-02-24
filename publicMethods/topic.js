@@ -11,7 +11,7 @@ var method = function (channel, topic) {
 var defaults = {
     description: {
         pl: ",topic [string] - Zmienia temat kanału na [string].",
-        eng: ",topic [string] - Changes channel topic to [string]."
+        en: ",topic [string] - Changes channel topic to [string]."
     },
     aliases: [
         "t"

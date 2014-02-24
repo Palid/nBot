@@ -15,6 +15,7 @@ var client = new irc.Client('chat.freenode.net', 'exampleNick', {
 });
 
 client.commandCharacter = ',';
+client.defaultLang = "en";
 
 
 module.exports = client;

@@ -40,7 +40,7 @@ var method = function (channel, data) {
 var defaults = {
     description: {
         pl: ",google [string] - Wyświetla wynik wyszukiwania [string]",
-        eng: ",google [string] - Shows search result of [string]"
+        en: ",google [string] - Shows search result of [string]"
     },
     aliases: [
         "g",

@@ -21,7 +21,7 @@ var method = function (channel, data) {
 var defaults = {
     description: {
         pl: ",message [użytkownik] [wiadomość] - Wysyła [wiadomość] do [użytkownika].",
-        eng: ",message [user] [message] - Sends [message] to [user]."
+        en: ",message [user] [message] - Sends [message] to [user]."
     },
     aliases: [
         "msg",

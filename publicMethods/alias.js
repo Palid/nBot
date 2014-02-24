@@ -28,7 +28,7 @@ var method = function (channel, data) {
 var defaults = {
     description: {
         pl: ",alias [cmd]- Wyświetla listę aliasów dla komendy.",
-        eng: ",alias [cmd]- Lists all aliases for command."
+        en: ",alias [cmd]- Lists all aliases for command."
     },
     aliases: [
         "aliases"

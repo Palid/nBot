@@ -21,7 +21,7 @@ var method = function (channel, data, commandGiver) {
 var defaults = {
     description: {
         pl: ",kick [użytkownik] [powód] - Wykopuje [użytkownika] z kanału z [powodem].",
-        eng: ",kick [user] [reason] - Kicks [user] with [reason]"
+        en: ",kick [user] [reason] - Kicks [user] with [reason]"
     },
     aliases: [
         "k"

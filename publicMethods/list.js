@@ -16,7 +16,7 @@ var method = function (channel) {
 var defaults = {
     description: {
         pl: ",list - Wyświetla listę komend.",
-        eng: ",list - Lists all commands."
+        en: ",list - Lists all commands."
     },
     aliases: [
         "commands"

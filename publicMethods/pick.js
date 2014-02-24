@@ -24,7 +24,7 @@ var method = function (channel, data) {
 var defaults = {
     description: {
         pl: ",pick [str1] [str2]...- Wyświetla posortowaną listę.",
-        eng: ",pick [str1] [str2]...- Shows sorted list.."
+        en: ",pick [str1] [str2]...- Shows sorted list.."
     },
     aliases: [
         "choose"

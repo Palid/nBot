@@ -35,7 +35,7 @@ var method = function (channel, data) {
 var defaults = {
     description: {
         pl: ",dice [i]d[n] - Rzuca [n] koścmi [i] razy.",
-        eng: ",dice [i]d[n] - Throws [n] dices [i] times."
+        en: ",dice [i]d[n] - Throws [n] dices [i] times."
     },
     aliases: [
         "d",

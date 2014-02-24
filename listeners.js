@@ -19,18 +19,19 @@ client.addListener('message', function (from, to, message) {
     if (message.charAt(0) === client.commandCharacter) {
         message = message.replace(client.commandCharacter, '');
         var firstWhitespace = _.indexOf(message, ' '),
-            body = message.substring(firstWhitespace + 1),
-            command = message.substring(0, firstWhitespace);
-
-        if (firstWhitespace === -1) {
-            body = "";
-            command = message;
-        }
+            body = (firstWhitespace !== -1) ? message.substring(firstWhitespace + 1) : "",
+            command = (firstWhitespace !== -1) ? message.substring(0, firstWhitespace) : message;
 
         if (_.isUndefined(aliases[command])) {
-            return client.say(to, "Command " + command + " not found", command);
+            client.say(to, "Command " + command + " not found");
         } else {
-            return aliases[command](to, body, from);
+            try {
+                aliases[command](to, body, from);
+            } catch (err) {
+                bot.log(true, to, err);
+                console.log(err);
+                client.say(to, "Command " + command + " exited with an error.");
+            }
         }
 
     }

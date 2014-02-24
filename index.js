@@ -24,6 +24,8 @@ var initialize = function (data) {
     fs.writeFile(configDir, stringify, function (err) {
         if (err) console.log(err);
     });
+
+    module.exports = aliasList;
 };
 
 var createList = function (data) {
@@ -38,7 +40,14 @@ var createList = function (data) {
         aliasesList[property] = methods[property].method;
 
         for (var i = 0, len = collection[property].length; i < len; i++) {
-            aliasesList[collection[property][i]] = methods[property].method;
+            /** 
+             * I'm not really sure if returning method is better than just
+             * defining it to the dictionary. Need to benchmark this stuff.
+             */
+            aliasesList[collection[property][i]] = function (channel, data, user) {
+                return methods[property].method;
+            };
+
         }
     }
     return aliasesList;
@@ -73,6 +82,3 @@ var parsed = checkIfExists(configDir),
     aliasList = (_.isNull(parsed)) ? {} : createList(parsed);
 
 initialize(parsed);
-
-
-module.exports = aliasList;

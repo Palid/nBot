@@ -11,7 +11,7 @@ var method = function (channel, data) {
 var defaults = {
     description: {
         pl: ",shout [string] - Bot wykrzykuje [string].",
-        eng: ",shout [string] - Bot shouts [string]."
+        en: ",shout [string] - Bot shouts [string]."
     },
     aliases: []
 };

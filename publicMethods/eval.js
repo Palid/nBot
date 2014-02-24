@@ -49,7 +49,7 @@ var method = function (channel, evaluation) {
 var defaults = {
     description: {
         pl: ",eval [argumenty] - Ewaluuje wyrażenie. Dostępny JSowy obiekt Math.",
-        eng: ",eval [arguments] - Evaluates the expression. Object Math is allowed."
+        en: ",eval [arguments] - Evaluates the expression. Object Math is allowed."
     },
     aliases: [
         'maths',

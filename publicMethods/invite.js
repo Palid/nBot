@@ -11,7 +11,7 @@ var method = function (channel, data) {
 var defaults = {
     description: {
         pl: ",invite [użytkownik] [kanał] - Zaprasza [użytkownika] na [kanał].",
-        eng: ",invite [user] [channel] - Invites [user] on [channel]."
+        en: ",invite [user] [channel] - Invites [user] on [channel]."
     },
     aliases: [
         "inv"

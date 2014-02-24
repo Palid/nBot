@@ -1,7 +1,7 @@
 /*jslint node: true */
 "use strict";
 var forever = require('forever-monitor');
-var child = new(forever.Monitor)('./listeners.js', {
+var child = new(forever.Monitor)('listeners.js', {
     'silent': false,
     'pidFile': 'pids/app.pid',
 

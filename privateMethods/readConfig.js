@@ -7,14 +7,14 @@ var _ = require('lodash'),
     config = path.resolve(__dirname, "../config/aliases.json");
 
 var method = function (dir) {
-    console.log(Date.now());
-    console.log("used!");
 
-    var aliases = fs.readFileSync(dir, 'utf8'),
-        parsed = JSON.parse(aliases);
+    if (fs.existsSync(dir)) {
+        var aliases = fs.readFileSync(dir, 'utf8'),
+            parsed = JSON.parse(aliases);
 
+        return parsed;
+    }
 
-    return parsed;
 };
 
 var parsedConfig = method(config);

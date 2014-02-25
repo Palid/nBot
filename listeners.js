@@ -69,7 +69,7 @@ client.addListener('ircError', function (message) {
 });
 
 client.addListener('raw', function (message) {
-    bot.log(true, 'raw', JSON.stringify(message) + '\r\n');
+    bot.log(true, 'raw', JSON.stringify(message, null, 4) + '\r\n');
 });
 
 console.info('nBot start');

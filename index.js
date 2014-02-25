@@ -1,4 +1,6 @@
-/*jslint node: true */
+/*jslint loopfunc: true */
+
+"use strict";
 var fs = require('fs'),
     _ = require('lodash'),
     path = require('path'),
@@ -11,18 +13,20 @@ var initialize = function (data) {
 
     for (var property in methods) {
 
-        if (!_.has(parsed, property)) {
-            parsed[property] = {
+        if (!_.has(data, property)) {
+            data[property] = {
                 aliases: methods[property].defaults.aliases,
                 description: methods[property].defaults.description
             };
         }
     }
 
-    var stringify = JSON.stringify(parsed, null, 4);
+    var stringify = JSON.stringify(data, null, 4);
 
     fs.writeFile(configDir, stringify, function (err) {
-        if (err) console.log(err);
+        if (err) {
+            console.log(err);
+        }
     });
 
     module.exports = aliasList;
@@ -56,23 +60,28 @@ var createList = function (data) {
 var checkIfExists = function (dir) {
 
     if (fs.existsSync(dir)) {
+        var parseData;
 
         try {
-            var parsed = bot.readConfig;
+            parsedData = bot.readConfig;
         } catch (e) {
             fs.unlink(dir, function (err) {
-                if (err) console.log(err);
+                if (err) {
+                    console.log(err);
+                }
             });
             return {};
         }
-        if (!_.isObject(parsed)) {
+        if (!_.isObject(parsedData)) {
             fs.unlink(dir, function (err) {
-                if (err) console.log(err);
+                if (err) {
+                    console.log(err)
+                }
             });
             return {};
         }
 
-        return parsed;
+        return parsedData;
     } else {
         return {};
     }

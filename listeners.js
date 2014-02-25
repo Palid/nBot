@@ -1,4 +1,3 @@
-/*jslint node: true */
 "use strict";
 var fs = require('fs'),
     _ = require('lodash'),
@@ -10,7 +9,7 @@ var fs = require('fs'),
 
 // from = messaging user
 // to = channel OR bot
-// message = message
+// message = message$
 
 client.addListener('message', function (from, to, message) {
 

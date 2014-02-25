@@ -1,4 +1,3 @@
-/*jslint node: true */
 "use strict";
 var forever = require('forever-monitor');
 var child = new(forever.Monitor)('listeners.js', {

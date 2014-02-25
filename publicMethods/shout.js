@@ -1,4 +1,3 @@
-/*jslint node: true */
 "use strict";
 var irc = require('irc'),
     client = require('../config/bot.js');

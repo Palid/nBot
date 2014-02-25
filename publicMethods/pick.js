@@ -1,4 +1,4 @@
-/*jslint node: true */
+"use strict";
 var crypto = require('crypto'),
     _ = require('lodash'),
     client = require('../config/bot.js');

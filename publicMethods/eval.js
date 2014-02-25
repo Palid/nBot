@@ -1,4 +1,4 @@
-/*jslint node: true */
+/*jslint evil: true */
 "use strict";
 var _ = require('lodash'),
     irc = require('irc'),
@@ -11,6 +11,7 @@ cluster.setupMaster({
     silent: false
 });
 
+
 var method = function (channel, evaluation) {
 
     //This will be fired when the forked process becomes online
@@ -18,7 +19,8 @@ var method = function (channel, evaluation) {
 
         worker.on("message", function (evaledString) {
 
-            clearTimeout(timer); //The worker responded in under 5 seconds, clear the timeout
+            clearTimeout(timer); //The worker responded in under 5 seconds, 
+            // clear the timeout
             worker.destroy(); //Don't leave him hanging 
             cluster.removeAllListeners();
 

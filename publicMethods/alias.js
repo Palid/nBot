@@ -2,14 +2,13 @@
 var _ = require('lodash'),
     fs = require('fs'),
     path = require('path'),
-    irc = require('irc'),
     client = require('../config/bot.js'),
-    bot = require('../privateMethods/');
+    config = require('../initialize/parseJSON.js');
 
 var method = function (channel, data) {
     // Gotta require it in method, otherwise it's loaded globally.
     // Bad, bad things happen then...
-    var parsed = bot.readConfig;
+    var parsed = config;
 
     if (_.has(parsed, data)) {
         var list = "";

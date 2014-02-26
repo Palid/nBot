@@ -1,11 +1,8 @@
 "use strict";
-var fs = require('fs'),
-    _ = require('lodash'),
-    irc = require('irc'),
-    client = require('./config/bot.js'),
-    methods = require('./publicMethods/'),
-    bot = require('./privateMethods/'),
-    aliases = require('./index.js');
+var client = require('./config/bot.js'),
+    logger = require('./privateMethods/log.js'),
+    command = require('./privateMethods/checkCommand.js'),
+    aliases = require('./initialize/');
 
 // from = messaging user
 // to = channel OR bot
@@ -13,27 +10,9 @@ var fs = require('fs'),
 
 client.addListener('message', function (from, to, message) {
 
-    bot.log(true, to, '<' + from + '> ' + message + '\r\n');
+    logger(true, to, '<' + from + '> ' + message + '\r\n');
 
-    if (message.charAt(0) === client.commandCharacter) {
-        message = message.replace(client.commandCharacter, '');
-        var firstWhitespace = _.indexOf(message, ' '),
-            body = (firstWhitespace !== -1) ? message.substring(firstWhitespace + 1) : "",
-            command = (firstWhitespace !== -1) ? message.substring(0, firstWhitespace) : message;
-
-        if (_.isUndefined(aliases[command])) {
-            client.say(to, "Command " + command + " not found");
-        } else {
-            try {
-                aliases[command](to, body, from);
-            } catch (err) {
-                bot.log(true, to, err);
-                console.log(err);
-                client.say(to, "Command " + command + " exited with an error.");
-            }
-        }
-
-    }
+    command(from, to, message);
 
 });
 
@@ -59,16 +38,16 @@ client.addListener('kick', function (channel, who, by, reason) {
 
 client.addListener('error', function (message) {
     console.log(message);
-    bot.log(true, 'error', message + '\r\n');
+    logger(true, 'error', message + '\r\n');
 });
 
 client.addListener('ircError', function (message) {
     console.log(message);
-    bot.log(true, 'ircError', message + '\r\n');
+    logger(true, 'ircError', message + '\r\n');
 });
 
 client.addListener('raw', function (message) {
-    bot.log(true, 'raw', JSON.stringify(message, null, 4) + '\r\n');
+    logger(true, 'raw', JSON.stringify(message, null, 4));
 });
 
 console.info('nBot start');

@@ -3,11 +3,9 @@ var forever = require('forever-monitor');
 var child = new(forever.Monitor)('listeners.js', {
     'silent': false,
     'pidFile': 'pids/app.pid',
+    'command': 'node',
 
-    'command': 'node --harmony',
-
-
-    'watch': true,
+    'watch': false,
     'watchDirectory': '.', // Top-level directory to watch from.
     'watchIgnoreDotFiles': true, // whether to ignore dot files
     'watchIgnorePatterns': [''], // array of glob patterns to ignore, merged with contents of watchDirectory + '/.foreverignore' file

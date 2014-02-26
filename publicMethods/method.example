@@ -1,0 +1,26 @@
+"use strict";
+var client = require('../config/bot.js');
+
+// 
+var method = function (channel, data) {
+    //return the thing client is supposed to do down there
+    return "thing the client is supposed to do"
+};
+
+//
+var defaults = {
+    description: {
+        pl: ",komenda [data] - Bot robi [data]",
+        en: ",command [data] - Bot does [data]"
+    },
+    aliases: [
+        "command",
+        "yourOwn"
+    ]
+};
+
+
+module.exports = {
+    method: method,
+    defaults: defaults
+};

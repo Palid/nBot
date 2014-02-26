@@ -1,0 +1,30 @@
+'use strict';
+var _ = require('lodash'),
+    fs = require('fs'),
+    path = require('path'),
+    methods = require('./publicMethods/');
+
+var method = function (data) {
+    var aliasesList = {};
+
+    var collection = _.mapValues(data, function (el) {
+        return el.aliases;
+    });
+
+    for (var property in collection) {
+
+        aliasesList[property] = methods[property].method;
+
+        for (var i = 0, len = collection[property].length; i < len; i++) {
+            /** 
+             * I'm not really sure if returning method is better than just
+             * defining it to the dictionary. Need to benchmark this stuff.
+             */
+            aliasesList[collection[property][i]] = methods[property].method;
+
+        }
+    }
+    return aliasesList;
+};
+
+module.exports = method;

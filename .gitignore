@@ -1,5 +1,5 @@
 node_modules/
-logs/*
+logs/
 *.sublime*
 *.log
 config/bot.js

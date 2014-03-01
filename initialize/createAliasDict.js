@@ -2,8 +2,8 @@
 var fs = require('fs'),
     path = require('path'),
     _ = require('lodash'),
-    methods = require('../publicMethods/'),
-    config = require('./parseJSON.js');
+    methods = require('../publicMethods/');
+// config = require('./parseJSON.js');
 
 var createList = function (data) {
     var aliasesList = {};
@@ -25,11 +25,10 @@ var createList = function (data) {
 
         }
     }
+
     return aliasesList;
 };
 
 console.log("Creating aliases dictionary");
 
-var list = createList(config);
-
-module.exports = list;
+module.exports = createList;

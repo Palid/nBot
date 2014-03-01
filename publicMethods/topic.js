@@ -1,6 +1,5 @@
 "use strict";
-var irc = require('irc'),
-    client = require('../config/bot.js');
+var client = require('../config/bot.js');
 
 var method = function (channel, topic) {
     client.say(channel + ' topic changed to ' + topic);

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 var _ = require('lodash'),
     fs = require('fs'),
     dir = fs.readdirSync(__dirname + '/');

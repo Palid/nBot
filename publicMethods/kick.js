@@ -1,6 +1,5 @@
 "use strict";
 var _ = require('lodash'),
-    irc = require('irc'),
     client = require('../config/bot.js');
 
 var method = function (channel, data, commandGiver) {

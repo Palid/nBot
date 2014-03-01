@@ -1,9 +1,12 @@
 "use strict";
 var _ = require('lodash'),
     client = require('../config/bot.js'),
-    aliases = require('../initialize/createAliasDict.js');
+    aliases = require('./watchFile.js').aliases;
 
 var method = function (from, to, message) {
+
+    console.log(aliases);
+
     if (message.charAt(0) === client.commandCharacter) {
         message = message.replace(client.commandCharacter, '');
         var firstWhitespace = _.indexOf(message, ' '),

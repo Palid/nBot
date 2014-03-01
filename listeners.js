@@ -3,7 +3,6 @@ var client = require('./config/bot.js'),
     logger = require('./privateMethods/log.js'),
     command = require('./privateMethods/checkCommand.js'),
     aliases = require('./initialize/');
-
 // from = messaging user
 // to = channel OR bot
 // message = message$

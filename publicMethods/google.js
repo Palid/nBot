@@ -1,6 +1,5 @@
 "use strict";
 var _ = require('lodash'),
-    irc = require('irc'),
     google = require('google'),
     client = require('../config/bot.js');
 

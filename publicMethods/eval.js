@@ -1,7 +1,5 @@
-/*jslint evil: true */
 "use strict";
 var _ = require('lodash'),
-    irc = require('irc'),
     cluster = require('cluster'),
     client = require('../config/bot.js');
 

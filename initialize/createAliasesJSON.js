@@ -3,7 +3,6 @@ var fs = require('fs'),
     path = require('path'),
     _ = require('lodash'),
     methods = require('../publicMethods/'),
-    config = require('./parseJSON.js'),
     configDir = path.resolve(__dirname, "../config/aliases.json");
 
 var method = function (data) {
@@ -29,4 +28,4 @@ var method = function (data) {
 
 console.log("Creating aliases.json");
 
-method(config);
+module.exports = method;

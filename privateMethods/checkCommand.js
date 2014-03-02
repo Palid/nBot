@@ -1,6 +1,7 @@
 "use strict";
 var _ = require('lodash'),
     client = require('../config/bot.js'),
+    hotLoad = require('./hotload.js'),
     aliases = require('./watchFile.js').aliases;
 
 var method = function (from, to, message) {

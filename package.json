@@ -1,19 +1,20 @@
 {
-    "name": "noBot",
-    "version": "0.1.0",
-    "description": "node.js IRC bot using IRC library",
-    "main": "bot.js",
-    "scripts": {},
-    "repository": {
-        "type": "git",
-        "url": "ssh://git@bitbucket.org/palid/nobot.git"
-    },
-    "author": "Dariusz 'Palid' Niemczyk",
-    "license": "ISC",
-    "dependencies": {
-        "irc": "~0.3.6",
-        "lodash": "~2.4.1",
-        "google": "~0.3.2",
-        "forever-monitor": "~1.2.3"
-    }
+  "name": "noBot",
+  "version": "0.1.0",
+  "description": "node.js IRC bot using IRC library",
+  "main": "bot.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@bitbucket.org/palid/nobot.git"
+  },
+  "author": "Dariusz 'Palid' Niemczyk",
+  "license": "ISC",
+  "dependencies": {
+    "irc": "~0.3.6",
+    "lodash": "~2.4.1",
+    "google": "~0.3.2",
+    "forever-monitor": "~1.2.3",
+    "connect": "~2.13.0"
+  }
 }

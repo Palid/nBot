@@ -1,11 +1,24 @@
 "use strict";
+var _ = require('lodash'),
+    figlet = require('figlet'),
+    client = require('../config/bot.js');
+
+
 
 var method = function (channel, data) {
+
+    figlet(data, function (err, data) {
+        if (err) {
+            console.dir(err);
+            return;
+        }
+        client.say(channel, data);
+    });
+
     return {
-        type: "say",
-        to: channel,
-        message: data.toUpperCase()
+        type: "async"
     };
+
 };
 
 var defaults = {
@@ -15,6 +28,8 @@ var defaults = {
     },
     aliases: []
 };
+
+method("asd", "POTATO");
 
 
 module.exports = {

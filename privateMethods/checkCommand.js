@@ -9,6 +9,28 @@ watch.on('configChanged', function () {
     aliases = hotLoad(__dirname, '../initialize/createAliasDict.js');
 });
 
+var RESPONSES = {
+    async: function () {
+        // Do nothing, it's a fallback.
+        // It's bad.
+        // Terribad.
+        // ▄███▄░░▄███▄░░████▄░████▄░██▄░░▄██
+        // ▀█▄▀▀░██▀░▀██░██░██░██░██░░▀████▀░
+        // ▄▄▀█▄░██▄░▄██░████▀░████▀░░░░██░░░
+        // ▀███▀░░▀███▀░░██░██░██░██░░░░██░░░
+    },
+    command: function (response) {
+        if ( !! response.nick) {
+            client.send(response.command, response.to, response.nick, response.message);
+        } else {
+            client.send(response.command, response.to, response.message);
+        }
+    },
+    say: function (response) {
+        client.say(response.to, response.message);
+    }
+};
+
 var method = function (from, to, message) {
 
     if (message.charAt(0) === client.commandCharacter) {
@@ -22,19 +44,7 @@ var method = function (from, to, message) {
         } else {
             try {
                 var response = aliases[command](to, body, from);
-
-                if (response.type === "async") {
-                    console.log("Waiting for response from " + command + " command");
-                } else if (response.type === "command") {
-                    if ( !! response.nick) {
-                        client.send(response.command, response.to, response.nick, response.message);
-                    } else {
-                        client.send(response.command, response.to, response.message);
-                    }
-                } else if (response.type === "say") {
-                    client.say(response.to, response.message);
-                }
-
+                RESPONSES[response.type](response);
             } catch (err) {
                 console.log(err);
                 client.say(to, "Command " + command + " exited with an error.");

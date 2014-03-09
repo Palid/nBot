@@ -33,7 +33,7 @@ var method = function (channel, data) {
 
     return {
         type: "async"
-    }
+    };
 
 };
 

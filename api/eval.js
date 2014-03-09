@@ -22,7 +22,7 @@ var method = function (channel, evaluation) {
             worker.destroy(); //Don't leave him hanging 
             cluster.removeAllListeners();
 
-            if ( !! evaledString) {
+            if (!evaledString) {
                 client.say(channel, "null");
             } else {
                 client.say(channel, evaledString);

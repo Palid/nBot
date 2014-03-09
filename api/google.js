@@ -33,9 +33,9 @@ var method = function (channel, data) {
             if (_.isString(description)) {
                 searchResult += "\r\n" + description;
             }
+            client.say(channel, searchResult);
 
         }
-        client.say(channel, searchResult);
 
     });
 

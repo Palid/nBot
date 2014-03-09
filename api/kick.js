@@ -1,6 +1,5 @@
 "use strict";
-var _ = require('lodash'),
-    client = require('../config/bot.js');
+var _ = require('lodash');
 
 var method = function (channel, data, commandGiver) {
 
@@ -9,10 +8,21 @@ var method = function (channel, data, commandGiver) {
         body = data.substring(firstWhitespace + 1);
 
     if (nick === "chomis" || body === "chomis") {
-
-        return client.send("KICK", channel, commandGiver, "Czemu chcesz wykopać chomika? ;_;");
+        return {
+            type: "command",
+            command: "KICK",
+            to: channel,
+            nick: commandGiver,
+            message: "Czemu chcesz wykopać chomika? ;_;"
+        };
     } else {
-        return client.send("KICK", channel, nick, body);
+        return {
+            type: "command",
+            command: "KICK",
+            to: channel,
+            nick: nick,
+            message: body
+        };
     }
 };
 

@@ -2,7 +2,7 @@
 var fs = require('fs'),
     path = require('path'),
     _ = require('lodash'),
-    methods = require('../publicMethods/');
+    methods = require('../api/');
 // config = require('./parseJSON.js');
 
 var createList = function (data) {

@@ -1,6 +1,5 @@
 "use strict";
-var _ = require('lodash'),
-    client = require('../config/bot.js');
+var _ = require('lodash');
 
 
 var method = function (channel, data) {
@@ -11,9 +10,18 @@ var method = function (channel, data) {
             nick = data.substring(0, firstWhitespace),
             body = data.substring(firstWhitespace + 1);
 
-        return client.say(nick, body);
+        return {
+            type: "say",
+            to: nick,
+            message: body
+        };
+
     }
-    return client.say(channel, "Couldn't send text message.");
+    return {
+        type: "say",
+        to: channel,
+        message: "Couldn't send text message."
+    };
 };
 
 var defaults = {

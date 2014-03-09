@@ -1,7 +1,5 @@
 "use strict";
-var _ = require('lodash'),
-    client = require('../config/bot.js');
-
+var _ = require('lodash');
 
 var method = function (channel, data) {
 
@@ -22,10 +20,17 @@ var method = function (channel, data) {
             resultsList += x.toString() + ", ";
         }
 
-        return client.say(channel, "Throw results for " + data + ": " + resultsList + "with final result of: " + finalResult);
+        return {
+            type: "say",
+            to: channel,
+            message: "Throw results for " + data + ": " + resultsList + "with final result of: " + finalResult
+        };
     } else {
-        return client.say(channel, "Throw result is not a number. Example of valid dice throw: 2d10");
-
+        return {
+            type: "say",
+            to: channel,
+            message: "Throw result is not a number. Example of valid dice throw: 2d10"
+        };
     }
 
 };

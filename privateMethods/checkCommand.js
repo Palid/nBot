@@ -1,12 +1,15 @@
 "use strict";
 var _ = require('lodash'),
     client = require('../config/bot.js'),
-    hotLoad = require('./hotload.js'),
-    aliases = require('./watchFile.js').aliases;
+    hotLoad = require('./hotload.js');
+
+hotLoad('');
+
+
+// var aliases = hotLoad.getAliases();
+var aliases = [];
 
 var method = function (from, to, message) {
-
-    console.log(aliases);
 
     if (message.charAt(0) === client.commandCharacter) {
         message = message.replace(client.commandCharacter, '');
@@ -18,7 +21,18 @@ var method = function (from, to, message) {
             client.say(to, "Command " + command + " not found");
         } else {
             try {
-                aliases[command](to, body, from);
+                var response = aliases[command](to, body, from);
+
+                if (response.type === "command") {
+                    if ( !! response.nick) {
+                        client.send(response.command, response.to, response.nick, response.message);
+                    } else {
+                        client.send(response.command, response.to, response.message);
+                    }
+                } else if (response.type === "say") {
+                    client.say(response.to, response.message);
+                }
+
             } catch (err) {
                 console.log(err);
                 client.say(to, "Command " + command + " exited with an error.");

@@ -6,19 +6,24 @@ var _ = require('lodash'),
     config = require('../initialize/parseJSON.js');
 
 var method = function (channel, data) {
-    // Gotta require it in method, otherwise it's loaded globally.
-    // Bad, bad things happen then...
-    var parsed = config;
 
-    if (_.has(parsed, data)) {
+    if (_.has(config, data)) {
         var list = "";
-        _.forEach(parsed[data].aliases, function (alias, iterator) {
+        _.forEach(config[data].aliases, function (alias, iterator) {
             list = list + (client.commandCharacter + alias + " ");
         });
-        return client.say(channel, "Aliases for " + data + " are: " + list);
 
+        return {
+            type: "say",
+            to: channel,
+            message: "Aliases for " + data + " are: " + list
+        };
     } else {
-        return client.say(channel, "Command not found.");
+        return {
+            type: "say",
+            to: channel,
+            message: "Command not found."
+        };
     }
 
 };

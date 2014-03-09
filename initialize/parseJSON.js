@@ -1,8 +1,7 @@
 "use strict";
-var _ = require('lodash'),
-    fs = require('fs'),
+var fs = require('fs'),
     path = require('path'),
-    log = require('../privateMethods/log.js');
+    config = path.resolve(__dirname, "../config/aliases.json");
 
 var method = function (dir) {
 
@@ -28,4 +27,4 @@ var method = function (dir) {
 console.log("Parsing JSON file");
 
 
-module.exports = method;
+module.exports = method(config);

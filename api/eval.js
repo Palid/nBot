@@ -1,6 +1,7 @@
 "use strict";
 var _ = require('lodash'),
-    cluster = require('cluster');
+    cluster = require('cluster'),
+    client = require('../config/bot.js');
 
 cluster.setupMaster({
     exec: "cluster/eval.js",
@@ -21,24 +22,10 @@ var method = function (channel, evaluation) {
             worker.destroy(); //Don't leave him hanging 
             cluster.removeAllListeners();
 
-            if (_.isNull(evaledString)) {
-                return {
-                    type: "say",
-                    to: channel,
-                    message: "null"
-                };
-            } else if (_.isUndefined(evaledString)) {
-                return {
-                    type: "say",
-                    to: channel,
-                    message: "undefined"
-                };
+            if ( !! evaledString) {
+                client.say(channel, "null");
             } else {
-                return {
-                    type: "say",
-                    to: channel,
-                    message: evaledString
-                };
+                client.say(channel, evaledString);
             }
 
         });
@@ -47,11 +34,7 @@ var method = function (channel, evaluation) {
         var timer = setTimeout(function () {
             cluster.removeAllListeners();
             worker.destroy();
-            return {
-                type: "say",
-                to: channel,
-                message: "undefined"
-            };
+            client.say(channel, "null");
         }, 200);
 
     });
@@ -59,6 +42,10 @@ var method = function (channel, evaluation) {
     var worker = cluster.fork();
 
     worker.send(evaluation);
+
+    return {
+        type: "async"
+    };
 };
 
 var defaults = {

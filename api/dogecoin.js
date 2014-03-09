@@ -1,35 +1,40 @@
 "use strict";
-var request = require('request');
+var _ = require('lodash'),
+    request = require('request'),
+    client = require('../config/bot.js');
+
+var message,
+    options = {
+        url: 'https://www.coins-e.com/api/v2/markets/data/',
+        method: 'GET',
+        headers: {
+            "User-Agent": "Mozilla/4.0 (compatible; Cryptsy API node client)",
+            "Content-type": "application/x-www-form-urlencoded",
+            "Host": "www.coins-e.com"
+        }
+    };
+
 
 var method = function (channel, data) {
-    var message,
-        options = {
-            url: 'https://www.coins-e.com/api/v2/markets/data/',
-            method: 'GET',
-            headers: {
-                "User-Agent": "Mozilla/4.0 (compatible; Cryptsy API node client)",
-                "Content-type": "application/x-www-form-urlencoded",
-                "Host": "www.coins-e.com"
-            }
-        };
 
     request(options.url, options, function (err, res, body) {
         var response = JSON.parse(body);
         if (!err && response.message === 'success') {
-            message =
-                "Dogecoin status: " +
-                "average: " + response.markets.DOGE_BTC.marketstat['24h'].avg_rate + " " +
-                "high: " + response.markets.DOGE_BTC.marketstat['24h'].h + " " +
-                "low: " + response.markets.DOGE_BTC.marketstat['24h'].l + " " +
-                "volume: " + response.markets.DOGE_BTC.marketstat['24h'].volume;
+            message = [
+                "Dogecoin status:",
+                "average: " + response.markets.DOGE_BTC.marketstat['24h'].avg_rate,
+                "high: " + response.markets.DOGE_BTC.marketstat['24h'].h,
+                "low: " + response.markets.DOGE_BTC.marketstat['24h'].l,
+                "volume: " + response.markets.DOGE_BTC.marketstat['24h'].volume
+            ];
+            client.say(channel, message.join(" "));
         }
     });
 
     return {
-        type: "say",
-        to: channel,
-        message: message
-    };
+        type: "async"
+    }
+
 };
 
 var defaults = {

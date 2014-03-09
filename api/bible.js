@@ -1,5 +1,6 @@
 "use strict";
-var request = require('request');
+var request = require('request'),
+    client = require('../config/bot.js');
 
 var method = function (channel, data) {
     var message,
@@ -10,18 +11,16 @@ var method = function (channel, data) {
 
     request(options.url, options, function (err, res, body) {
         var response = body;
-        console.log(body);
         message = body;
         if (err) {
             console.log(err);
             message = err;
         }
+        client.say(channel, message);
     });
 
     return {
-        type: "say",
-        to: channel,
-        message: message
+        type: "async"
     };
 };
 

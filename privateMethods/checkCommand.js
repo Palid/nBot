@@ -22,7 +22,10 @@ var method = function (from, to, message) {
         } else {
             try {
                 var response = aliases[command](to, body, from);
-                if (response.type === "command") {
+
+                if (response.type === "async") {
+                    console.log("Waiting for response from " + command + " command");
+                } else if (response.type === "command") {
                     if ( !! response.nick) {
                         client.send(response.command, response.to, response.nick, response.message);
                     } else {

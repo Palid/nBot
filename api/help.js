@@ -22,8 +22,11 @@ var method = function (channel, data) {
         // hardcoded english help
         response = config.help.description.en;
     }
-
-    return client.say(channel, response);
+    return {
+        type: "say",
+        to: channel,
+        message: response
+    };
 
 };
 

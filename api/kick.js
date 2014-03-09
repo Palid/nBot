@@ -9,10 +9,23 @@ var method = function (channel, data, commandGiver) {
         body = data.substring(firstWhitespace + 1);
 
     if (nick === "chomis" || body === "chomis") {
+        client.send("KICK", channel, commandGiver, "Czemu chcesz wykopać chomika? ;_;");
 
-        return client.send("KICK", channel, commandGiver, "Czemu chcesz wykopać chomika? ;_;");
+        return {
+            type: "command",
+            command: "KICK",
+            to: channel,
+            nick: commandGiver,
+            message: "Czemu chcesz wykopać chomika? ;_;"
+        };
     } else {
-        return client.send("KICK", channel, nick, body);
+        return {
+            type: "command",
+            command: "KICK",
+            to: channel,
+            nick: nick,
+            message: body
+        };
     }
 };
 

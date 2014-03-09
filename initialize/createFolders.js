@@ -1,23 +1,18 @@
 "use strict";
 var fs = require('fs'),
     _ = require('lodash'),
-    path = require('path');
+    path = require('path'),
+    rootPath = path.dirname(process.mainModule.filename);
 
 
-//Create logs directory
+function method(dirName) {
 
-if (fs.existsSync(path.resolve(__dirname, "../logs"))) {
-    console.log("Logs directory exists, not creating");
-} else {
-    console.log("Creating logs directory");
-    fs.mkdirSync(path.resolve(__dirname, "../logs"));
+    if (fs.existsSync(path.resolve(__dirname, rootPath + "/" + dirName))) {
+        console.log("Directory " + dirName + " exists, not creating");
+    } else {
+        console.log("Creating directory " + dirName);
+        fs.mkdirSync(path.resolve(__dirname, rootPath + "/" + dirName));
+    }
 }
 
-//Create pids directory for forever
-
-if (fs.existsSync(path.resolve(__dirname, "../pids"))) {
-    console.log("Pids directory exists, not creating");
-} else {
-    console.log("Creating Pids directory");
-    fs.mkdirSync(path.resolve(__dirname, "../pids"));
-}
+module.exports = method;

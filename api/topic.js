@@ -3,7 +3,11 @@ var client = require('../config/bot.js');
 
 var method = function (channel, topic) {
     client.say(channel + ' topic changed to ' + topic);
-    return client.send("TOPIC", channel, topic);
+    return {
+        type: "command",
+        to: channel,
+        message: topic
+    };
 };
 
 var defaults = {

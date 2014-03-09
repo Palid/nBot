@@ -10,7 +10,9 @@ var method = function (channel, data) {
     google.resultsPerPage = 1;
 
     google(data, function (err, next, links) {
-        if (err) console.error(err);
+        if (err) {
+            console.error(err);
+        }
 
         var length = links.length;
 
@@ -20,15 +22,23 @@ var method = function (channel, data) {
                 description = links[i].description.substring(0, 200) + "...",
                 searchResult = "";
 
-            if (_.isString(link)) searchResult += link + " --- ";
+            if (_.isString(link)) {
+                searchResult += link + " --- ";
+            }
 
-            if (_.isString(title)) searchResult += title + " ";
+            if (_.isString(title)) {
+                searchResult += title + " ";
+            }
 
-            if (_.isString(description)) searchResult += "\r\n" + description;
+            if (_.isString(description)) {
+                searchResult += "\r\n" + description;
+            }
 
-            console.log(searchResult);
-
-            client.say(channel, searchResult);
+            return {
+                type: "say",
+                to: channel,
+                message: searchResult
+            };
 
         }
 

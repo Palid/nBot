@@ -8,7 +8,12 @@ var method = function (channel) {
     for (var property in methods) {
         list = list + (client.commandCharacter + property + " ");
     }
-    return client.say(channel, "Available commands: " + list);
+
+    return {
+        type: "say",
+        to: channel,
+        message: "Available commands: " + list
+    };
 };
 
 var defaults = {

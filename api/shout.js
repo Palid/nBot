@@ -3,7 +3,11 @@ var client = require('../config/bot.js');
 
 
 var method = function (channel, data) {
-    return client.say(channel, data.toUpperCase());
+    return {
+        type: "say",
+        to: channel,
+        message: data.toUpperCase()
+    };
 };
 
 var defaults = {

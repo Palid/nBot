@@ -1,4 +1,0 @@
-pids/**
-logs/**
-node_modules/**
-*.sublime-project

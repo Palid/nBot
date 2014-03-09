@@ -2,8 +2,13 @@
 var client = require('../config/bot.js');
 
 
-var method = function (channel, data) {
-    return client.send("INVITE", data, channel);
+var method = function (channel, nick) {
+    return {
+        type: "command",
+        command: "INVITE",
+        to: nick,
+        body: channel
+    };
 };
 
 var defaults = {

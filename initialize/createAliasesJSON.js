@@ -2,7 +2,7 @@
 var fs = require('fs'),
     path = require('path'),
     _ = require('lodash'),
-    methods = require('../publicMethods/'),
+    methods = require('../api/'),
     configDir = path.resolve(__dirname, "../config/aliases.json");
 
 var method = function (data) {

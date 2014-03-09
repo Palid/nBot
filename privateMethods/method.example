@@ -2,7 +2,7 @@
 var _ = require('lodash'),
     fs = require('fs'),
     path = require('path'),
-    methods = require('./publicMethods/');
+    methods = require('./api/');
 
 var method = function (data) {
     value = data;

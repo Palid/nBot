@@ -23,11 +23,23 @@ var method = function (channel, evaluation) {
             cluster.removeAllListeners();
 
             if (_.isNull(evaledString)) {
-                return client.say(channel, "null");
+                return {
+                    type: "say",
+                    to: channel,
+                    message: "null"
+                };
             } else if (_.isUndefined(evaledString)) {
-                return client.say(channel, "undefined");
+                return {
+                    type: "say",
+                    to: channel,
+                    message: "undefined"
+                };
             } else {
-                return client.say(channel, evaledString);
+                return {
+                    type: "say",
+                    to: channel,
+                    message: evaledString
+                };
             }
 
         });
@@ -36,7 +48,11 @@ var method = function (channel, evaluation) {
         var timer = setTimeout(function () {
             cluster.removeAllListeners();
             worker.destroy();
-            return client.say(channel, "undefined");
+            return {
+                type: "say",
+                to: channel,
+                message: "undefined"
+            };
         }, 200);
 
     });

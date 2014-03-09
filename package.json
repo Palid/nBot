@@ -13,8 +13,6 @@
   "dependencies": {
     "irc": "~0.3.6",
     "lodash": "~2.4.1",
-    "google": "~0.3.2",
-    "forever-monitor": "~1.2.3",
-    "connect": "~2.13.0"
+    "google": "~0.3.2"
   }
 }

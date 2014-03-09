@@ -12,7 +12,11 @@ var method = function (channel, data) {
             console.dir(err);
             return;
         }
-        client.say(channel, data);
+        if (data.length > 500){
+            client.say(channel, "String is too long.");
+        } else{
+            client.say(channel, data);
+        }
     });
 
     return {

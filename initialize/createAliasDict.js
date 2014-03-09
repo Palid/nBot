@@ -14,13 +14,14 @@ watch.on('configChanged', function () {
 
 
 var createList = function (data) {
-    var aliasesList = {};
+    var aliasesList = {},
+        property;
 
     var collection = _.mapValues(data, function (data) {
         return data.aliases;
     });
 
-    for (var property in collection) {
+    for (property in collection) {
 
         aliasesList[property] = methods[property].method;
 

@@ -1,6 +1,5 @@
 "use strict";
 
-// 
 var method = function (channel, data) {
     //return the thing client is supposed to do down there
     //If command makes the bot say something:

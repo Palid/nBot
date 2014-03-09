@@ -3,7 +3,15 @@ var _ = require('lodash'),
     fs = require('fs'),
     path = require('path'),
     client = require('../config/bot.js'),
-    config = require('../initialize/parseJSON.js');
+    watch = require('../initialize/watch.js'),
+    hotLoad = require('../privateMethods/hotload.js'),
+    config = require('../initialize/parseJSON.js'),
+    aliases = require('../initialize/createAliasDict.js');
+
+watch.on('configChanged', function () {
+    aliases = hotLoad(__dirname, '../initialize/createAliasDict.js');
+    config = hotLoad(__dirname, '../initialize/parseJSON.js');
+});
 
 var method = function (channel, data) {
 

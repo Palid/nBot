@@ -30,14 +30,11 @@ var method = function (channel, data) {
         }
     });
 
-
-    var obj = {
+    return {
         type: "say",
         to: channel,
         message: arr2.join(" > ")
     };
-
-    return obj;
 
 };
 

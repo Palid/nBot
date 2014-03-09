@@ -1,8 +1,13 @@
 "use strict";
 var _ = require('lodash'),
     client = require('../config/bot.js'),
+    watch = require('../initialize/watch.js'),
+    hotLoad = require('../privateMethods/hotload.js'),
     config = require('../initialize/parseJSON.js');
 
+watch.on('configChanged', function () {
+    config = hotLoad(__dirname, '../initialize/parseJSON.js');
+});
 
 var method = function (channel, data) {
     var firstWhitespace,
@@ -32,8 +37,8 @@ var method = function (channel, data) {
 
 var defaults = {
     description: {
-        pl: ",help [komenda] - Wyświetla opis dla [komenda].",
-        en: ",help [command] - Shows description for [command]."
+        pl: ",help [komenda] [język] - Wyświetla opis dla [komenda] w [języku].",
+        en: ",help [command] [lang] - Shows description for [command] in [lang]."
     },
     aliases: [
         "h"

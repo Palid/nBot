@@ -1,7 +1,6 @@
 "use strict";
 var _ = require('lodash');
 
-
 var method = function (channel, data) {
 
     if (data.substring(0, 1) !== '#') {

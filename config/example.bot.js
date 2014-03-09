@@ -6,7 +6,7 @@ var client = new irc.Client('chat.freenode.net', 'exampleNick', {
     realName: "That is my real name",
     channels: ['#example.channel'],
     floodProtection: true,
-    floodProtectionDelay: 500,
+    floodProtectionDelay: 100,
     messageSplit: 512,
     sasl: true,
     login: "bot",

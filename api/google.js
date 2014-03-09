@@ -1,6 +1,7 @@
 "use strict";
 var _ = require('lodash'),
-    google = require('google');
+    google = require('google'),
+    client = require('../config/bot.js');
 
 
 var method = function (channel, data) {
@@ -33,15 +34,14 @@ var method = function (channel, data) {
                 searchResult += "\r\n" + description;
             }
 
-            return {
-                type: "say",
-                to: channel,
-                message: searchResult
-            };
-
         }
+        client.say(channel, searchResult);
 
     });
+
+    return {
+        type: "async",
+    };
 };
 
 var defaults = {

@@ -2,8 +2,16 @@
 var fs = require('fs'),
     path = require('path'),
     _ = require('lodash'),
-    methods = require('../api/');
-// config = require('./parseJSON.js');
+    methods = require('../api/'),
+    config = require('./parseJSON.js'),
+    hotLoad = require('../privateMethods/hotload.js'),
+    watch = require('./watch.js');
+
+
+watch.on('configChanged', function () {
+    config = hotLoad(__dirname, './parseJSON.js');
+});
+
 
 var createList = function (data) {
     var aliasesList = {};
@@ -29,6 +37,9 @@ var createList = function (data) {
     return aliasesList;
 };
 
+
 console.log("Creating aliases dictionary");
 
-module.exports = createList;
+
+
+module.exports = createList(config);

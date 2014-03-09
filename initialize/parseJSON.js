@@ -26,5 +26,7 @@ var method = function (dir) {
 
 console.log("Parsing JSON file");
 
+var a = method(config);
 
-module.exports = method(config);
+
+module.exports = a;

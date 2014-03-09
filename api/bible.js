@@ -1,5 +1,4 @@
 "use strict";
-// var request = require('restler');
 var request = require('request');
 
 var method = function (channel, data) {

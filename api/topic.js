@@ -3,6 +3,7 @@
 var method = function (channel, topic) {
     return {
         type: "command",
+        command: "TOPIC",
         to: channel,
         message: topic
     };

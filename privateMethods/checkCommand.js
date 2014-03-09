@@ -1,13 +1,13 @@
 "use strict";
 var _ = require('lodash'),
+    watch = require('../initialize/watch.js'),
     client = require('../config/bot.js'),
-    hotLoad = require('./hotload.js');
+    hotLoad = require('./hotload.js'),
+    aliases = require('../initialize/createAliasDict.js');
 
-hotLoad('');
-
-
-// var aliases = hotLoad.getAliases();
-var aliases = [];
+watch.on('configChanged', function () {
+    aliases = hotLoad(__dirname, '../initialize/createAliasDict.js');
+});
 
 var method = function (from, to, message) {
 
@@ -22,7 +22,6 @@ var method = function (from, to, message) {
         } else {
             try {
                 var response = aliases[command](to, body, from);
-
                 if (response.type === "command") {
                     if ( !! response.nick) {
                         client.send(response.command, response.to, response.nick, response.message);

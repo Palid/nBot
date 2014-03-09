@@ -2,11 +2,10 @@
 var fs = require('fs'),
     _ = require('lodash'),
     path = require('path'),
-    rootPath = path.dirname(process.mainModule.filename);
+    rootPath = "../";
 
 
 function method(dirName) {
-
     if (fs.existsSync(path.resolve(__dirname, rootPath + "/" + dirName))) {
         console.log("Directory " + dirName + " exists, not creating");
     } else {

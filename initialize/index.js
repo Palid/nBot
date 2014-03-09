@@ -16,3 +16,13 @@ var fs = require('fs'),
 
 console.log("Creating configs and folders");
 makeDirs('logs');
+
+require('./parseJSON.js');
+
+require('./createAliasesJSON.js');
+
+require('./createAliasDict.js');
+
+// var pars = parsed(config),
+//     jsonFile = createJSON(pars),
+//     dict = aliasesDict(pars);

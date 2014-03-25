@@ -8,7 +8,8 @@ var _ = require('lodash'),
 function getTitle(channel, url, data) {
     var $ = cheerio.load(data),
         title = $('title').text();
-    client.say(channel, url + ' | ' + title);
+
+    client.say(channel, '↳ title: ' + (title = (title.length <= 80) ? title : (title.substr(0, 76)) + '...'));
 }
 
 function method(commandGiver, channel, data) {

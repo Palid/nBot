@@ -2,6 +2,7 @@
 var client = require('./config/bot.js'),
     logger = require('./privateMethods/log.js'),
     command = require('./privateMethods/checkCommand.js'),
+    urlScrape = require('./privateMethods/urlScrape.js'),
     aliases = require('./initialize/');
 // from = messaging user
 // to = channel OR bot
@@ -12,6 +13,8 @@ client.addListener('message', function (from, to, message) {
     logger(true, to, '<' + from + '> ' + message + '\r\n');
 
     command(from, to, message);
+    urlScrape(from, to, message);
+
 
 });
 

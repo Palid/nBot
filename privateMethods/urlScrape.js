@@ -5,11 +5,17 @@ var _ = require('lodash'),
     client = require('../config/bot.js'),
     re = require('../helpers/urlRe.js');
 
+// This somehow fixes memory leaks...
+// looks like a failed cookie, uh?
+request = request.defaults({
+    jar: request.jar()
+});
+
 function getTitle(channel, url, data) {
     var $ = cheerio.load(data),
-        title = $('title').text();
+        title = $('title').text().replace(/\r?\n|\r/g, '');
 
-    client.say(channel, '↳ title: ' + (title = (title.length <= 80) ? title : (title.substr(0, 76)) + '...'));
+    client.say(channel, '↳ title: ' + (title = (title.length <= 80) ? title : (title.substr(0, 79)) + '...'));
 }
 
 function method(commandGiver, channel, data) {
@@ -28,7 +34,7 @@ function method(commandGiver, channel, data) {
 
         r.on('data', function (chunk) {
             buffer += chunk;
-            if (buffer.length > (1024 * 1024)) {
+            if (buffer.length > (1024 * 1024 * 1.5)) {
                 r.abort();
                 client.say(channel, "File too big. Aborting.");
             }

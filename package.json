@@ -17,5 +17,6 @@
     "request": "~2.34.0",
     "figlet": "~1.0.8",
     "cheerio": "~0.13.1"
-  }
+  },
+  "devDependencies": {}
 }

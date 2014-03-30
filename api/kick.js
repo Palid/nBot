@@ -8,7 +8,7 @@ var method = function (channel, data, commandGiver) {
         nick = data.substring(0, firstWhitespace),
         body = data.substring(firstWhitespace + 1);
 
-    if (nick === client.nick) {
+    if (nick === client.nick || body === client.nick) {
         return {
             type: "command",
             command: "KICK",

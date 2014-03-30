@@ -11,7 +11,6 @@ watch.on('configChanged', function () {
     config = hotLoad(__dirname, './parseJSON.js');
 });
 
-
 var createList = function (data) {
     var aliasesList = {},
         property;

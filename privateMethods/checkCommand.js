@@ -18,16 +18,17 @@ var RESPONSES = {
         // ▀█▄▀▀░██▀░▀██░██░██░██░██░░▀████▀░
         // ▄▄▀█▄░██▄░▄██░████▀░████▀░░░░██░░░
         // ▀███▀░░▀███▀░░██░██░██░██░░░░██░░░
+        return;
     },
     command: function (response) {
         if ( !! response.nick) {
-            client.send(response.command, response.to, response.nick, response.message);
+            return client.send(response.command, response.to, response.nick, response.message);
         } else {
-            client.send(response.command, response.to, response.message);
+            return client.send(response.command, response.to, response.message);
         }
     },
     say: function (response) {
-        client.say(response.to, response.message);
+        return client.say(response.to, response.message);
     }
 };
 

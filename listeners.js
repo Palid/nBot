@@ -2,18 +2,26 @@
 var client = require('./config/bot.js'),
     logger = require('./privateMethods/log.js'),
     command = require('./privateMethods/checkCommand.js'),
-    urlScrape = require('./privateMethods/urlScrape.js'),
+    urlTitle = require('./privateMethods/urlScrape.js'),
     aliases = require('./initialize/');
 // from = messaging user
 // to = channel OR bot
 // message = message$
+
+
+// TODO
+// Regexp/indexOf command activation on listener.
+// var REGEXP = {
+//     command = client.commandCharacter,
+//     url = require('../helpers/urlRe.js')
+// };
 
 client.addListener('message', function (from, to, message) {
 
     logger(true, to, '<' + from + '> ' + message + '\r\n');
 
     command(from, to, message);
-    urlScrape(from, to, message);
+    urlTitle(from, to, message);
 
 
 });

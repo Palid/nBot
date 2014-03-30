@@ -1,22 +1,24 @@
 "use strict";
 
 var method = function (channel, data) {
-    //return the thing client is supposed to do down there
-    //If command makes the bot say something:
-    return {
-        type: "say",
-        to: channel,
-        message: data
-    };
 
-    //If command makes the bot do something (use IRC command for example):
+    //Choose return depending on type of command
     /*
     return {
         type: "command",
+        command: command,
         to: channel,
-        //Nick IS NOT required!
         nick: nick,
         message: message
+    }
+    ||  return {
+        type: "say",
+        to: channel,
+        nick: nick,
+        message: message
+    }
+    || return {
+        type: "async"
     };
     */
 };

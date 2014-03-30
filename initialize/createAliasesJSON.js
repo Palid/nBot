@@ -18,9 +18,7 @@ var method = function (data) {
         }
     }
 
-    var stringify = JSON.stringify(data, null, 4);
-
-    fs.writeFile(configDir, stringify, function (err) {
+    fs.writeFile(configDir, JSON.stringify(data, null, 4), function (err) {
         if (err) {
             console.log(err);
         }

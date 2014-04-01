@@ -3,7 +3,7 @@ var fs = require('fs'),
     _ = require('lodash'),
     methods = require('../api/'),
     config = require('./parseJSON.js'),
-    hotLoad = require('../privateMethods/hotload.js'),
+    hotLoad = require('../helpers/hotload.js'),
     watch = require('./watch.js');
 
 

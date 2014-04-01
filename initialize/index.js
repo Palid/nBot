@@ -2,7 +2,7 @@
 var fs = require('fs'),
     path = require('path'),
     _ = require('lodash'),
-    log = require('../privateMethods/log.js'),
+    log = require('../helpers/log.js'),
     makeDirs = require('./createFolders.js'),
     config = path.resolve(__dirname, "../config/aliases.json");
 
@@ -19,7 +19,12 @@ makeDirs('logs');
 
 require('./parseJSON.js');
 
-require('./createAliasesJSON.js');
+try {
+    require('./createAliasesJSON.js');
+} catch (err) {
+    console.log(err);
+}
+
 
 require('./createAliasDict.js');
 

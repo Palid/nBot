@@ -4,7 +4,7 @@ var _ = require('lodash'),
     path = require('path'),
     client = require('../config/bot.js'),
     watch = require('../initialize/watch.js'),
-    hotLoad = require('../privateMethods/hotload.js'),
+    hotLoad = require('../helpers/hotload.js'),
     config = require('../initialize/parseJSON.js'),
     aliases = require('../initialize/createAliasDict.js');
 

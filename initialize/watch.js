@@ -2,7 +2,7 @@
 var fs = require('fs'),
     path = require('path'),
     events = require('events'),
-    log = require('../privateMethods/log.js'),
+    log = require('../helpers/log.js'),
     config = path.resolve(__dirname, "../config/aliases.json"),
     emitter = new events.EventEmitter();
 

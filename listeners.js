@@ -1,14 +1,14 @@
 "use strict";
 var client = require('./config/bot.js'),
-    logger = require('./privateMethods/log.js'),
-    command = require('./privateMethods/checkCommand.js'),
-    urlTitle = require('./privateMethods/urlScrape.js'),
-    greeter = require('./privateMethods/greeter.js'),
-    aliases = require('./initialize/');
+    logger = require('./helpers/log.js'),
+    command = require('./listener/checkCommand.js'),
+    urlTitle = require('./listener/urlScrape.js'),
+    greeter = require('./listener/greeter.js');
+
+require('./initialize/');
 // from = messaging user
 // to = channel OR bot
 // message = message$
-
 
 // TODO
 // Regexp/indexOf command activation on listener.

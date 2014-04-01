@@ -37,8 +37,6 @@ var defaults = {
     ]
 };
 
-console.log(client.nick);
-
 
 module.exports = {
     method: method,

@@ -3,6 +3,7 @@ var client = require('./config/bot.js'),
     logger = require('./privateMethods/log.js'),
     command = require('./privateMethods/checkCommand.js'),
     urlTitle = require('./privateMethods/urlScrape.js'),
+    greeter = require('./privateMethods/greeter.js'),
     aliases = require('./initialize/');
 // from = messaging user
 // to = channel OR bot
@@ -36,6 +37,7 @@ client.addListener('ctcp', function (nick, message) {
 
 client.addListener('join', function (channel, who) {
     console.log('%s has joined %s', who, channel);
+    greeter(channel, who);
 });
 
 client.addListener('part', function (channel, who, reason) {

@@ -37,7 +37,7 @@ client.addListener('ctcp', function (nick, message) {
 
 client.addListener('join', function (channel, who) {
     console.log('%s has joined %s', who, channel);
-    greeter(channel, who);
+    // greeter(channel, who);
 });
 
 client.addListener('part', function (channel, who, reason) {

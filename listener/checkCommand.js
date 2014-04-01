@@ -21,10 +21,14 @@ var RESPONSES = {
         return;
     },
     command: function (response) {
-        if ( !! response.nick) {
+        var nickBool = !! response.nick,
+            messageBool = !! response.message;
+        if (nickBool && messageBool) {
             return client.send(response.command, response.to, response.nick, response.message);
-        } else {
+        } else if (messageBool) {
             return client.send(response.command, response.to, response.message);
+        } else {
+            return client.send(response.command, response.to, response.nick);
         }
     },
     say: function (response) {

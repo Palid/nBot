@@ -1,12 +1,23 @@
 "use strict";
+var _ = require('lodash');
 
-var method = function (channel, nick) {
-    return {
-        type: "command",
-        command: "INVITE",
-        to: nick,
-        body: channel
-    };
+var method = function (channel, nick, message) {
+    console.log(channel);
+    console.log(nick);
+    if (_.isString(channel) && _.isString(nick)) {
+        return {
+            type: "command",
+            command: "INVITE",
+            to: nick,
+            nick: channel
+        };
+    } else {
+        return {
+            type: "say",
+            to: channel,
+            message: "Invite error."
+        }
+    }
 };
 
 var defaults = {

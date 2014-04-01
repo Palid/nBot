@@ -3,6 +3,7 @@ var client = require('./config/bot.js'),
     logger = require('./helpers/log.js'),
     command = require('./listener/checkCommand.js'),
     urlTitle = require('./listener/urlScrape.js'),
+    sayError = require('./listener/sayError.js'),
     greeter = require('./listener/greeter.js');
 
 require('./initialize/');
@@ -50,6 +51,7 @@ client.addListener('kick', function (channel, who, by, reason) {
 
 client.addListener('error', function (message) {
     console.log(message);
+    sayError(message);
     logger(true, 'error', message + '\r\n');
 });
 

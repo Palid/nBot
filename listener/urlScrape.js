@@ -11,28 +11,46 @@ request = request.defaults({
     jar: request.jar()
 });
 
-function getTitle(channel, url, data) {
-    var $ = cheerio.load(data),
-        title = $('title').text().replace(/\r?\n|\r/g, '');
+function errors(err, channel) {
+    console.log(err);
+    client.say(channel, "Couldn't get title.");
+}
 
-    client.say(channel, '↳ title: ' + (title = (title.length <= 80) ?
-        title :
-        (title.substr(0, 79)) + '...'));
+function getTitle(channel, url, data) {
+    try {
+
+        var $ = cheerio.load(data),
+            title = $('title').text(),
+            re = title ? title.replace(/\r?\n|\r/g, '') : '';
+        console.log("Title: " + title);
+        console.log("reTitle: " + re);
+
+        if (re.length > 0) {
+            client.say(channel, '↳ title: ' + (title = (title.length <= 80) ?
+                title :
+                (title.substr(0, 79)) + '...'));
+        }
+
+    } catch (err) {
+        errors(err, channel);
+    }
+
 }
 
 function method(commandGiver, channel, data) {
 
     var match = data.match(re);
     if (match) {
-        var url = match[0],
-            buffer = 0;
-        url = url.search('www.') ? url : url.replace('www.', 'http://');
-
-        var r = request(url, function (err, resp, body) {
-            if (!err) {
-                getTitle(channel, url, body);
-            }
-        });
+        var url = _.indexOf(match[0], 'www') !== -1 ? match[0].replace('www', 'http://') : match[0],
+            buffer = 0,
+            r = request(url, function (err, resp, body) {
+                if (err) {
+                    r.abort();
+                    errors(err, channel);
+                } else {
+                    getTitle(channel, url, body);
+                }
+            });
 
         r.on('data', function (chunk) {
             buffer += chunk;
@@ -40,10 +58,7 @@ function method(commandGiver, channel, data) {
                 r.abort();
                 client.say(channel, "File too big. Aborting.");
             }
-
         });
-
-
     }
 }
 

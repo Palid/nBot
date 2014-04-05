@@ -21,9 +21,7 @@ function getTitle(channel, url, data) {
 
         var $ = cheerio.load(data),
             title = $('title').text(),
-            re = title ? title.replace(/\r?\n|\r/g, '') : '';
-        console.log("Title: " + title);
-        console.log("reTitle: " + re);
+            re = title ? title.replace(/\r?\n|\r/g, '') : "Couldn't get title.";
 
         if (re.length > 0) {
             client.say(channel, '↳ title: ' + (title = (title.length <= 80) ?

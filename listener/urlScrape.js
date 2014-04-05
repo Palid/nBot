@@ -12,7 +12,9 @@ request = request.defaults({
 });
 
 function errors(err, channel) {
-    console.log(err);
+    if (err) {
+        console.log(err);
+    }
     client.say(channel, "Couldn't get title.");
 }
 
@@ -21,12 +23,14 @@ function getTitle(channel, url, data) {
 
         var $ = cheerio.load(data),
             title = $('title').text(),
-            re = title ? title.replace(/\r?\n|\r/g, '') : "Couldn't get title.";
+            re = title ? title.replace(/\r?\n|\r/g, '') : "";
 
         if (re.length > 0) {
             client.say(channel, '↳ title: ' + (title = (title.length <= 80) ?
                 title :
                 (title.substr(0, 79)) + '...'));
+        } else {
+            errors(null, channel);
         }
 
     } catch (err) {

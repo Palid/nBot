@@ -3,13 +3,17 @@ var _ = require('lodash'),
     cheerio = require('cheerio'),
     request = require('request'),
     client = require('../config/bot.js'),
-    re = require('../helpers/urlRe.js');
+    re = require('../helpers/urlRe.js'),
+    scrapeTitle = client.options.urlScrapeTitle,
+    titleStringLen = scrapeTitle.length;
 
 // This somehow fixes memory leaks...
 // looks like a failed cookie, uh?
 request = request.defaults({
     jar: request.jar()
 });
+
+
 
 function errors(err, channel) {
     if (err) {
@@ -22,13 +26,14 @@ function getTitle(channel, url, data) {
     try {
 
         var $ = cheerio.load(data),
-            title = $('title').text(),
-            re = title ? title.replace(/\r?\n|\r/g, '') : "";
+            title = $('title').text().replace(/[\r\n]/g, '');
 
-        if (re.length > 0) {
-            client.say(channel, '↳ title: ' + (title = (title.length <= 80) ?
+        console.log(title);
+
+        if (title.replace(/\s/, '').length > 0) {
+            client.say(channel, scrapeTitle + (title = (title.length <= 80) ?
                 title :
-                (title.substr(0, 79)) + '...'));
+                (title.substr(0, (80 - titleStringLen - 3))) + '...'));
         } else {
             errors(null, channel);
         }
@@ -49,7 +54,7 @@ function method(commandGiver, channel, data) {
                 if (err) {
                     r.abort();
                     errors(err, channel);
-                } else {
+                } else if (resp.headers['content-type'].search('text/html') !== -1) {
                     getTitle(channel, url, body);
                 }
             });

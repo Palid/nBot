@@ -20,7 +20,7 @@ var method = function (channel, data) {
         firstWhitespace = _.indexOf(data, ' ');
         command = (firstWhitespace > 0) ? data.substring(0, firstWhitespace) : data;
         getLang = data.substring(firstWhitespace + 1);
-        lang = (firstWhitespace > 0) ? getLang : client.defaultLang;
+        lang = (firstWhitespace > 0) ? getLang : client.options.defaultLang;
         response = (!_.isUndefined(config[command])) ? config[command].description[lang] :
             "Couldn't find " + lang + " description for " + command;
     } else {

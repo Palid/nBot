@@ -38,8 +38,8 @@ var RESPONSES = {
 
 var method = function (from, to, message) {
 
-    if (message.charAt(0) === client.commandCharacter) {
-        message = message.replace(client.commandCharacter, '');
+    if (message.charAt(0) === client.options.commandCharacter) {
+        message = message.replace(client.options.commandCharacter, '');
         var firstWhitespace = _.indexOf(message, ' '),
             body = (firstWhitespace !== -1) ? message.substring(firstWhitespace + 1) : "",
             command = (firstWhitespace !== -1) ? message.substring(0, firstWhitespace) : message;

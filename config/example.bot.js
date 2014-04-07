@@ -13,8 +13,10 @@ var client = new irc.Client('chat.freenode.net', 'exampleNick', {
     password: "saslPassword"
 });
 
-client.commandCharacter = ',';
-client.defaultLang = "en";
-
+client.options = {
+    commandCharacter: ',',
+    defaultLang: 'en',
+    urlScrapeTitle: '↳ title: '
+};
 
 module.exports = client;

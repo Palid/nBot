@@ -1,5 +1,5 @@
 "use strict";
-var re = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/);
+// var re = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/);
 // Description
 /*(
   ( // brackets covering match for protocol (optional) and domain
@@ -12,9 +12,11 @@ var re = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9
   )
   ( // brackets covering match for path, query string and anchor
     (?:\/[\+~%\/\.\w\-]*) // allow optional /path
-    ?\??(?:[\-\+=&;%@\.\w]*) // allow optional query string starting with ? 
+    ?\??(?:[\-\+=&;%@\.\w]*) // allow optional query string starting with ?
     #?(?:[\.\!\/\\\w]*) // allow optional anchor #anchor
   )? // make URL suffix optional
 )*/
+
+var re = new RegExp(/http(s?):\/\/(\S+)|(www\.\S+)/);
 
 module.exports = re;

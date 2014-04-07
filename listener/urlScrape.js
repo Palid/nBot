@@ -48,16 +48,17 @@ function method(commandGiver, channel, data) {
 
     var match = data.match(re);
     if (match) {
-        var url = _.indexOf(match[0], 'www') !== -1 ? match[0].replace('www', 'http://') : match[0],
-            buffer = 0,
-            r = request(url, function (err, resp, body) {
-                if (err) {
-                    r.abort();
-                    errors(err, channel);
-                } else if (resp.headers['content-type'].search('text/html') !== -1) {
-                    getTitle(channel, url, body);
-                }
-            });
+        var m = match[0].search('www.'),
+            url = m !== -1 && !m ? match[0].replace('www.', 'http://') : match[0],
+            buffer = 0;
+        var r = request(url, function (err, resp, body) {
+            if (err) {
+                r.abort();
+                errors(err, channel);
+            } else if (resp.headers['content-type'].search('text/html') !== -1) {
+                getTitle(channel, url, body);
+            }
+        });
 
         r.on('data', function (chunk) {
             buffer += chunk;

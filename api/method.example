@@ -1,6 +1,6 @@
 "use strict";
 
-var method = function (channel, data) {
+function method (channel, data) {
 
     //Choose return depending on type of command
     /*
@@ -21,7 +21,7 @@ var method = function (channel, data) {
         type: "async"
     };
     */
-};
+}
 
 //
 var defaults = {

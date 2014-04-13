@@ -21,6 +21,12 @@ require('./initialize/');
 
 client.addListener('message', function (from, to, message) {
 
+    if (client.nick === to) {
+        logger(true, from, '<' + from + '> ' + message + '\r\n');
+    } else {
+        logger(true, to, '<' + from + '> ' + message + '\r\n');
+    }
+
     logger(true, to, '<' + from + '> ' + message + '\r\n');
     command(from, to, message);
     urlTitle(from, to, message);

@@ -12,21 +12,31 @@ function getRandomPoster(response) {
 function method(channel, data) {
 
     tagged.search(data, function (err, response) {
-
+        var iterations = 0,
+            len = response.length;
         if (err) {
             return console.log(err);
         }
-
-        if (response.length) {
+        if (len > 1) {
             var photos = response[getRandomPoster(response)].photos,
-                photoList = photos.length >= 1 ? photos[0].original_size : photos,
-                url = photoList.url,
-                width = photoList.width,
-                height = photoList.height;
+                photosNotExist = _.isUndefined(photos);
+            do {
+                iterations++;
+                if (!photosNotExist) {
+                    var photoList = photos[0].original_size,
+                        url = photoList.url,
+                        width = photoList.width,
+                        height = photoList.height;
+                    client.say(channel, url);
+                } else {
+                    photos = response[getRandomPoster(response)].photos;
+                    photosNotExist = _.isUndefined(photos);
+                }
+            }
+            while (photosNotExist && iterations <= len);
 
-            return client.say(channel, url);
         } else {
-            return client.say(channel, 'Tag not found.');
+            return client.say(channel, 'Images not found.');
         }
 
     });

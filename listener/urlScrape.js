@@ -46,6 +46,10 @@ function getTitle(channel, url, data) {
 
 function method(commandGiver, channel, data) {
 
+    if (client.nick === channel) {
+        channel = commandGiver;
+    }
+
     var match = data.match(re);
     if (match) {
         var m = match[0].search('www.'),

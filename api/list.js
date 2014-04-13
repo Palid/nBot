@@ -2,7 +2,7 @@
 var client = require('../config/bot.js'),
     methods = require('./index.js');
 
-var method = function (channel) {
+var method = function (channel, to, msg) {
     var list = "";
 
     for (var property in methods) {

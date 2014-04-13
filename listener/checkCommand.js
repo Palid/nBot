@@ -36,7 +36,11 @@ var RESPONSES = {
     }
 };
 
-var method = function (from, to, message) {
+function method(from, to, message) {
+
+    console.log(from);
+    console.log(to);
+    console.log(message);
 
     if (message.charAt(0) === client.options.commandCharacter) {
         message = message.replace(client.options.commandCharacter, '');
@@ -48,8 +52,14 @@ var method = function (from, to, message) {
             client.say(to, "Command " + command + " not found");
         } else {
             try {
-                var response = aliases[command](to, body, from);
+                var response;
+                if (to === client.nick) {
+                    response = aliases[command](from, body, to);
+                } else {
+                    response = aliases[command](to, body, from);
+                }
                 RESPONSES[response.type](response);
+
             } catch (err) {
                 console.log(err);
                 client.say(to, "Command " + command + " exited with an error.");
@@ -57,6 +67,6 @@ var method = function (from, to, message) {
         }
 
     }
-};
+}
 
 module.exports = method;

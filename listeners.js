@@ -1,5 +1,6 @@
 "use strict";
-var client = require('./config/bot.js'),
+var _ = require('lodash'),
+    client = require('./config/bot.js'),
     logger = require('./helpers/log.js'),
     command = require('./listener/checkCommand.js'),
     urlTitle = require('./listener/urlScrape.js'),
@@ -21,10 +22,8 @@ require('./initialize/');
 client.addListener('message', function (from, to, message) {
 
     logger(true, to, '<' + from + '> ' + message + '\r\n');
-
     command(from, to, message);
     urlTitle(from, to, message);
-
 
 });
 

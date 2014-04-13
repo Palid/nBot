@@ -12,7 +12,7 @@ function getRandomPoster(response) {
 function method(channel, data) {
 
     tagged.search(data, function (err, response) {
-        var iterations = 0,
+        var iterations = -1,
             len = response.length;
         if (err) {
             return console.log(err);
@@ -29,7 +29,7 @@ function method(channel, data) {
                         height = photoList.height;
                     client.say(channel, url);
                 } else {
-                    photos = response[getRandomPoster(response)].photos;
+                    photos = response[iterations].photos;
                     photosNotExist = _.isUndefined(photos);
                 }
             }

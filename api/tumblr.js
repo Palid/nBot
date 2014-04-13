@@ -1,8 +1,9 @@
 "use strict";
 var _ = require('lodash'),
+    client = require('../config/bot.js'),
     tumblr = require('tumblr'),
     oauth = require('../config/oAuth.js').tumblr,
-    client = require('../config/bot.js');
+    tagged = new tumblr.Tagged(oauth);
 
 function getRandomPoster(response) {
     return Math.floor(Math.random() * response.length);
@@ -10,20 +11,23 @@ function getRandomPoster(response) {
 
 function method(channel, data) {
 
-    var tagged = new tumblr.Tagged(oauth);
-
     tagged.search(data, function (err, response) {
-        if (err) {
-            console.log(err);
-        }
-        // First
-        var photos = response[getRandomPoster(response)].photos,
-            photoList = photos.length >= 1 ? photos[0].original_size : photos,
-            url = photoList.url,
-            width = photoList.width,
-            height = photoList.height;
 
-        client.say(channel, url);
+        if (err) {
+            return console.log(err);
+        }
+
+        if (response.length) {
+            var photos = response[getRandomPoster(response)].photos,
+                photoList = photos.length >= 1 ? photos[0].original_size : photos,
+                url = photoList.url,
+                width = photoList.width,
+                height = photoList.height;
+
+            return client.say(channel, url);
+        } else {
+            return client.say(channel, 'Tag not found.');
+        }
 
     });
 

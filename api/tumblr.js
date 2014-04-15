@@ -1,12 +1,12 @@
 "use strict";
 var _ = require('lodash'),
     client = require('../config/bot.js'),
-    tumblr = require('tumblr'),
     oauth = require('../config/oAuth.js').tumblr,
+    tumblr = require('tumblr'),
     tagged = new tumblr.Tagged(oauth);
 
-function getRandomPoster(response) {
-    return Math.floor(Math.random() * response.length);
+function getRandomPoster(len) {
+    return Math.floor(Math.random() * len);
 }
 
 function method(channel, data) {
@@ -18,7 +18,7 @@ function method(channel, data) {
             return console.log(err);
         }
         if (len > 1) {
-            var photos = response[getRandomPoster(response)].photos,
+            var photos = response[getRandomPoster(len)].photos,
                 photosNotExist = _.isUndefined(photos);
             do {
                 iterations++;

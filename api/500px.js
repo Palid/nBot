@@ -49,12 +49,12 @@ var defaults = {
         'px', {
             alias: 'boobs',
             options: {
-                message: 'boobs'
+                data: 'boobs'
             }
         }, {
             alias: 'cats',
             options: {
-                message: 'cat'
+                data: 'cat'
             }
         }
     ]

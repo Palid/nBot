@@ -5,16 +5,16 @@ var _ = require('lodash'),
 
 
 
-var method = function (channel, data) {
+var method = function shout(channel, data) {
 
     figlet(data, function (err, data) {
         if (err) {
             console.dir(err);
             return;
         }
-        if (data.length > 500){
+        if (data.length > 500) {
             client.say(channel, "String is too long.");
-        } else{
+        } else {
             client.say(channel, data);
         }
     });
@@ -32,8 +32,6 @@ var defaults = {
     },
     aliases: []
 };
-
-method("asd", "POTATO");
 
 
 module.exports = {

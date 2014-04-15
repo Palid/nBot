@@ -9,7 +9,7 @@ function getRandomPoster(len) {
     return Math.floor(Math.random() * len);
 }
 
-function method(channel, data) {
+var method = function fivehundred_px(channel, data) {
 
     api500px.photos.searchByTag(data, {
         image_size: 4
@@ -34,7 +34,7 @@ function method(channel, data) {
         type: "async"
     };
 
-}
+};
 
 //
 var defaults = {
@@ -44,7 +44,17 @@ var defaults = {
     },
     aliases: [
         '500',
-        'px'
+        'px', {
+            alias: 'boobs',
+            options: {
+                data: 'boobs'
+            }
+        }, {
+            alias: 'cats',
+            options: {
+                data: 'cat'
+            }
+        }
     ]
 };
 

@@ -15,7 +15,7 @@ var message,
     };
 
 
-var method = function (channel, data) {
+var method = function dogecoin(channel, data) {
 
     request(options.url, options, function (err, res, body) {
         var response = JSON.parse(body);

@@ -2,7 +2,7 @@
 var request = require('request'),
     client = require('../config/bot.js');
 
-var method = function (channel, data) {
+var method = function bible(channel, data) {
     var message,
         options = {
             url: "http://labs.bible.org/api/?passage=" + data + "&formatting=plain",

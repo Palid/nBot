@@ -1,7 +1,7 @@
 "use strict";
 var _ = require('lodash');
 
-var method = function (channel, data) {
+var method = function dice(channel, data) {
 
     var firstWhitespace = _.indexOf(data, ' '),
         d = _.indexOf(data, 'd'),

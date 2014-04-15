@@ -10,16 +10,16 @@ cluster.setupMaster({
 });
 
 
-var method = function (channel, evaluation) {
+var method = function evaluate(channel, evaluation) {
 
     //This will be fired when the forked process becomes online
     cluster.on("online", function (worker) {
 
         worker.on("message", function (evaledString) {
 
-            clearTimeout(timer); //The worker responded in under 5 seconds, 
+            clearTimeout(timer); //The worker responded in under 5 seconds,
             // clear the timeout
-            worker.destroy(); //Don't leave him hanging 
+            worker.destroy(); //Don't leave him hanging
             cluster.removeAllListeners();
 
             if (!evaledString) {
@@ -56,7 +56,7 @@ var defaults = {
     aliases: [
         'maths',
         'math',
-        'evaluate',
+        'eval',
         'e',
         'count'
     ]

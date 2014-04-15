@@ -1,19 +1,19 @@
 "use strict";
 
-function method (channel, data) {
+function method (to, data, from) {
 
     //Choose return depending on type of command
     /*
     return {
         type: "command",
         command: command,
-        to: channel,
+        to: to,
         nick: nick,
         message: message
     }
     ||  return {
         type: "say",
-        to: channel,
+        to: to,
         nick: nick,
         message: message
     }

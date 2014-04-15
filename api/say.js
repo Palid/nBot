@@ -1,6 +1,6 @@
 "use strict";
 
-var method = function (channel, data) {
+var method = function say(channel, data) {
     return {
         type: "say",
         to: channel,

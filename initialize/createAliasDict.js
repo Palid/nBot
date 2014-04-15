@@ -15,24 +15,27 @@ var createList = function (data) {
     var aliasesList = {},
         property;
 
-    var collection = _.mapValues(data, function (data) {
-        return data.aliases;
+    var aliasDict = _.mapValues(data, function (property) {
+        return property.aliases;
     });
 
-    for (property in collection) {
+    _.forEach(aliasDict, function (property, key) {
+        var selfKey = key;
+        aliasesList[key] = methods[key].method;
 
-        aliasesList[property] = methods[property].method;
+        _.forEach(aliasDict[key], function (property, key) {
+            if (_.isObject(property)) {
+                aliasesList[property.alias] = {
+                    method: methods[selfKey].method,
+                    options: property.options
+                };
+            } else {
+                aliasesList[property] = methods[selfKey].method;
+            }
+        });
+    });
 
-        for (var i = 0, len = collection[property].length; i < len; i++) {
-            /**
-             * I'm not really sure if returning method is better than just
-             * defining it to the dictionary. Need to benchmark this stuff.
-             */
-            aliasesList[collection[property][i]] = methods[property].method;
-
-        }
-    }
-
+    console.log(aliasesList);
     return aliasesList;
 };
 

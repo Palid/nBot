@@ -1,7 +1,7 @@
 "use strict";
 var _ = require('lodash');
 
-var method = function (channel, nick, message) {
+var method = function invite(channel, nick, message) {
     console.log(channel);
     console.log(nick);
     if (_.isString(channel) && _.isString(nick)) {

@@ -9,7 +9,7 @@ watch.on('configChanged', function () {
     config = hotLoad(__dirname, '../initialize/parseJSON.js');
 });
 
-var method = function (channel, data) {
+var method = function help(channel, data) {
     var firstWhitespace,
         command,
         getLang,

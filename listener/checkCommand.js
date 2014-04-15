@@ -52,11 +52,28 @@ function method(from, to, message) {
             client.say(to, "Command " + command + " not found");
         } else {
             try {
-                var response;
+                var response, options,
+                    isFunction = _.isFunction(aliases[command]);
+                if (!isFunction) {
+                    options = aliases[command].options;
+                    from = _.isUndefined(options.from) ? from : options.from;
+                    to = _.isUndefined(options.to) ? to : options.to;
+                    body = _.isUndefined(options.data) ? body : options.data;
+                }
                 if (to === client.nick) {
-                    response = aliases[command](from, body, to);
+                    if (!isFunction) {
+                        response = aliases[command].method(from, body, to);
+                    } else {
+                        response = aliases[command](from, body, to);
+                    }
+
                 } else {
-                    response = aliases[command](to, body, from);
+                    if (!isFunction) {
+                        response = aliases[command].method(to, body, from);
+                    } else {
+                        response = aliases[command](to, body, from);
+                    }
+
                 }
                 RESPONSES[response.type](response);
 

@@ -1,11 +1,11 @@
 "use strict";
 
-var method = function (channel, topic) {
+var method = function topic(channel, data) {
     return {
         type: "command",
         command: "TOPIC",
         to: channel,
-        message: topic
+        message: data
     };
 };
 

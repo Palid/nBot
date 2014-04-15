@@ -4,3 +4,4 @@ logs/
 *.log
 config/bot.js
 config/aliases.json
+config/oAuth.js

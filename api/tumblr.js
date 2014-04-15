@@ -9,7 +9,9 @@ function getRandomPoster(len) {
     return Math.floor(Math.random() * len);
 }
 
-var method = function tumblr(channel, data) {
+var method = function tumblr(options) {
+    var channel = options.to,
+        data = options.message;
 
     tagged.search(data, function (err, response) {
         var iterations = -1,

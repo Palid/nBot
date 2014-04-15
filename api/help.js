@@ -9,12 +9,11 @@ watch.on('configChanged', function () {
     config = hotLoad(__dirname, '../initialize/parseJSON.js');
 });
 
-var method = function help(channel, data) {
-    var firstWhitespace,
-        command,
-        getLang,
-        lang,
-        response;
+var method = function help(options) {
+    var firstWhitespace, command, getLang, lang, response,
+        channel = options.to,
+        data = options.message;
+
 
     if (data.length > 0) {
         firstWhitespace = _.indexOf(data, ' ');
@@ -24,8 +23,7 @@ var method = function help(channel, data) {
         response = (!_.isUndefined(config[command])) ? config[command].description[lang] :
             "Couldn't find " + lang + " description for " + command;
     } else {
-        // hardcoded english help
-        response = config.help.description.en;
+        response = config.help.description[client.options.defaultLang];
     }
     return {
         type: "say",

@@ -9,7 +9,9 @@ function getRandomPoster(len) {
     return Math.floor(Math.random() * len);
 }
 
-var method = function fivehundred_px(channel, data) {
+var method = function fivehundred_px(options) {
+    var channel = options.to,
+        data = options.message;
 
     api500px.photos.searchByTag(data, {
         image_size: 4
@@ -47,12 +49,12 @@ var defaults = {
         'px', {
             alias: 'boobs',
             options: {
-                data: 'boobs'
+                message: 'boobs'
             }
         }, {
             alias: 'cats',
             options: {
-                data: 'cat'
+                message: 'cat'
             }
         }
     ]

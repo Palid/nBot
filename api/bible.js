@@ -2,14 +2,17 @@
 var request = require('request'),
     client = require('../config/bot.js');
 
-var method = function bible(channel, data) {
+var method = function bible(options) {
+    var channel = options.to,
+        data = options.message;
+
     var message,
-        options = {
+        requestOptions = {
             url: "http://labs.bible.org/api/?passage=" + data + "&formatting=plain",
             method: 'GET',
         };
 
-    request(options.url, options, function (err, res, body) {
+    request(requestOptions.url, requestOptions, function (err, res, body) {
         var response = body;
         message = body;
         if (err) {

@@ -13,7 +13,9 @@ watch.on('configChanged', function () {
     config = hotLoad(__dirname, '../initialize/parseJSON.js');
 });
 
-var method = function alias(channel, data) {
+var method = function alias(options) {
+    var channel = options.to,
+        data = options.message;
 
     if (_.has(config, data)) {
         var list = "";

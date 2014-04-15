@@ -1,8 +1,11 @@
 "use strict";
 
-function method (to, data, from) {
+var method = function nameYourFunctionForDebugging(options) {
+    var to = options.to,
+        message = options.message,
+        from = options.from;
 
-    //Choose return depending on type of command
+    //Choose one depending on command's type
     /*
     return {
         type: "command",
@@ -21,7 +24,7 @@ function method (to, data, from) {
         type: "async"
     };
     */
-}
+};
 
 //
 var defaults = {

@@ -1,6 +1,8 @@
 "use strict";
 
-var method = function say(channel, data) {
+var method = function say(options) {
+    var channel = options.to,
+        data = options.message;
     return {
         type: "say",
         to: channel,

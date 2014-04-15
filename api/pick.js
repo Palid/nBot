@@ -12,8 +12,10 @@ function encrypt(word) {
 }
 
 
-var method = function pick(channel, data) {
-    var arr = [],
+var method = function pick(options) {
+    var channel = options.to,
+        data = options.message,
+        arr = [],
         arr2 = [],
         string = data.split(" ");
 

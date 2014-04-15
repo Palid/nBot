@@ -2,7 +2,10 @@
 var _ = require('lodash'),
     client = require('../config/bot.js');
 
-var method = function kick(channel, data, commandGiver) {
+var method = function kick(options) {
+    var channel = options.to,
+        commandGiver = options.from,
+        data = options.message;
 
     var firstWhitespace = _.indexOf(data, ' '),
         nick = data.substring(0, firstWhitespace),

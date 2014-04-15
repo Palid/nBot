@@ -38,10 +38,6 @@ var RESPONSES = {
 
 function method(from, to, message) {
 
-    console.log(from);
-    console.log(to);
-    console.log(message);
-
     if (message.charAt(0) === client.options.commandCharacter) {
         message = message.replace(client.options.commandCharacter, '');
         var firstWhitespace = _.indexOf(message, ' '),
@@ -60,18 +56,35 @@ function method(from, to, message) {
                     to = _.isUndefined(options.to) ? to : options.to;
                     body = _.isUndefined(options.data) ? body : options.data;
                 }
-                if (to === client.nick) {
+
+                if (to !== client.nick) {
                     if (!isFunction) {
-                        response = aliases[command].method(from, body, to);
+                        response = aliases[command].method({
+                            from: from,
+                            message: body,
+                            to: to
+                        });
                     } else {
-                        response = aliases[command](from, body, to);
+                        response = aliases[command]({
+                            from: from,
+                            message: body,
+                            to: to
+                        });
                     }
 
                 } else {
                     if (!isFunction) {
-                        response = aliases[command].method(to, body, from);
+                        response = aliases[command].method({
+                            from: to,
+                            message: body,
+                            to: from
+                        });
                     } else {
-                        response = aliases[command](to, body, from);
+                        response = aliases[command]({
+                            from: to,
+                            message: body,
+                            to: from
+                        });
                     }
 
                 }

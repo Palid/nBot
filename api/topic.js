@@ -1,6 +1,8 @@
 "use strict";
 
-var method = function topic(channel, data) {
+var method = function topic(options) {
+    var channel = options.to,
+        data = options.message;
     return {
         type: "command",
         command: "TOPIC",

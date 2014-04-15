@@ -1,7 +1,9 @@
 "use strict";
 var _ = require('lodash');
 
-var method = function message(channel, data) {
+var method = function message(options) {
+    var channel = options.to,
+        data = options.message;
 
     if (data.substring(0, 1) !== '#') {
 

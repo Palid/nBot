@@ -4,7 +4,7 @@ var _ = require('lodash'),
     client = require('../config/bot.js');
 
 var message,
-    options = {
+    requestOptions = {
         url: 'https://www.coins-e.com/api/v2/markets/data/',
         method: 'GET',
         headers: {
@@ -15,9 +15,12 @@ var message,
     };
 
 
-var method = function dogecoin(channel, data) {
+var method = function dogecoin(options) {
 
-    request(options.url, options, function (err, res, body) {
+    var channel = options.to,
+        data = options.message;
+
+    request(requestOptions.url, requestOptions, function (err, res, body) {
         var response = JSON.parse(body);
         if (!err && response.message === 'success') {
             message = [

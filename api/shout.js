@@ -5,7 +5,9 @@ var _ = require('lodash'),
 
 
 
-var method = function shout(channel, data) {
+var method = function shout(options) {
+    var channel = options.to,
+        data = options.message;
 
     figlet(data, function (err, data) {
         if (err) {

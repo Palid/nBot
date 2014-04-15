@@ -4,7 +4,10 @@ var _ = require('lodash'),
     client = require('../config/bot.js');
 
 
-var method = function google(channel, data) {
+var method = function google(options) {
+    var channel = options.to,
+        data = options.message;
+
     // Links amount to display
     // per search
     google.resultsPerPage = 1;

@@ -10,7 +10,10 @@ cluster.setupMaster({
 });
 
 
-var method = function evaluate(channel, evaluation) {
+var method = function evaluate(options) {
+
+    var channel = options.to,
+        evaluation = options.message;
 
     //This will be fired when the forked process becomes online
     cluster.on("online", function (worker) {

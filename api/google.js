@@ -3,15 +3,11 @@ var _ = require('lodash'),
     google = require('google'),
     client = require('../config/bot.js');
 
+// Links amount to display
+// per search
+google.resultsPerPage = 1;
 
-var method = function google(options) {
-    var channel = options.to,
-        data = options.message;
-
-    // Links amount to display
-    // per search
-    google.resultsPerPage = 1;
-
+function nodeJSSaysHelloToRetardedLibraries(data, channel) {
     google(data, function (err, next, links) {
         if (err) {
             console.error(err);
@@ -41,6 +37,25 @@ var method = function google(options) {
         }
 
     });
+}
+
+
+var method = function google(options) {
+    var channel = options.to,
+        data = options.message;
+
+    // NOW I can use the google function.
+    // Guess what! It didn't work because some smartass decided
+    // that sending function properties in an object
+    // will CRASH the library throwing an exception.
+    //  _    _  ___ _____
+    // | |  | |/ _ \_   _|
+    // | |  | / /_\ \| |
+    // | |/\| |  _  || |
+    // \  /\  / | | || |
+    //  \/  \/\_| |_/\_/
+
+    nodeJSSaysHelloToRetardedLibraries(data, channel);
 
     return {
         type: "async",

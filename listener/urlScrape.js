@@ -43,28 +43,32 @@ function getTitle(channel, url, data) {
 
 }
 
-function method(from, channel, data) {
+function method(from, channel, data, match) {
 
-    var m = data.search('www.'),
-        url = m !== -1 && !m ? data.replace('www.', 'http://') : data,
-        buffer = 0;
+    console.log(match);
 
-    var r = request(url, function (err, resp, body) {
-        if (err) {
-            r.abort();
-            errors(err, channel);
-        } else if (resp.headers['content-type'].search('text/html') !== -1) {
-            getTitle(channel, url, body);
-        }
-    });
+    if (match) {
+        var m = match[0].search('www.'),
+            url = m !== -1 && !m ? match[0].replace('www.', 'http://') : match[0],
+            buffer = 0;
 
-    r.on('data', function (chunk) {
-        buffer += chunk;
-        if (buffer.length > (1024 * 1024 * 1.5)) {
-            r.abort();
-            // client.say(channel, "File too big. Aborting.");
-        }
-    });
+        var r = request(url, function (err, resp, body) {
+            if (err) {
+                r.abort();
+                errors(err, channel);
+            } else if (resp.headers['content-type'].search('text/html') !== -1) {
+                getTitle(channel, url, body);
+            }
+        });
+
+        r.on('data', function (chunk) {
+            buffer += chunk;
+            if (buffer.length > (1024 * 1024 * 1.5)) {
+                r.abort();
+                // client.say(channel, "File too big. Aborting.");
+            }
+        });
+    }
 }
 
 module.exports = method;

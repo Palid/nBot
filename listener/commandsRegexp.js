@@ -12,8 +12,9 @@ var _ = require('lodash'),
     },
     method = function regexStarter(from, to, message) {
         _.forEach(METHODS, function (property, key) {
-            if (property.re.test(message)) {
-                property.method(from, to, message);
+            var match = message.match(property.re);
+            if (match) {
+                property.method(from, to, message, match);
             }
         });
     };

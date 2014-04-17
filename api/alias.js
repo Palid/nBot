@@ -8,6 +8,7 @@ var _ = require('lodash'),
     aliases = require('../initialize/createAliasDict.js');
 
 watch.on('configChanged', function () {
+    config = hotLoad(__dirname, '../initialize/parseJSON.js');
     aliases = hotLoad(__dirname, '../initialize/createAliasDict.js');
 });
 

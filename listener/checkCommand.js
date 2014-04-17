@@ -36,67 +36,67 @@ var RESPONSES = {
     }
 };
 
+// WARNING!
+// Message starts substringing at 1, because
+// the first symbol in the string is the client.commandCharacter
+
 function method(from, to, message) {
+    var firstWhitespace = _.indexOf(message, ' '),
+        body = (firstWhitespace !== -1) ? message.substring(firstWhitespace + 1) : "",
+        command = (firstWhitespace !== -1) ? message.substring(1, firstWhitespace) : message;
 
-    if (message.charAt(0) === client.options.commandCharacter) {
-        message = message.replace(client.options.commandCharacter, '');
-        var firstWhitespace = _.indexOf(message, ' '),
-            body = (firstWhitespace !== -1) ? message.substring(firstWhitespace + 1) : "",
-            command = (firstWhitespace !== -1) ? message.substring(0, firstWhitespace) : message;
-
-        if (_.isUndefined(aliases[command])) {
-            client.say(to, "Command " + command + " not found");
-        } else {
-            try {
-                var response, options,
-                    isFunction = _.isFunction(aliases[command]);
-                if (!isFunction) {
-                    options = aliases[command].options;
-                    from = _.isUndefined(options.from) ? from : options.from;
-                    to = _.isUndefined(options.to) ? to : options.to;
-                    body = _.isUndefined(options.data) ? body : options.data;
-                }
-
-                if (to !== client.nick) {
-                    if (!isFunction) {
-                        response = aliases[command].method({
-                            from: from,
-                            message: body,
-                            to: to
-                        });
-                    } else {
-                        response = aliases[command]({
-                            from: from,
-                            message: body,
-                            to: to
-                        });
-                    }
-
-                } else {
-                    if (!isFunction) {
-                        response = aliases[command].method({
-                            from: to,
-                            message: body,
-                            to: from
-                        });
-                    } else {
-                        response = aliases[command]({
-                            from: to,
-                            message: body,
-                            to: from
-                        });
-                    }
-
-                }
-                RESPONSES[response.type](response);
-
-            } catch (err) {
-                console.log(err);
-                client.say(to, "Command " + command + " exited with an error.");
+    if (_.isUndefined(aliases[command])) {
+        client.say(to, "Command " + command + " not found");
+    } else {
+        try {
+            var response, options,
+                isFunction = _.isFunction(aliases[command]);
+            if (!isFunction) {
+                options = aliases[command].options;
+                from = _.isUndefined(options.from) ? from : options.from;
+                to = _.isUndefined(options.to) ? to : options.to;
+                body = _.isUndefined(options.data) ? body : options.data;
             }
-        }
 
+            if (to !== client.nick) {
+                if (!isFunction) {
+                    response = aliases[command].method({
+                        from: from,
+                        message: body,
+                        to: to
+                    });
+                } else {
+                    response = aliases[command]({
+                        from: from,
+                        message: body,
+                        to: to
+                    });
+                }
+
+            } else {
+                if (!isFunction) {
+                    response = aliases[command].method({
+                        from: to,
+                        message: body,
+                        to: from
+                    });
+                } else {
+                    response = aliases[command]({
+                        from: to,
+                        message: body,
+                        to: from
+                    });
+                }
+
+            }
+            RESPONSES[response.type](response);
+
+        } catch (err) {
+            console.log(err);
+            client.say(to, "Command " + command + " exited with an error.");
+        }
     }
+
 }
 
 module.exports = method;

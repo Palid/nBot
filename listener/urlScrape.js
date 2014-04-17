@@ -3,7 +3,6 @@ var _ = require('lodash'),
     cheerio = require('cheerio'),
     request = require('request'),
     client = require('../config/bot.js'),
-    re = require('../helpers/urlRe.js'),
     scrapeTitle = client.options.urlScrapeTitle,
     titleStringLen = scrapeTitle.length;
 
@@ -50,28 +49,25 @@ function method(commandGiver, channel, data) {
         channel = commandGiver;
     }
 
-    var match = data.match(re);
-    if (match) {
-        var m = match[0].search('www.'),
-            url = m !== -1 && !m ? match[0].replace('www.', 'http://') : match[0],
-            buffer = 0;
-        var r = request(url, function (err, resp, body) {
-            if (err) {
-                r.abort();
-                errors(err, channel);
-            } else if (resp.headers['content-type'].search('text/html') !== -1) {
-                getTitle(channel, url, body);
-            }
-        });
+    var m = data[0].search('www.'),
+        url = m !== -1 && !m ? data[0].replace('www.', 'http://') : data[0],
+        buffer = 0;
+    var r = request(url, function (err, resp, body) {
+        if (err) {
+            r.abort();
+            errors(err, channel);
+        } else if (resp.headers['content-type'].search('text/html') !== -1) {
+            getTitle(channel, url, body);
+        }
+    });
 
-        r.on('data', function (chunk) {
-            buffer += chunk;
-            if (buffer.length > (1024 * 1024 * 1.5)) {
-                r.abort();
-                client.say(channel, "File too big. Aborting.");
-            }
-        });
-    }
+    r.on('data', function (chunk) {
+        buffer += chunk;
+        if (buffer.length > (1024 * 1024 * 1.5)) {
+            r.abort();
+            client.say(channel, "File too big. Aborting.");
+        }
+    });
 }
 
 

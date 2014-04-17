@@ -19,6 +19,7 @@ var method = function evaluate(options) {
     cluster.on("online", function (worker) {
 
         worker.on("message", function (evaledString) {
+            var stringToSay = evaledString.toString().replace(/[\r\n]/g, '');
 
             clearTimeout(timer); //The worker responded in under 5 seconds,
             // clear the timeout
@@ -28,7 +29,7 @@ var method = function evaluate(options) {
             if (!evaledString) {
                 client.say(channel, "null");
             } else {
-                client.say(channel, evaledString);
+                client.say(channel, stringToSay);
             }
 
         });

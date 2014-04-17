@@ -2,22 +2,13 @@
 var _ = require('lodash'),
     client = require('./config/bot.js'),
     logger = require('./helpers/log.js'),
-    command = require('./listener/checkCommand.js'),
-    urlTitle = require('./listener/urlScrape.js'),
+    commandsRe = require('./listener/commandsRegexp.js'),
     sayError = require('./listener/sayError.js'),
     greeter = require('./listener/greeter.js');
 
-require('./initialize/');
 // from = messaging user
 // to = channel OR bot
 // message = message$
-
-// TODO
-// Regexp/indexOf command activation on listener.
-// var REGEXP = {
-//     command = client.commandCharacter,
-//     url = require('../helpers/urlRe.js')
-// };
 
 client.addListener('message', function (from, to, message) {
 
@@ -28,8 +19,7 @@ client.addListener('message', function (from, to, message) {
     }
 
     logger(true, to, '<' + from + '> ' + message + '\r\n');
-    command(from, to, message);
-    urlTitle(from, to, message);
+    commandsRe(from, to, message);
 
 });
 

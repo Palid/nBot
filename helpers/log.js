@@ -3,7 +3,11 @@ var _ = require('lodash'),
     fs = require('fs'),
     path = require('path');
 
-var method = function (timestampBool, name, data) {
+var method = function (options) {
+
+    var timestampBool = options.timeStamp,
+        name = options.fileName,
+        data = options.data;
 
     function timestamp() {
 

@@ -43,15 +43,12 @@ function getTitle(channel, url, data) {
 
 }
 
-function method(commandGiver, channel, data) {
+function method(from, channel, data) {
 
-    if (client.nick === channel) {
-        channel = commandGiver;
-    }
-
-    var m = data[0].search('www.'),
-        url = m !== -1 && !m ? data[0].replace('www.', 'http://') : data[0],
+    var m = data.search('www.'),
+        url = m !== -1 && !m ? data.replace('www.', 'http://') : data,
         buffer = 0;
+
     var r = request(url, function (err, resp, body) {
         if (err) {
             r.abort();
@@ -69,6 +66,5 @@ function method(commandGiver, channel, data) {
         }
     });
 }
-
 
 module.exports = method;

@@ -18,14 +18,15 @@ client.addListener('message', function (from, to, message) {
             fileName: from,
             data: '<' + from + '> ' + message + '\r\n'
         });
+        commandsRe(to, from, message);
     } else {
         logger({
             timeStamp: true,
             fileName: to,
             data: '<' + from + '> ' + message + '\r\n'
         });
+        commandsRe(from, to, message);
     }
-    commandsRe(from, to, message);
 
 });
 

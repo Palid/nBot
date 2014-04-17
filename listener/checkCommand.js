@@ -58,37 +58,20 @@ var method = function activateCommand(from, to, message) {
                 body = _.isUndefined(options.data) ? body : options.data;
             }
 
-            if (to !== client.nick) {
-                if (!isFunction) {
-                    response = aliases[command].method({
-                        from: from,
-                        message: body,
-                        to: to
-                    });
-                } else {
-                    response = aliases[command]({
-                        from: from,
-                        message: body,
-                        to: to
-                    });
-                }
-
+            if (!isFunction) {
+                response = aliases[command].method({
+                    from: from,
+                    message: body,
+                    to: to
+                });
             } else {
-                if (!isFunction) {
-                    response = aliases[command].method({
-                        from: to,
-                        message: body,
-                        to: from
-                    });
-                } else {
-                    response = aliases[command]({
-                        from: to,
-                        message: body,
-                        to: from
-                    });
-                }
-
+                response = aliases[command]({
+                    from: from,
+                    message: body,
+                    to: to
+                });
             }
+
             RESPONSES[response.type](response);
 
         } catch (err) {

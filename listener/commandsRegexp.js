@@ -1,17 +1,19 @@
 "use strict";
 var _ = require('lodash'),
-    REGEXES = {
-        command: new RegExp(/,/),
-        urlTitle: new RegExp(/http(s?):\/\/(\S+)|(www\.\S+)/),
-    },
     METHODS = {
-        command: require('./checkCommand.js'),
-        urlTitle: require('./urlScrape.js'),
+        command: {
+            re: new RegExp(/^\,{1}/),
+            method: require('./checkCommand.js')
+        },
+        urlTitle: {
+            re: new RegExp(/http(s?):\/\/(\S+)|(www\.\S+)/),
+            method: require('./urlScrape.js')
+        },
     },
     method = function regexStarter(from, to, message) {
-        _.forEach(REGEXES, function (property, key) {
-            if (property.test(message)) {
-                METHODS[key](from, to, message);
+        _.forEach(METHODS, function (property, key) {
+            if (property.re.test(message)) {
+                property.method(from, to, message);
             }
         });
     };

@@ -40,7 +40,7 @@ var RESPONSES = {
 // Message starts substringing at 1, because
 // the first symbol in the string is the client.commandCharacter
 
-function method(from, to, message) {
+var method = function activateCommand(from, to, message) {
     var firstWhitespace = _.indexOf(message, ' '),
         body = (firstWhitespace !== -1) ? message.substring(firstWhitespace + 1) : "",
         command = (firstWhitespace !== -1) ? message.substring(1, firstWhitespace) : message;
@@ -97,6 +97,6 @@ function method(from, to, message) {
         }
     }
 
-}
+};
 
 module.exports = method;

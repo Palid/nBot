@@ -18,7 +18,7 @@ function errors(err, channel) {
     if (err) {
         console.log(err);
     }
-    client.say(channel, "Couldn't get title.");
+    // client.say(channel, "Couldn't get title.");
 }
 
 function getTitle(channel, url, data) {
@@ -62,7 +62,7 @@ function method(from, channel, data) {
         buffer += chunk;
         if (buffer.length > (1024 * 1024 * 1.5)) {
             r.abort();
-            client.say(channel, "File too big. Aborting.");
+            // client.say(channel, "File too big. Aborting.");
         }
     });
 }

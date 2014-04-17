@@ -1,18 +1,17 @@
 "use strict";
-var client = require('../config/bot.js'),
+var _ = require('lodash'),
     methods = require('./index.js');
 
 var method = function list(options) {
-    var channel = options.to,
-        commands = "";
+    var commands = "";
 
-    for (var property in methods) {
-        commands = commands + (client.commandCharacter + property + " ");
-    }
+    _.forEach(methods, function (property, key) {
+        commands = commands + key + " ";
+    });
 
     return {
         type: "say",
-        to: channel,
+        to: options.to,
         message: "Available commands: " + commands
     };
 };

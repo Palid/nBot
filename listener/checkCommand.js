@@ -43,7 +43,7 @@ var RESPONSES = {
 var method = function activateCommand(from, to, message) {
     var firstWhitespace = _.indexOf(message, ' '),
         body = (firstWhitespace !== -1) ? message.substring(firstWhitespace + 1) : "",
-        command = (firstWhitespace !== -1) ? message.substring(1, firstWhitespace) : message;
+        command = (firstWhitespace !== -1) ? message.substring(1, firstWhitespace) : message.substring(1);
 
     if (_.isUndefined(aliases[command])) {
         client.say(to, "Command " + command + " not found");

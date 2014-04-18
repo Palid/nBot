@@ -2,8 +2,8 @@
 var _ = require('lodash');
 
 var method = function invite(options) {
-    var channel = options.to,
-        nick = options.from,
+    var channel = options.from,
+        nick = options.to,
         data = options.message;
 
     if (_.isString(channel) && _.isString(nick)) {
@@ -18,7 +18,7 @@ var method = function invite(options) {
             type: "say",
             to: channel,
             message: "Invite error."
-        }
+        };
     }
 };
 

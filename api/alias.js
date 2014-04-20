@@ -4,12 +4,11 @@ var _ = require('lodash'),
     path = require('path'),
     watch = require('../initialize/watch.js'),
     hotLoad = require('../helpers/hotload.js'),
-    config = require('../initialize/parseJSON.js'),
-    aliases = require('../initialize/createAliasDict.js');
+    aliases = require('../initialize/createAliasDict.js'),
+    config = hotLoad(__dirname, '../initialize/parseJSON.js');
 
 watch.on('configChanged', function () {
     config = hotLoad(__dirname, '../initialize/parseJSON.js');
-    aliases = hotLoad(__dirname, '../initialize/createAliasDict.js');
 });
 
 var method = function alias(options) {

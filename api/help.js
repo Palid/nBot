@@ -3,7 +3,7 @@ var _ = require('lodash'),
     client = require('../config/bot.js'),
     watch = require('../initialize/watch.js'),
     hotLoad = require('../helpers/hotload.js'),
-    config = require('../initialize/parseJSON.js');
+    config = hotLoad(__dirname, '../initialize/parseJSON.js');
 
 watch.on('configChanged', function () {
     config = hotLoad(__dirname, '../initialize/parseJSON.js');

@@ -23,11 +23,20 @@ var method = function dice(options) {
             resultsList += x.toString() + ", ";
         }
 
-        return {
-            type: "say",
-            to: channel,
-            message: "Throw results for " + data + ": " + resultsList + "with final result of: " + finalResult
-        };
+        if (resultsList.length <= 50) {
+            return {
+                type: "say",
+                to: channel,
+                message: "Throw results for " + data + ": " + resultsList + "with final result of: " + finalResult
+            };
+        } else {
+            return {
+                type: "say",
+                to: channel,
+                message: "Too many results."
+            };
+        }
+
     } else {
         return {
             type: "say",

@@ -9,7 +9,6 @@ cluster.setupMaster({
     silent: false
 });
 
-
 var method = function evaluate(options) {
 
     var channel = options.to,

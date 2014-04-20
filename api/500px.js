@@ -46,17 +46,7 @@ var defaults = {
     },
     aliases: [
         '500',
-        'px', {
-            alias: 'boobs',
-            options: {
-                data: 'boobs'
-            }
-        }, {
-            alias: 'cats',
-            options: {
-                data: 'cat'
-            }
-        }
+        'px'
     ]
 };
 

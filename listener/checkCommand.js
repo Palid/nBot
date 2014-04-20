@@ -3,7 +3,7 @@ var _ = require('lodash'),
     watch = require('../initialize/watch.js'),
     client = require('../config/bot.js'),
     hotLoad = require('../helpers/hotload.js'),
-    aliases = require('../initialize/createAliasDict.js');
+    aliases = hotLoad(__dirname, '../initialize/createAliasDict.js');
 
 watch.on('configChanged', function () {
     aliases = hotLoad(__dirname, '../initialize/createAliasDict.js');

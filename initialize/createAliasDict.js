@@ -2,9 +2,9 @@
 var fs = require('fs'),
     _ = require('lodash'),
     methods = require('../api/'),
-    config = require('./parseJSON.js'),
     hotLoad = require('../helpers/hotload.js'),
-    watch = require('./watch.js');
+    watch = require('./watch.js'),
+    config = hotLoad(__dirname, './parseJSON.js');
 
 
 watch.on('configChanged', function () {
@@ -12,8 +12,7 @@ watch.on('configChanged', function () {
 });
 
 var createList = function (data) {
-    var aliasesList = {},
-        property;
+    var aliasesList = {};
 
     var aliasDict = _.mapValues(data, function (property) {
         return property.aliases;

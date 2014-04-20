@@ -32,7 +32,11 @@ var RESPONSES = {
         }
     },
     say: function (response) {
-        return client.say(response.to, response.message);
+        if (response.message.length > 300) {
+            return client.say(response.to, "Response too long.");
+        } else {
+            return client.say(response.to, response.message);
+        }
     }
 };
 

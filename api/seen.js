@@ -9,7 +9,7 @@ var method = function seen(options) {
         return false;
     } else {
         var to = options.to,
-            message = !_.isUndefined(db[to].users[options.message].seen) ?
+            message = !_.isUndefined(db[to].users[options.message]) ?
                 db[to].users[options.message].seen :
                 "I didn't see this user speak even once.";
         return {

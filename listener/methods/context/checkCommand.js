@@ -1,12 +1,14 @@
 "use strict";
-var _ = require('lodash'),
-    watch = require('../initialize/watch.js'),
-    client = require('../config/bot.js'),
-    hotLoad = require('../helpers/hotload.js'),
-    aliases = hotLoad(__dirname, '../initialize/createAliasDict.js');
+var path = require('path'),
+    _ = require('lodash'),
+    rootDir = path.dirname(require.main.filename),
+    watch = require(rootDir + '/initialize/watch.js'),
+    client = require(rootDir + '/config/bot.js'),
+    hotLoad = require(rootDir + '/helpers/hotload.js'),
+    aliases = hotLoad(__dirname, rootDir + '/initialize/createAliasDict.js');
 
 watch.on('configChanged', function () {
-    aliases = hotLoad(__dirname, '../initialize/createAliasDict.js');
+    aliases = hotLoad(__dirname, rootDir + '/initialize/createAliasDict.js');
 });
 
 var RESPONSES = {

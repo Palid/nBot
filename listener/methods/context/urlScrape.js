@@ -1,8 +1,11 @@
 "use strict";
-var _ = require('lodash'),
+var path = require('path'),
+    _ = require('lodash'),
     cheerio = require('cheerio'),
     request = require('request'),
-    client = require('../config/bot.js'),
+    rootDir = path.dirname(require.main.filename),
+    client = require(rootDir + '/config/bot.js'),
+    db = require(rootDir + '/initialize/db.js'),
     scrapeTitle = client.options.urlScrapeTitle,
     titleStringLen = scrapeTitle.length;
 
@@ -43,13 +46,43 @@ function getTitle(channel, url, data) {
 
 }
 
+function saveToDatabase(from, channel, data, link) {
+    if (_.isUndefined(db[channel].links[link])) {
+        db[channel].links[link] = {};
+        if (_.isUndefined(db[channel].links[link].firstPost)) {
+            db[channel].links[link].firstPost = [];
+            db[channel].links[link].firstPost.by = from;
+            db[channel].links[link].firstPost.date = new Date().toString();
+        }
+    } else {
+        client.say(channel,
+            "Link was already posted " +
+            db[channel].links[link].count +
+            " times."
+        );
+        client.say(channel,
+            "Originally by: " +
+            db[channel].links[link].firstPost.by +
+            " on: " +
+            db[channel].links[link].firstPost.date
+        );
+    }
+    var count = db[channel].links[link].count;
+    db[channel].links[link].lastDate = new Date().toString();
+    db[channel].links[link].count = count ?
+        parseInt(count, 10) + 1 :
+        1;
+}
+
 function method(from, channel, data, match) {
 
-    console.log(match);
-
     if (match) {
-        var m = match[0].search('www.'),
-            url = m !== -1 && !m ? match[0].replace('www.', 'http://') : match[0],
+        var link = match[0];
+
+        saveToDatabase(from, channel, data, link);
+
+        var m = link.search('www.'),
+            url = m !== -1 && !m ? link.replace('www.', 'http://') : link,
             buffer = 0;
 
         var r = request(url, function (err, resp, body) {

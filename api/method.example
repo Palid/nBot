@@ -11,13 +11,13 @@ var method = function nameYourFunctionForDebugging(options) {
         type: "command",
         command: command,
         to: to,
-        nick: nick,
+        nick: from,
         message: message
     }
     ||  return {
         type: "say",
         to: to,
-        nick: nick,
+        nick: from,
         message: message
     }
     || return {

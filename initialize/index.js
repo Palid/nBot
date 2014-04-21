@@ -16,4 +16,7 @@ makeDirs('logs/users');
 console.log("Creating Aliases JSON");
 require('./createAliasesJSON.js');
 
+console.log("Get database");
+require('./db.js');
+
 require('../listener/');

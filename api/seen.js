@@ -7,12 +7,15 @@ var method = function seen(options) {
     if (options.message === client.nick) {
         return false;
     } else {
-        var to = options.to;
+        var to = options.to,
+            message = db[to].users[options.message].seen ?
+                db[to].users[options.message].seen :
+                "I didn't see this user speak even once.";
         return {
             type: "say",
             to: to,
             nick: options.from,
-            message: db[to].users[options.message].seen
+            message: message
         };
     }
 

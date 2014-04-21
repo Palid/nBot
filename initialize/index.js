@@ -8,3 +8,4 @@ var makeDirs = require('./createFolders.js');
 
 console.log("Creating configs and folders");
 makeDirs('logs');
+makeDirs('logs/users');

@@ -13,9 +13,9 @@ var method = function dice(options) {
         finalResult = null,
         resultsList = "";
 
-    if (!_.isNaN(dices) && !_.isNaN(diceThrows)) {
-        console.log(_.isNumber(dices));
-        console.log(_.isNumber(diceThrows));
+    if (!_.isNaN(dices) && !_.isNaN(diceThrows) &&
+        dices.toString().split("").length < 3 &&
+        diceThrows.toString().split("").length < 3) {
 
         for (var i = 0; i < diceThrows; i++) {
             var x = Math.floor(Math.random() * dices + 1);
@@ -23,25 +23,17 @@ var method = function dice(options) {
             resultsList += x.toString() + ", ";
         }
 
-        if (resultsList.length <= 50) {
-            return {
-                type: "say",
-                to: channel,
-                message: "Throw results for " + data + ": " + resultsList + "with final result of: " + finalResult
-            };
-        } else {
-            return {
-                type: "say",
-                to: channel,
-                message: "Too many results."
-            };
-        }
+        return {
+            type: "say",
+            to: channel,
+            message: "Throw results for " + data + ": " + resultsList + "with final result of: " + finalResult
+        };
 
     } else {
         return {
             type: "say",
             to: channel,
-            message: "Throw result is not a number. Example of valid dice throw: 2d10"
+            message: "Throw result is too long or is not a number. Example of valid dice throw: 2d10"
         };
     }
 

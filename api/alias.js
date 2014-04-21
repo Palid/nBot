@@ -4,7 +4,6 @@ var _ = require('lodash'),
     path = require('path'),
     watch = require('../initialize/watch.js'),
     hotLoad = require('../helpers/hotload.js'),
-    aliases = require('../initialize/createAliasDict.js'),
     config = hotLoad(__dirname, '../initialize/parseJSON.js');
 
 watch.on('configChanged', function () {

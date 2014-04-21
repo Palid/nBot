@@ -57,7 +57,7 @@ client.addListener('error', function (message) {
     logger({
         timeStamp: true,
         fileName: 'error',
-        data: message + '\r\n'
+        data: JSON.stringify(message, null, 4) + '\r\n'
     });
 });
 
@@ -66,7 +66,7 @@ client.addListener('ircError', function (message) {
     logger({
         timeStamp: true,
         fileName: 'ircError',
-        data: message + '\r\n'
+        data: JSON.stringify(message, null, 4) + '\r\n'
     });
 });
 

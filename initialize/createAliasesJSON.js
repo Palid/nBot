@@ -3,13 +3,12 @@ var fs = require('fs'),
     path = require('path'),
     _ = require('lodash'),
     methods = require('../api/'),
-    configDir = path.resolve(__dirname, "../config/aliases.json"),
+    configDir = path.resolve(__dirname, "../database/aliases.json"),
     config = require('./parseJSON.js');
 
 var method = function (data) {
 
     for (var property in methods) {
-
         if (!_.has(data, property)) {
             data[property] = {
                 aliases: methods[property].defaults.aliases,

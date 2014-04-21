@@ -12,11 +12,10 @@ watch.on('configChanged', function () {
 });
 
 var createList = function (data) {
-    var aliasesList = {};
-
-    var aliasDict = _.mapValues(data, function (property) {
-        return property.aliases;
-    });
+    var aliasesList = {},
+        aliasDict = _.mapValues(data, function (property) {
+            return property.aliases;
+        });
 
     _.forEach(aliasDict, function (property, key) {
         var selfKey = key;

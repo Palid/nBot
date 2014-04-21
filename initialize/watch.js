@@ -2,7 +2,7 @@
 var fs = require('fs'),
     path = require('path'),
     events = require('events'),
-    config = path.resolve(__dirname, "../config/aliases.json"),
+    config = path.resolve(__dirname, "../database/aliases.json"),
     emitter = new events.EventEmitter();
 
 function main(curr, prev) {

@@ -1,7 +1,7 @@
 "use strict";
 var fs = require('fs'),
     path = require('path'),
-    config = path.resolve(__dirname, "../config/aliases.json");
+    config = path.resolve(__dirname, "../database/aliases.json");
 
 var method = function (dir) {
 

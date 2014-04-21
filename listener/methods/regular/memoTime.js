@@ -9,7 +9,6 @@ var method = function usersLog(from, to, message) {
     if (_.isUndefined(db[to])) {
         db[to] = {};
         if (_.isUndefined(db[to].users)) db[to].users = {};
-        if (_.isUndefined(db[to].links)) db[to].links = {};
     }
 
     if (_.isUndefined(db[to].users[from])) {

@@ -47,6 +47,18 @@ function getTitle(channel, url, data) {
 }
 
 function saveToDatabase(from, channel, data, link) {
+    var lastSlash = _.lastIndexOf(link, '/');
+
+    console.log("LastSlash: %s, length: %s", lastSlash, link.length);
+
+    if (lastSlash === link.length - 1) {
+        console.log("Oldlink: %s", link);
+        link = link.substr(0, lastSlash);
+        console.log("Newlink: %s", link);
+    }
+    link = link.replace('https://', 'http://');
+
+    if (_.isUndefined(db[channel].links)) db[channel].links = {};
     if (_.isUndefined(db[channel].links[link])) {
         db[channel].links[link] = {};
         if (_.isUndefined(db[channel].links[link].firstPost)) {
@@ -79,11 +91,11 @@ function method(from, channel, data, match) {
     if (match) {
         var link = match[0];
 
-        saveToDatabase(from, channel, data, link);
-
         var m = link.search('www.'),
             url = m !== -1 && !m ? link.replace('www.', 'http://') : link,
             buffer = 0;
+
+        saveToDatabase(from, channel, data, url);
 
         var r = request(url, function (err, resp, body) {
             if (err) {

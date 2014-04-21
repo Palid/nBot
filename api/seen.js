@@ -1,5 +1,6 @@
 "use strict";
-var db = require('../initialize/db.js'),
+var _ = require('lodash'),
+    db = require('../initialize/db.js'),
     client = require('../config/bot.js');
 
 var method = function seen(options) {
@@ -8,7 +9,7 @@ var method = function seen(options) {
         return false;
     } else {
         var to = options.to,
-            message = !db[to].users[options.message].seen ?
+            message = !_.isUndefined(db[to].users[options.message].seen) ?
                 db[to].users[options.message].seen :
                 "I didn't see this user speak even once.";
         return {

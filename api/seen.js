@@ -8,7 +8,7 @@ var method = function seen(options) {
         return false;
     } else {
         var to = options.to,
-            message = db[to].users[options.message].seen ?
+            message = !db[to].users[options.message].seen ?
                 db[to].users[options.message].seen :
                 "I didn't see this user speak even once.";
         return {

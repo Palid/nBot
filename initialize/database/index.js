@@ -2,9 +2,10 @@
 var _ = require('lodash'),
     fs = require('fs'),
     path = require('path'),
-    makeDirs = require('../helpers/makeDirs.js'),
-    client = require('../config/bot.js'),
-    db = path.resolve(__dirname, '../database/db.json'),
+    makeDirs = require('../../helpers/makeDirs.js'),
+    loadDir = require('../../helpers/loadDirectory.js'),
+    client = require('../../config/bot.js'),
+    db = path.resolve(__dirname, '../../database/db.json'),
     data;
 
 makeDirs({
@@ -13,6 +14,12 @@ makeDirs({
     urls: 'database/urls',
     channels: 'database/channels'
 });
+
+// var b = loadDir('../../database', {
+//     currentDir: __dirname,
+//     type: 'json',
+//     maxDepth: 2
+// });
 
 // Try to parse JSON
 try {

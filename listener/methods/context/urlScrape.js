@@ -5,7 +5,7 @@ var path = require('path'),
     request = require('request'),
     rootDir = path.dirname(require.main.filename),
     client = require(rootDir + '/config/bot.js'),
-    db = require(rootDir + '/initialize/db.js'),
+    db = require(rootDir + '/initialize/database/index.js'),
     scrapeTitle = client.options.urlScrapeTitle,
     titleStringLen = scrapeTitle.length;
 

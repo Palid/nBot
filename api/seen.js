@@ -1,6 +1,6 @@
 "use strict";
 var _ = require('lodash'),
-    db = require('../initialize/db.js'),
+    db = require('../initialize/database/index.js'),
     client = require('../config/bot.js');
 
 var method = function seen(options) {

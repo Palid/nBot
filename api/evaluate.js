@@ -18,7 +18,7 @@ var method = function evaluate(options) {
     cluster.on("online", function (worker) {
 
         worker.on("message", function (evaledString) {
-            var stringToSay = evaledString.toString().replace(/[\r\n]/g, '');
+            var stringToSay = evaledString ? evaledString.toString().replace(/[\r\n]/g, '') : null;
 
             clearTimeout(timer); //The worker responded in under 5 seconds,
             // clear the timeout

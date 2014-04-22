@@ -15,6 +15,9 @@ makeDirs({
     channels: 'database/channels'
 });
 
+// TODO
+// Create this damn database.
+
 // var b = loadDir('../../database', {
 //     currentDir: __dirname,
 //     type: 'json',

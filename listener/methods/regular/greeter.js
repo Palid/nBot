@@ -13,9 +13,7 @@ var GREETLIST = [
 ];
 
 var BANNEDDICT = {
-    kozak127: "pierdol się kozak127",
-    kozakov: "pierdol się kozakov",
-    firemark: "pierdol się firemark"
+    nick: "sentence"
 };
 
 function method(channel, who) {

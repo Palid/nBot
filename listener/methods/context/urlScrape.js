@@ -58,7 +58,6 @@ function saveToDatabase(from, channel, data, link) {
     }
     link = link.replace('https://', 'http://');
 
-    if (_.isUndefined(db[channel].links)) db[channel].links = {};
     if (_.isUndefined(db[channel].links[link])) {
         db[channel].links[link] = {};
         if (_.isUndefined(db[channel].links[link].firstPost)) {

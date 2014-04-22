@@ -3,8 +3,7 @@ var _ = require('lodash'),
     client = require('../config/bot.js'),
     logger = require('../helpers/log.js'),
     commandsRe = require('./commandsRegexp.js'),
-    sayError = require('./sayError.js'),
-    greeter = require('./greeter.js');
+    sayError = require('./sayError.js');
 
 // from = messaging user
 // to = channel OR bot
@@ -40,7 +39,6 @@ client.addListener('ctcp', function (nick, message) {
 
 client.addListener('join', function (channel, who) {
     console.log('%s has joined %s', who, channel);
-    // greeter(channel, who);
 });
 
 client.addListener('part', function (channel, who, reason) {

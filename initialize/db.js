@@ -2,9 +2,17 @@
 var _ = require('lodash'),
     fs = require('fs'),
     path = require('path'),
+    makeDirs = require('../helpers/makeDirs.js'),
     client = require('../config/bot.js'),
     db = path.resolve(__dirname, '../database/db.json'),
     data;
+
+makeDirs({
+    database: 'database',
+    users: 'database/users',
+    urls: 'database/urls',
+    channels: 'database/channels'
+});
 
 // Try to parse JSON
 try {
@@ -23,14 +31,14 @@ _.forEach(client.opt.channels, function (property, key) {
 
 // Save the base instantly
 fs.writeFile(db, JSON.stringify(data, null, 4), function (err) {
-    console.log(err);
+    if (err) console.log(err);
 });
 
 
 // Write data to file every minute.
 setInterval(function () {
     fs.writeFile(db, JSON.stringify(data, null, 4), function (err) {
-        console.log(err);
+        if (err) console.log(err);
     });
 }, 60000);
 

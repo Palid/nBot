@@ -12,22 +12,26 @@ var _ = require('lodash'),
 client.addListener('message', function (from, to, message) {
     var fromLower = from.toLowerCase(),
         toLower = to.toLowerCase(),
+        messageLower = message.toLowerCase(),
         nick = client.nick.toLowerCase();
+
+    console.log(fromLower);
+    console.log(toLower);
 
     if (nick === toLower) {
         logger({
             timeStamp: true,
             fileName: fromLower,
-            data: '<' + fromLower + '> ' + message + '\r\n'
+            data: '<' + fromLower + '> ' + messageLower + '\r\n'
         });
-        commandsRe(toLower, fromLower, message);
+        commandsRe(toLower, fromLower, messageLower);
     } else {
         logger({
             timeStamp: true,
             fileName: toLower,
-            data: '<' + fromLower + '> ' + message + '\r\n'
+            data: '<' + fromLower + '> ' + messageLower + '\r\n'
         });
-        commandsRe(fromLower, toLower, message);
+        commandsRe(fromLower, toLower, messageLower);
     }
 
 });

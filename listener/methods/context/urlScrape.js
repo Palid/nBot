@@ -88,9 +88,8 @@ function saveToDatabase(from, channel, data, link) {
 function method(from, channel, data, match) {
 
     if (match) {
-        var link = match[0];
-
-        var m = link.search('www.'),
+        var link = match[0].toLowerCase(),
+            m = link.search('www.'),
             url = m !== -1 && !m ? link.replace('www.', 'http://') : link,
             buffer = 0;
 

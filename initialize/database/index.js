@@ -34,9 +34,10 @@ try {
 
 // Generate entries for each channel
 _.forEach(client.opt.channels, function (property, key) {
-    if (!data[property]) data[property] = {};
-    if (!data[property].users) data[property].users = {};
-    if (!data[property].links) data[property].links = {};
+    var propertyLower = property.toLowerCase();
+    if (!data[propertyLower]) data[propertyLower] = {};
+    if (!data[propertyLower].users) data[propertyLower].users = {};
+    if (!data[propertyLower].links) data[propertyLower].links = {};
 });
 
 // Save the base instantly

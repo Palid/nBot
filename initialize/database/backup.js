@@ -20,6 +20,4 @@ setInterval(function () {
     fs.writeFile(dir, JSON.stringify(db, null, 4), function (err) {
         if (err) console.log(err);
     });
-    // cele testowe
-}, 1000);
-// }, 60000);
+}, 60000);

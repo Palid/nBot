@@ -5,7 +5,21 @@ var path = require('path'),
     db = require(rootDir + '/initialize/database/index.js');
 
 var method = function usersLog(from, to, message) {
-    db.setters.setSeen(from, to);
+    var data = db.get("channelUser", {
+        from: from,
+        to: to
+    });
+    if (!_.isObject(data)) {
+        db.set("seenCreate", {
+            from: from,
+            to: to
+        });
+    }
+    db.set("seen", {
+        from: from,
+        to: to
+    });
+
 
 };
 

@@ -8,8 +8,12 @@ var method = function kick(options) {
         data = options.message;
 
     var firstWhitespace = _.indexOf(data, ' '),
-        nick = data.substring(0, firstWhitespace),
-        body = data.substring(firstWhitespace + 1);
+        nick = firstWhitespace > 0 ?
+            data.substring(0, firstWhitespace).toLowerCase() :
+            data.toLowerCase(),
+        body = firstWhitespace > 0 ? data.substring(firstWhitespace + 1) : "";
+
+    console.log("Whitespace: %s, Nick to: %s, body to: %s", firstWhitespace, nick, body);
 
     if (nick === client.nick || body === client.nick) {
         return {

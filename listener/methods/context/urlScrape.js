@@ -16,7 +16,6 @@ request = request.defaults({
 });
 
 
-
 function errors(err, channel) {
     if (err) console.log(err);
 }
@@ -25,8 +24,6 @@ function getTitle(channel, url, data) {
     try {
         var $ = cheerio.load(data),
             title = $('title').text().replace(/[\r\n]/g, '');
-
-        console.log(title);
 
         if (title.replace(/\s/, '').length > 0) {
             client.say(channel, scrapeTitle + (title = (title.length <= 80) ?
@@ -43,42 +40,52 @@ function getTitle(channel, url, data) {
 }
 
 function saveToDatabase(from, channel, data, link) {
-    var lastSlash = _.lastIndexOf(link, '/');
-
-    console.log("LastSlash: %s, length: %s", lastSlash, link.length);
+    var lastSlash = _.lastIndexOf(link, '/'),
+        dbLink = db.get("channelLink", {
+            to: channel,
+            link: link
+        });
 
     if (lastSlash === link.length - 1) {
-        console.log("Oldlink: %s", link);
         link = link.substr(0, lastSlash);
-        console.log("Newlink: %s", link);
     }
+
     link = link.replace('https://', 'http://');
 
-    if (_.isUndefined(db.channels[channel].links[link])) {
-        db.channels[channel].links[link] = {};
-        if (_.isUndefined(db.channels[channel].links[link].firstPost)) {
-            db.channels[channel].links[link].firstPost = [];
-            db.channels[channel].links[link].firstPost.by = from;
-            db.channels[channel].links[link].firstPost.date = new Date().toString();
-        }
+    if (!_.isObject(dbLink)) {
+        db.set("link", {
+            from: from,
+            to: channel,
+            link: link
+        });
+        dbLink = db.get("channelLink", {
+            to: channel,
+            link: link
+        });
     } else {
         client.say(channel,
             "Link was already posted " +
-            db.channels[channel].links[link].count +
+            dbLink.count +
             " times."
         );
         client.say(channel,
             "Originally by: " +
-            db.channels[channel].links[link].firstPost.by +
+            dbLink.firstPost.by +
             " on: " +
-            db.channels[channel].links[link].firstPost.date
+            dbLink.firstPost.date
         );
     }
-    var count = db.channels[channel].links[link].count;
-    db.channels[channel].links[link].lastDate = new Date().toString();
-    db.channels[channel].links[link].count = count ?
-        parseInt(count, 10) + 1 :
-        1;
+    db.set("linkDate", {
+        from: from,
+        to: channel,
+        link: link
+    });
+    db.set("linkCount", {
+        from: from,
+        to: channel,
+        link: link,
+        value: parseInt(dbLink.count, 10) + 1
+    });
 }
 
 function method(from, channel, data, match) {
@@ -91,7 +98,12 @@ function method(from, channel, data, match) {
 
         saveToDatabase(from, channel, data, url);
 
-        var r = request(url, function (err, resp, body) {
+        var r = request({
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0'
+            },
+            url: url
+        }, function (err, resp, body) {
             if (err) {
                 r.abort();
                 errors(err, channel);
@@ -104,7 +116,6 @@ function method(from, channel, data, match) {
             buffer += chunk;
             if (buffer.length > (1024 * 1024 * 1.5)) {
                 r.abort();
-                // client.say(channel, "File too big. Aborting.");
             }
         });
     }

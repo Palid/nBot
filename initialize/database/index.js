@@ -1,8 +1,6 @@
 "use strict";
 var _ = require('lodash'),
-    makeDirs = require('../../helpers/makeDirs.js'),
-    getters = require('./getters.js'),
-    setters = require('./setters.js');
+    makeDirs = require('../../helpers/makeDirs.js');
 
 makeDirs({
     database: 'database',
@@ -12,6 +10,6 @@ makeDirs({
 });
 
 module.exports = {
-    setters: setters,
-    getters: getters
+    set: require('./setters.js'),
+    get: require('./getters.js')
 };

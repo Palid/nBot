@@ -5,15 +5,10 @@ var path = require('path'),
     db = require(rootDir + '/initialize/database/index.js');
 
 var method = function usersLog(from, to, message) {
-    if (_.isUndefined(db[to].users[from])) {
-        db[to].users[from] = {};
-        if (_.isUndefined(db[to].users[from].aliases)) db[to].users[from].aliases = [];
-        if (_.isUndefined(db[to].users[from])) db[to].users[from] = {};
-        if (_.isUndefined(db[to].users[from].memo)) db[to].users[from].memo = [];
-    }
-    db[to].users[from].seen = new Date().toString();
+    db.setters.setSeen(from, to);
 
 };
+
 
 
 module.exports = method;

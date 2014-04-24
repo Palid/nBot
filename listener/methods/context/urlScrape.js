@@ -18,15 +18,11 @@ request = request.defaults({
 
 
 function errors(err, channel) {
-    if (err) {
-        console.log(err);
-    }
-    // client.say(channel, "Couldn't get title.");
+    if (err) console.log(err);
 }
 
 function getTitle(channel, url, data) {
     try {
-
         var $ = cheerio.load(data),
             title = $('title').text().replace(/[\r\n]/g, '');
 
@@ -58,29 +54,29 @@ function saveToDatabase(from, channel, data, link) {
     }
     link = link.replace('https://', 'http://');
 
-    if (_.isUndefined(db[channel].links[link])) {
-        db[channel].links[link] = {};
-        if (_.isUndefined(db[channel].links[link].firstPost)) {
-            db[channel].links[link].firstPost = [];
-            db[channel].links[link].firstPost.by = from;
-            db[channel].links[link].firstPost.date = new Date().toString();
+    if (_.isUndefined(db.channels[channel].links[link])) {
+        db.channels[channel].links[link] = {};
+        if (_.isUndefined(db.channels[channel].links[link].firstPost)) {
+            db.channels[channel].links[link].firstPost = [];
+            db.channels[channel].links[link].firstPost.by = from;
+            db.channels[channel].links[link].firstPost.date = new Date().toString();
         }
     } else {
         client.say(channel,
             "Link was already posted " +
-            db[channel].links[link].count +
+            db.channels[channel].links[link].count +
             " times."
         );
         client.say(channel,
             "Originally by: " +
-            db[channel].links[link].firstPost.by +
+            db.channels[channel].links[link].firstPost.by +
             " on: " +
-            db[channel].links[link].firstPost.date
+            db.channels[channel].links[link].firstPost.date
         );
     }
-    var count = db[channel].links[link].count;
-    db[channel].links[link].lastDate = new Date().toString();
-    db[channel].links[link].count = count ?
+    var count = db.channels[channel].links[link].count;
+    db.channels[channel].links[link].lastDate = new Date().toString();
+    db.channels[channel].links[link].count = count ?
         parseInt(count, 10) + 1 :
         1;
 }

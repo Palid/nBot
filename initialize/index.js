@@ -5,7 +5,7 @@
  */
 
 console.info("Initializing database");
-require('./database/index.js');
+require('./database/backup.js');
 
 console.info("Creating Aliases JSON");
 require('./createAliasesJSON.js');

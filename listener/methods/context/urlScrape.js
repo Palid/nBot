@@ -6,7 +6,7 @@ var path = require('path'),
     rootDir = path.dirname(require.main.filename),
     client = require(rootDir + '/config/bot.js'),
     db = require(rootDir + '/initialize/database/index.js'),
-    scrapeTitle = client.opt.urlScrapeTitle,
+    scrapeTitle = client.options.urlScrapeTitle,
     titleStringLen = scrapeTitle.length;
 
 // This somehow fixes memory leaks...

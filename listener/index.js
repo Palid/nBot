@@ -87,8 +87,10 @@ console.info('nBot start');
 // Autokiller if 'killMe!' is true
 // created for building the app on drone.io
 if (client.options['deleteMe!']) {
+    console.error("client.options['deleteMe!'] isn't deleted!");
+    console.error("Gracefully exiting in 10000ms");
     setTimeout(function buildKiller() {
-        console.log("Gracefully exiting.");
+        console.log("Timeout, initialize exit.");
         process.exit(0);
     }, 10000);
 }

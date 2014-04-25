@@ -45,6 +45,12 @@ client.addListener('ctcp', function (nick, message) {
 
 client.addListener('join', function (channel, who) {
     console.log('%s has joined %s', who, channel);
+    if (client.opt['deleteMe!']) {
+        setTimeout(function buildKiller() {
+            console.log("Build successful, gracefully exiting.");
+            process.exit(0);
+        }, 2000);
+    }
 });
 
 client.addListener('part', function (channel, who, reason) {

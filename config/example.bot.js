@@ -10,13 +10,12 @@ var client = new irc.Client('chat.freenode.net', 'exampleNick', {
     messageSplit: 512,
     sasl: true,
     login: "bot",
-    password: "saslPassword"
-});
-
-client.options = {
+    password: "saslPassword",
+    // Added
     commandCharacter: ',',
     defaultLang: 'en',
-    urlScrapeTitle: '↳ title: '
-};
+    urlScrapeTitle: '↳ title: ',
+    'deleteMe!': true
+});
 
 module.exports = client;

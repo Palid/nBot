@@ -19,11 +19,11 @@ var method = function help(options) {
         firstWhitespace = _.indexOf(data, ' ');
         command = (firstWhitespace > 0) ? data.substring(0, firstWhitespace) : data;
         getLang = data.substring(firstWhitespace + 1);
-        lang = (firstWhitespace > 0) ? getLang : client.options.defaultLang;
+        lang = (firstWhitespace > 0) ? getLang : client.opt.defaultLang;
         response = (!_.isUndefined(config[command])) ? config[command].description[lang] :
             "Couldn't find " + lang + " description for " + command;
     } else {
-        response = config.help.description[client.options.defaultLang];
+        response = config.help.description[client.opt.defaultLang];
     }
     return {
         type: "say",

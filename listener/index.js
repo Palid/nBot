@@ -45,12 +45,6 @@ client.addListener('ctcp', function (nick, message) {
 
 client.addListener('join', function (channel, who) {
     console.log('%s has joined %s', who, channel);
-    if (client.options['deleteMe!']) {
-        setTimeout(function buildKiller() {
-            console.log("Build successful, gracefully exiting.");
-            process.exit(0);
-        }, 2000);
-    }
 });
 
 client.addListener('part', function (channel, who, reason) {
@@ -90,6 +84,11 @@ client.addListener('raw', function (message) {
 
 console.info('nBot start');
 
-// TODO
-// PERMISSIONS SYSTEM
-// That'll really be important...
+// Autokiller if 'killMe!' is true
+// created for building the app on drone.io
+if (client.options['deleteMe!']) {
+    setTimeout(function buildKiller() {
+        console.log("Gracefully exiting.");
+        process.exit(0);
+    }, 10000);
+}

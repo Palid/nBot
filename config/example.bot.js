@@ -15,7 +15,8 @@ var irc = require('irc'),
 client.options = {
     commandCharacter: ',',
     defaultLang: 'en',
-    urlScrapeTitle: '↳ title: '
+    urlScrapeTitle: '↳ title: ',
+    'deleteMe!': true
 };
 
 module.exports = client;

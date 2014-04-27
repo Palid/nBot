@@ -1,13 +1,13 @@
 "use strict";
 var path = require('path'),
     _ = require('lodash'),
-    cheerio = require('cheerio'),
     request = require('request'),
     rootDir = path.dirname(require.main.filename),
     client = require(rootDir + '/config/bot.js'),
     db = require(rootDir + '/initialize/database/index.js'),
     scrapeTitle = client.options.urlScrapeTitle,
-    titleStringLen = scrapeTitle.length;
+    titleStringLen = scrapeTitle.length,
+    re = new RegExp(/(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/g);
 
 // This somehow fixes memory leaks...
 // looks like a failed cookie, uh?
@@ -20,24 +20,16 @@ function errors(err, channel) {
     if (err) console.log(err);
 }
 
-function getTitle(channel, url, data) {
-    try {
-        var $ = cheerio.load(data),
-            title = $('title').text().replace(/[\r\n]/g, '');
-
-        if (title.replace(/\s/, '').length > 0) {
-            client.say(channel, scrapeTitle + (title = (title.length <= 80) ?
-                title :
-                (title.substr(0, (80 - titleStringLen - 3))) + '...'));
-        } else {
-            errors(null, channel);
-        }
-
-    } catch (err) {
-        errors(err, channel);
+function getTitle(channel, str) {
+    if (str.replace(/\s/, '').length > 0) {
+        client.say(channel, scrapeTitle + (str = (str.length <= 80) ?
+            str :
+            (str.substr(0, (80 - titleStringLen - 3))) + '...'));
+    } else {
+        errors(null, channel);
     }
-
 }
+
 
 function saveToDatabase(from, channel, data, link) {
     var lastSlash = _.lastIndexOf(link, '/'),
@@ -91,30 +83,35 @@ function saveToDatabase(from, channel, data, link) {
 function method(from, channel, data, match) {
 
     if (match) {
-        var link = match[0].toLowerCase(),
+        var link = match[0],
             m = link.search('www.'),
             url = m !== -1 && !m ? link.replace('www.', 'http://') : link,
             buffer = 0;
 
         saveToDatabase(from, channel, data, url);
-
+        console.log(url);
+        console.log('https://www.youtube.com/watch?v=A381p_SAbq8');
         var r = request({
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0'
-            },
             url: url
         }, function (err, resp, body) {
             if (err) {
                 r.abort();
                 errors(err, channel);
-            } else if (resp.headers['content-type'].search('text/html') !== -1) {
-                getTitle(channel, url, body);
+            } else if (resp.headers['content-type'].search('text/html') === -1) {
+                r.abort();
             }
         });
 
         r.on('data', function (chunk) {
             buffer += chunk;
-            if (buffer.length > (1024 * 1024 * 1.5)) {
+            var str = chunk.toString(),
+                match = re.exec(str);
+            if (match && match[2]) {
+                getTitle(channel, match[2]);
+                r.abort();
+            }
+            if (buffer.length > (10240)) {
+                console.log("Buffer was too long, aborted!");
                 r.abort();
             }
         });

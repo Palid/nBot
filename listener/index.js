@@ -81,7 +81,6 @@ client.addListener('raw', function (message) {
         data: JSON.stringify(message, null, 4)
     });
 });
-
 console.info('nBot start');
 
 // TODO

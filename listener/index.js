@@ -83,7 +83,7 @@ client.addListener('raw', function (message) {
 });
 console.info('nBot start');
 
-// Autokiller if 'killMe!' is true
+// Autokiller if 'deleteMe!' is true
 // created for building the app on drone.io
 if (client.options['deleteMe!']) {
     console.error("client.options['deleteMe!'] isn't deleted!");

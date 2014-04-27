@@ -46,10 +46,15 @@ var RESPONSES = {
 // Message starts substringing at 1, because
 // the first symbol in the string is the client.commandCharacter
 
-var method = function activateCommand(from, to, message) {
-    var firstWhitespace = _.indexOf(message, ' '),
-        body = (firstWhitespace !== -1) ? message.substring(firstWhitespace + 1) : "",
-        command = (firstWhitespace !== -1) ? message.substring(1, firstWhitespace) : message.substring(1);
+var method = function activateCommand(from, to, message, match) {
+    var len = match[0].length,
+        firstWhitespace = _.indexOf(message, ' '),
+        body = (firstWhitespace !== -1) ?
+            message.substring(firstWhitespace + len) :
+            "",
+        command = (firstWhitespace !== -1) ?
+            message.substring(len, firstWhitespace) :
+            message.substring(len);
 
     if (_.isUndefined(aliases[command])) {
         client.say(to, "Command " + command + " not found");

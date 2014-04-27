@@ -1,13 +1,19 @@
 "use strict";
 var _ = require('lodash'),
+    jsesc = require('jsesc'),
+    commandChar = require('../config/bot.js').options.commandCharacter,
+    // Regular methods which will fire every received message
     REGULAR = {
-        logMemo: {
-            method: require('./methods/regular/memoTime.js')
+        lastSeen: {
+            method: require('./methods/regular/lastSeen.js')
         }
     },
+    // Context dependant message which will fire only when message passed
+    // through the regex tests
     CONTEXTDEPENDANT = {
         command: {
-            re: new RegExp(/^\,{1}/),
+            re: new RegExp("^[" + jsesc(commandChar) +
+                "]{" + commandChar.length + "}"),
             method: require('./methods/context/checkCommand.js')
         },
         urlTitle: {
@@ -16,15 +22,22 @@ var _ = require('lodash'),
         },
     },
     method = function regexStarter(from, to, message) {
-        _.forEach(REGULAR, function (property, key) {
-            property.method(from, to, message);
-        });
-        _.forEach(CONTEXTDEPENDANT, function (property, key) {
-            var match = message.match(property.re);
-            if (match) {
-                property.method(from, to, message, match);
-            }
-        });
-    };
+        if (_.indexOf(to, '#') !== -1) {
+            _.forEach(REGULAR, function (property, key) {
+                property.method(from, to, message);
+            });
+            _.forEach(CONTEXTDEPENDANT, function (property, key) {
+                var match = message.match(property.re);
+                if (match) {
+                    property.method(from, to, message, match);
+                }
+            });
+        } else {
+            var match = CONTEXTDEPENDANT.command.re.test(message);
+            if (match) CONTEXTDEPENDANT.command.method(from, to, message);
+        }
 
+
+        // }
+    };
 module.exports = method;

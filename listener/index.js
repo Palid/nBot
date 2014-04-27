@@ -14,9 +14,6 @@ client.addListener('message', function (from, to, message) {
         toLower = to.toLowerCase(),
         nick = client.nick.toLowerCase();
 
-    // console.log(fromLower);
-    // console.log(toLower);
-
     if (nick === toLower) {
         logger({
             timeStamp: true,

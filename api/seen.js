@@ -8,13 +8,16 @@ var method = function seen(options) {
     if (options.message === client.nick) {
         return false;
     } else {
-        var to = options.to,
-            message = !_.isUndefined(db[to].users[options.message]) ?
-                db[to].users[options.message].seen :
+        var to = db.get("channelUser", {
+            to: options.to,
+            from: options.from
+        }),
+            message = !_.isUndefined(to) ?
+                to.seen :
                 "I didn't see this user speak even once.";
         return {
             type: "say",
-            to: to,
+            to: options.to,
             nick: options.from,
             message: message
         };

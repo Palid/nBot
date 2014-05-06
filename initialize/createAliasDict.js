@@ -1,6 +1,5 @@
 "use strict";
-var fs = require('fs'),
-    _ = require('lodash'),
+var _ = require('lodash'),
     methods = require('../api/'),
     hotLoad = require('../helpers/hotload.js'),
     watch = require('./watch.js'),
@@ -21,7 +20,7 @@ var createList = function (data) {
         var selfKey = key;
         aliasesList[key] = methods[key].method;
 
-        _.forEach(aliasDict[key], function (property, key) {
+        _.forEach(aliasDict[key], function (property) {
             if (_.isObject(property)) {
                 aliasesList[property.alias] = {
                     method: methods[selfKey].method,

@@ -24,8 +24,11 @@ var method = function oBoobsApi(options) {
             var parsed = JSON.parse(body);
             _.forEach(parsed, function (property) {
                 var id = property.id.toString();
+                while (id.length < 5) {
+                    id = 0 + id;
+                }
                 client.say(channel, "http://media.oboobs.ru/noise/" +
-                    (id.length < 5 ? 0 + id : id) +
+                    id +
                     ".jpg");
             });
         } catch (err) {

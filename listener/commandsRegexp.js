@@ -17,16 +17,17 @@ var _ = require('lodash'),
             method: require('./methods/context/checkCommand.js')
         },
         urlTitle: {
-            re: new RegExp(/http(s?):\/\/(\S+)|(www\.\S+)/),
+            // re: new RegExp(/http(s?):\/\/(\S+)|(www\.\S+)/),
+            re: new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/),
             method: require('./methods/context/urlScrape.js')
         },
     },
     method = function regexStarter(from, to, message) {
         if (_.indexOf(to, '#') !== -1) {
-            _.forEach(REGULAR, function (property, key) {
+            _.forEach(REGULAR, function (property) {
                 property.method(from, to, message);
             });
-            _.forEach(CONTEXTDEPENDANT, function (property, key) {
+            _.forEach(CONTEXTDEPENDANT, function (property) {
                 var match = message.match(property.re);
                 if (match) {
                     property.method(from, to, message, match);
@@ -36,8 +37,5 @@ var _ = require('lodash'),
             var match = CONTEXTDEPENDANT.command.re.test(message);
             if (match) CONTEXTDEPENDANT.command.method(from, to, message);
         }
-
-
-        // }
     };
 module.exports = method;

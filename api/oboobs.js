@@ -23,7 +23,10 @@ var method = function oBoobsApi(options) {
         try {
             var parsed = JSON.parse(body);
             _.forEach(parsed, function (property) {
-                client.say(channel, "http://media.oboobs.ru/noise/" + property.id + ".jpg");
+                var id = property.id.toString();
+                client.say(channel, "http://media.oboobs.ru/noise/" +
+                    (id.length < 5 ? 0 + id : id) +
+                    ".jpg");
             });
         } catch (err) {
             console.log(err);

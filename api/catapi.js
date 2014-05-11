@@ -9,7 +9,7 @@ var request = require('request'),
 var method = function catsApi(options) {
     var channel = options.to;
 
-    var r = request(url, requestOptions, function (err, response, body) {
+    var r = request(url, requestOptions, function (err, response) {
         if (err) {
             console.log(err);
             r.abort();
@@ -26,8 +26,8 @@ var method = function catsApi(options) {
 
 var defaults = {
     description: {
-        pl: ",cats - Zwraca losowe zdjęcia kotka.",
-        en: ",cats - Returns a random kitten photo."
+        pl: ",catapi - Zwraca losowe zdjęcia kotka.",
+        en: ",catapi - Returns a random kitten photo."
     },
     aliases: [
         "cat",

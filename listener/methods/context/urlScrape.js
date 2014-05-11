@@ -95,7 +95,6 @@ function method(from, channel, data, match) {
             url: url
         }, function (err, resp, body) {
             if (err) {
-                r.abort();
                 errors(err, channel);
             } else if (resp.headers['content-type'].search('text/html') === -1) {
                 r.abort();

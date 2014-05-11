@@ -42,10 +42,15 @@ var RESPONSES = {
     }
 };
 
-// WARNING!
-// Message starts substringing at 1, because
-// the first symbol in the string is the client.commandCharacter
-
+/**
+ * [activateCommand description]
+ *
+ * @param  {String} from - user from which the message was send
+ * @param  {String} to - channel/user to which the message was send
+ * @param  {String} message - message send
+ * @param  {Array} match - result from RegExp.match()
+ * @return {string} - may return an error
+ */
 var method = function activateCommand(from, to, message, match) {
     var len = match[0].length,
         firstWhitespace = _.indexOf(message, ' '),

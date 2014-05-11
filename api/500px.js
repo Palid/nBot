@@ -38,7 +38,6 @@ var method = function fivehundred_px(options) {
 
 };
 
-//
 var defaults = {
     description: {
         pl: ",500px [tag] - Bot pobiera losowy obrazek z [tag].",
@@ -46,7 +45,12 @@ var defaults = {
     },
     aliases: [
         '500',
-        'px'
+        'px', {
+            alias: 'nude',
+            options: {
+                data: 'nude'
+            }
+        }
     ]
 };
 

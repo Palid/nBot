@@ -10,7 +10,13 @@ watch.on('configChanged', function () {
     config = hotLoad(__dirname, './parseJSON.js');
 });
 
-var createList = function (data) {
+/**
+ * [createList description]
+ * Creates a dictionary with all possible aliases of functions.
+ * @param  {Object} data
+ * @return {Object}
+ */
+var createList = function createList(data) {
     var aliasesList = {},
         aliasDict = _.mapValues(data, function (property) {
             return property.aliases;

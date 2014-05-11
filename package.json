@@ -18,7 +18,6 @@
     "figlet": "~1.0.8",
     "tumblr": "^0.4.1",
     "500px": "^0.3.2",
-    "mongoose": "~3.8.8",
     "jsesc": "~0.4.3"
   },
   "devDependencies": {}

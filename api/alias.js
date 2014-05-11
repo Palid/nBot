@@ -1,8 +1,6 @@
 "use strict";
 var _ = require('lodash'),
-    fs = require('fs'),
-    path = require('path'),
-    watch = require('../initialize/watch.js'),
+    watch = require('../events/watch.js'),
     hotLoad = require('../helpers/hotload.js'),
     config = hotLoad(__dirname, '../initialize/parseJSON.js');
 
@@ -19,10 +17,8 @@ var method = function alias(options) {
             objList = "";
         _.forEach(config[data].aliases, function (property) {
             if (_.isObject(property)) {
-                console.log(property);
                 objList = objList + (property.alias + " ");
             } else {
-                console.log(property);
                 list = list + (property + " ");
             }
 

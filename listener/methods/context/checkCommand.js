@@ -2,7 +2,7 @@
 var path = require('path'),
     _ = require('lodash'),
     rootDir = path.dirname(require.main.filename),
-    watch = require(rootDir + '/initialize/watch.js'),
+    watch = require(rootDir + '/events/watch.js'),
     client = require(rootDir + '/config/bot.js'),
     hotLoad = require(rootDir + '/helpers/hotload.js'),
     aliases = hotLoad(__dirname, rootDir + '/initialize/createAliasDict.js');

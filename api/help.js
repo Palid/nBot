@@ -1,7 +1,7 @@
 "use strict";
 var _ = require('lodash'),
     client = require('../config/bot.js'),
-    watch = require('../initialize/watch.js'),
+    watch = require('../events/watch.js'),
     hotLoad = require('../helpers/hotload.js'),
     config = hotLoad(__dirname, '../initialize/parseJSON.js');
 

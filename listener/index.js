@@ -1,6 +1,5 @@
 "use strict";
-var _ = require('lodash'),
-    client = require('../config/bot.js'),
+var client = require('../config/bot.js'),
     logger = require('../helpers/log.js'),
     commandsRe = require('./commandsRegexp.js'),
     sayError = require('./sayError.js');

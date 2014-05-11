@@ -1,9 +1,8 @@
 "use strict";
 var fs = require('fs'),
     path = require('path'),
-    events = require('events'),
     config = path.resolve(__dirname, "../database/aliases.json"),
-    emitter = new events.EventEmitter();
+    emitter = require('./index.js');
 
 function main(curr, prev) {
     emitter.emit('configChanged');

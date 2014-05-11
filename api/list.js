@@ -26,7 +26,6 @@ var defaults = {
     ]
 };
 
-
 module.exports = {
     method: method,
     defaults: defaults

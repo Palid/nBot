@@ -56,7 +56,7 @@ function saveToDatabase(from, channel, data, link) {
         });
     } else {
         client.say(channel,
-            "Link was already posted " +
+            "Link was just posted " +
             dbLink.count +
             " times."
         );
@@ -84,16 +84,26 @@ function method(from, channel, data, match) {
 
     if (match) {
         var link = match[0],
-            m = link.search('www.'),
-            url = m !== -1 && !m ? link.replace('www.', 'http://') : link,
-            buffer = 0;
+            www = link.search('www.'),
+            http = link.search('http://'),
+            https = link.search('https://'),
+            buffer = 0,
+            url;
+
+
+        if (!www) {
+            url = link.replace('www.', 'http://');
+        } else if (http === -1 && https) {
+            url = 'http://' + link;
+        } else {
+            url = link;
+        }
+        // console.log('www: %s, http: %s, https: %s', www, http, https);
+        // console.log(url);
 
         saveToDatabase(from, channel, data, url);
-        console.log(url);
-        console.log('https://www.youtube.com/watch?v=A381p_SAbq8');
-        var r = request({
-            url: url
-        }, function (err, resp, body) {
+        var r = request(url, function (err, resp) {
+            console.log(url);
             if (err) {
                 errors(err, channel);
             } else if (resp.headers['content-type'].search('text/html') === -1) {

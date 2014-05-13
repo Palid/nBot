@@ -10,11 +10,12 @@ var method = function seen(options) {
     } else {
         var to = db.get("channelUser", {
             to: options.to,
-            from: options.from
+            from: options.message.trim()
         }),
             message = !_.isUndefined(to) ?
                 to.seen :
                 "I didn't see this user speak even once.";
+
         return {
             type: "say",
             to: options.to,

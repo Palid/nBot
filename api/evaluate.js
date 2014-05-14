@@ -15,15 +15,13 @@ var method = function evaluate(options) {
         evaluation = options.message;
 
     //This will be fired when the forked process becomes online
-    cluster.on("online", function (worker) {
+    cluster.once("online", function (worker) {
 
-        worker.on("message", function (evaledString) {
+        worker.once("message", function (evaledString) {
             var stringToSay = evaledString ? evaledString.toString().replace(/[\r\n]/g, '') : null;
 
-            clearTimeout(timer); //The worker responded in under 5 seconds,
-            // clear the timeout
-            worker.destroy(); //Don't leave him hanging
-            cluster.removeAllListeners();
+            clearTimeout(timer);
+            worker.destroy();
 
             if (!evaledString) {
                 client.say(channel, "null");

@@ -18,7 +18,7 @@ if (!data.channels) data.channels = {};
 if (!data.users) data.users = {};
 
 // Generate entries for each channel
-_.forEach(client.opt.channels, function (property, key) {
+_.forEach(config.irc.channels, function (property, key) {
     var propertyLower = property.toLowerCase();
     if (!data.channels[propertyLower]) data.channels[propertyLower] = {};
     if (!data.channels[propertyLower].users) data.channels[propertyLower].users = {};

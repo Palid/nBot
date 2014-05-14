@@ -17,6 +17,7 @@ client.options = {
     defaultLang: 'en',
     urlScrapeTitle: '↳ title: ',
     database: 'json',
+    root: 'yourNick',
     'deleteMe!': true
 };
 

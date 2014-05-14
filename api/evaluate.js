@@ -34,7 +34,7 @@ var method = function evaluate(options) {
         var timer = setTimeout(function () {
             cluster.removeAllListeners();
             worker.destroy();
-            client.say(channel, "null");
+            events.emit('apiResponse', channel, "null");
         }, 200);
 
     });

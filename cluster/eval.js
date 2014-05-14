@@ -4,14 +4,14 @@
 process.on('message', function clusterData(data) {
     data = data.trim();
 
-    var evalString = data.search('eval'),
-        evalFunc = data.search('eval\\(');
+    var evalString, evalFunc;
+    evalString = data.search('eval');
+    evalFunc = data.search('eval\\(');
 
-    console.log(evalString, evalFunc);
-
-    if (evalString !== -1 && evalFunc === -1) {
+    while (evalString !== -1 && evalFunc === -1) {
         data = data.replace('eval', 'eval()');
-        console.log(data);
+        evalString = data.search('eval');
+        evalFunc = data.search('eval\\(');
     }
 
     var vm = require('vm');

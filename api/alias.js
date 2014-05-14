@@ -1,6 +1,6 @@
 "use strict";
 var _ = require('lodash'),
-    watch = require('../events/watch.js'),
+    watch = require('../helpers/events.js'),
     hotLoad = require('../helpers/hotload.js'),
     config = hotLoad(__dirname, '../initialize/parseJSON.js');
 

@@ -1,6 +1,5 @@
 "use strict";
-var _ = require('lodash'),
-    client = require('../config/bot.js'),
+var events = require('../helpers/events.js'),
     oauth = require('../config/oAuth.js')['500px'],
     API500px = require('500px').API500px,
     api500px = new API500px(oauth.consumer_key);
@@ -26,9 +25,9 @@ var method = function fivehundred_px(options) {
                 url = photo.image_url,
                 width = photo.width,
                 height = photo.height;
-            client.say(channel, url);
+            events.emit('apiResponse', channel, url);
         } else {
-            return client.say(channel, 'Images not found.');
+            events.emit('apiResponse', channel, 'Images not found.');
         }
     });
 

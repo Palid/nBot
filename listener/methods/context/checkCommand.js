@@ -2,25 +2,22 @@
 var path = require('path'),
     _ = require('lodash'),
     rootDir = path.dirname(require.main.filename),
-    watch = require(rootDir + '/events/watch.js'),
+    events = require(rootDir + '/helpers/events.js'),
     client = require(rootDir + '/config/bot.js'),
     hotLoad = require(rootDir + '/helpers/hotload.js'),
     aliases = hotLoad(__dirname, rootDir + '/initialize/createAliasDict.js');
 
-watch.on('configChanged', function () {
+events.on('configChanged', function () {
     aliases = hotLoad(__dirname, rootDir + '/initialize/createAliasDict.js');
 });
 
 var RESPONSES = {
     async: function () {
-        // Do nothing, it's a fallback.
-        // It's bad.
-        // Terribad.
-        // ▄███▄░░▄███▄░░████▄░████▄░██▄░░▄██
-        // ▀█▄▀▀░██▀░▀██░██░██░██░██░░▀████▀░
-        // ▄▄▀█▄░██▄░▄██░████▀░████▀░░░░██░░░
-        // ▀███▀░░▀███▀░░██░██░██░██░░░░██░░░
-        return;
+        events.once('apiResponse', function (channel, message) {
+            console.log(channel);
+            console.log(message);
+            client.say(channel, message);
+        });
     },
     command: function (response) {
         var nickBool = !! response.nick,

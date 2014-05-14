@@ -1,6 +1,6 @@
 "use strict";
 var request = require('request'),
-    client = require('../config/bot.js');
+    events = require('../helpers/events.js');
 
 var method = function bible(options) {
     var channel = options.to,
@@ -13,13 +13,12 @@ var method = function bible(options) {
         };
 
     request(requestOptions.url, requestOptions, function (err, res, body) {
-        var response = body;
         message = body;
         if (err) {
             console.log(err);
             message = err;
         }
-        client.say(channel, message);
+        events.emit('apiResponse', channel, message);
     });
 
     return {

@@ -1,6 +1,6 @@
 "use strict";
 var request = require('request'),
-    client = require('../config/bot.js'),
+    events = require('../helpers/events.js'),
     url = "http://thecatapi.com/api/images/get",
     requestOptions = {
         method: 'HEAD'
@@ -13,9 +13,9 @@ var method = function catsApi(options) {
         if (err) {
             console.log(err);
             r.abort();
-            client.say(channel, "Something's wrong with CatAPI");
+            events.emit('apiResponse', channel, "Something's wrong with CatAPI");
         }
-        client.say(channel, response.request.uri.href);
+        events.emit('apiResponse', channel, response.request.uri.href);
         r.abort();
     });
 

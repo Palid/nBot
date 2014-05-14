@@ -1,7 +1,7 @@
 "use strict";
 var _ = require('lodash'),
     google = require('google'),
-    client = require('../config/bot.js');
+    events = require('../helpers/events.js');
 
 // Links amount to display
 // per search
@@ -30,7 +30,7 @@ function nodeJSSaysHelloToRetardedLibraries(data, channel) {
             if (_.isString(description)) {
                 searchResult += "\r\n" + description;
             }
-            client.say(channel, searchResult);
+            events.emit('apiResponse', channel, searchResult);
 
         }
 

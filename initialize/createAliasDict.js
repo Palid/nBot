@@ -2,7 +2,7 @@
 var _ = require('lodash'),
     methods = require('../api/'),
     hotLoad = require('../helpers/hotload.js'),
-    watch = require('../events/watch.js'),
+    watch = require('../helpers/events.js'),
     config = hotLoad(__dirname, './parseJSON.js');
 
 

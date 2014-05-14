@@ -1,7 +1,6 @@
 "use strict";
-var _ = require('lodash'),
-    cluster = require('cluster'),
-    client = require('../config/bot.js');
+var cluster = require('cluster'),
+    events = require('../helpers/events.js');
 
 cluster.setupMaster({
     exec: "cluster/eval.js",
@@ -24,9 +23,9 @@ var method = function evaluate(options) {
             worker.destroy();
 
             if (!evaledString) {
-                client.say(channel, "null");
+                events.emit('apiResponse', channel, "null");
             } else {
-                client.say(channel, stringToSay);
+                events.emit('apiResponse', channel, stringToSay);
             }
 
         });

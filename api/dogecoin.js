@@ -1,7 +1,6 @@
 "use strict";
-var _ = require('lodash'),
-    request = require('request'),
-    client = require('../config/bot.js');
+var request = require('request'),
+    events = require('../helpers/events.js');
 
 var message,
     requestOptions = {
@@ -17,8 +16,7 @@ var message,
 
 var method = function dogecoin(options) {
 
-    var channel = options.to,
-        data = options.message;
+    var channel = options.to;
 
     request(requestOptions.url, requestOptions, function (err, res, body) {
         var response = JSON.parse(body);
@@ -30,7 +28,7 @@ var method = function dogecoin(options) {
                 "low: " + response.markets.DOGE_BTC.marketstat['24h'].l,
                 "volume: " + response.markets.DOGE_BTC.marketstat['24h'].volume
             ];
-            client.say(channel, message.join(" "));
+            events.emit("apiResponse", channel, message.join(" "));
         }
     });
 

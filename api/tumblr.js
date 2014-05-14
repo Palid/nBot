@@ -1,6 +1,6 @@
 "use strict";
 var _ = require('lodash'),
-    client = require('../config/bot.js'),
+    events = require('../helpers/events.js'),
     oauth = require('../config/oAuth.js').tumblr,
     tumblr = require('tumblr'),
     tagged = new tumblr.Tagged(oauth);
@@ -29,7 +29,7 @@ var method = function tumblr(options) {
                         url = photoList.url,
                         width = photoList.width,
                         height = photoList.height;
-                    client.say(channel, url);
+                    events.emit('apiResponse', channel, url);
                 } else {
                     photos = response[iterations].photos;
                     photosNotExist = _.isUndefined(photos);
@@ -38,7 +38,7 @@ var method = function tumblr(options) {
             while (photosNotExist && iterations <= len);
 
         } else {
-            return client.say(channel, 'Images not found.');
+            return events.emit('apiResponse', channel, 'Images not found.');
         }
 
     });

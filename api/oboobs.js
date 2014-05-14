@@ -1,7 +1,7 @@
 "use strict";
 var _ = require('lodash'),
     request = require('request'),
-    client = require('../config/bot.js'),
+    events = require('../helpers/events.js'),
     defUrl = 'http://api.oboobs.ru/noise/',
     requestOptions = {
         method: 'GET'
@@ -17,7 +17,7 @@ var method = function oBoobsApi(options) {
         if (err) {
             console.log(err);
             r.abort();
-            client.say(channel, "Something's wrong with api.oboobs.ru.");
+            events.emit('apiResponse', channel, "Something's wrong with api.oboobs.ru.");
         }
 
         try {
@@ -27,13 +27,13 @@ var method = function oBoobsApi(options) {
                 while (id.length < 5) {
                     id = 0 + id;
                 }
-                client.say(channel, "http://media.oboobs.ru/noise/" +
+                events.emit('apiResponse', channel, "http://media.oboobs.ru/noise/" +
                     id +
                     ".jpg");
             });
         } catch (err) {
             console.log(err);
-            client.say(channel, "Couldn't parse received JSON.");
+            events.emit('apiResponse', channel, "Couldn't parse received JSON.");
         }
 
     });

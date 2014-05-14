@@ -16,6 +16,7 @@ client.options = {
     commandCharacter: ',',
     defaultLang: 'en',
     urlScrapeTitle: '↳ title: ',
+    root: 'yourNick',
     'deleteMe!': true
 };
 

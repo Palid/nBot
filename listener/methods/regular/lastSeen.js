@@ -2,7 +2,7 @@
 var path = require('path'),
     _ = require('lodash'),
     rootDir = path.dirname(require.main.filename),
-    db = require(rootDir + '/initialize/database/index.js');
+    db = require(rootDir + '/core/initialize/database/index.js');
 
 var method = function usersLog(from, to, message) {
     var data = db.get("channelUser", {

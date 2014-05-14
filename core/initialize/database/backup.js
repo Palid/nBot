@@ -2,12 +2,9 @@
 var _ = require('lodash'),
     fs = require('fs'),
     path = require('path'),
-    dir = path.resolve(__dirname, '../../database/db.json'),
+    dir = path.resolve(__dirname, '../../../database/db.json'),
     db = require('./db.js');
 
-function splitData(directory) {
-
-}
 
 // Save the base instantly
 fs.writeFile(dir, JSON.stringify(db, null, 4), function (err) {

@@ -2,8 +2,8 @@
 var fs = require('fs'),
     path = require('path'),
     _ = require('lodash'),
-    methods = require('../api/'),
-    configDir = path.resolve(__dirname, "../database/aliases.json"),
+    methods = require('../../api/'),
+    configDir = path.resolve(__dirname, "../../database/aliases.json"),
     config = require('./parseJSON.js');
 
 var method = function (data) {

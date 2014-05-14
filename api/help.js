@@ -2,11 +2,11 @@
 var _ = require('lodash'),
     client = require('../config/bot.js'),
     watch = require('../helpers/events.js'),
-    hotLoad = require('../helpers/hotload.js'),
-    config = hotLoad(__dirname, '../initialize/parseJSON.js');
+    hotLoad = require('node-hotload').hotLoad,
+    config = hotLoad(__dirname, '../core/initialize/parseJSON.js');
 
 watch.on('configChanged', function () {
-    config = hotLoad(__dirname, '../initialize/parseJSON.js');
+    config = hotLoad(__dirname, '../core/initialize/parseJSON.js');
 });
 
 var method = function help(options) {

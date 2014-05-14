@@ -3,12 +3,12 @@ var path = require('path'),
     _ = require('lodash'),
     rootDir = path.dirname(require.main.filename),
     events = require(rootDir + '/helpers/events.js'),
-    client = require(rootDir + '/config/bot.js'),
-    hotLoad = require(rootDir + '/helpers/hotload.js'),
-    aliases = hotLoad(__dirname, rootDir + '/initialize/createAliasDict.js');
+    client = require(rootDir + '/core/bot.js'),
+    hotLoad = require('node-hotload').hotLoad,
+    aliases = hotLoad(__dirname, rootDir + '/core/initialize/createAliasDict.js');
 
 events.on('configChanged', function () {
-    aliases = hotLoad(__dirname, rootDir + '/initialize/createAliasDict.js');
+    aliases = hotLoad(__dirname, rootDir + '/core/initialize/createAliasDict.js');
 });
 
 var RESPONSES = {

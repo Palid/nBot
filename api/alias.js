@@ -1,11 +1,11 @@
 "use strict";
 var _ = require('lodash'),
     events = require('../helpers/events.js'),
-    hotLoad = require('../helpers/hotload.js'),
-    config = hotLoad(__dirname, '../initialize/parseJSON.js');
+    hotLoad = require('node-hotload').hotLoad,
+    config = hotLoad(__dirname, '../core/initialize/parseJSON.js');
 
 events.on('configChanged', function () {
-    config = hotLoad(__dirname, '../initialize/parseJSON.js');
+    config = hotLoad(__dirname, '../core/initialize/parseJSON.js');
 });
 
 var method = function alias(options) {

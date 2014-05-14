@@ -1,5 +1,5 @@
 "use strict";
-var client = require('../config/bot.js'),
+var client = require('../core/bot.js'),
     logger = require('../helpers/log.js'),
     commandsRe = require('./commandsRegexp.js'),
     sayError = require('./sayError.js');

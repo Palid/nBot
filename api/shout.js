@@ -1,6 +1,5 @@
 "use strict";
-var _ = require('lodash'),
-    figlet = require('figlet'),
+var figlet = require('figlet'),
     events = require('../helpers/events.js');
 
 
@@ -17,7 +16,7 @@ var method = function shout(options) {
         if (data.length > 500) {
             events.emit('apiReponse', channel, "String is too long.");
         } else {
-            events.emit('apiResponse', channel, data);
+            events.emit('apiResponse', channel, data.split('/n'));
         }
     });
 

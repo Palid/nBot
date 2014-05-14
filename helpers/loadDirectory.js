@@ -1,7 +1,8 @@
 "use strict";
 var fs = require('fs'),
     path = require('path'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    events = require('./events.js');
 
 var RE = {
     js: {
@@ -55,6 +56,7 @@ function loadDirectory(dir, resolved, options) {
             }
         }
     }
+    if (options.event) events.emit(options.event, options.data);
     return options.data;
 }
 
@@ -71,7 +73,8 @@ function prepareFunction(destinationDir, required) {
         re: re,
         maxDepth: required.maxDepth,
         data: {},
-        iterator: 0
+        iterator: 0,
+        event: required.event
 
     });
 

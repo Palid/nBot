@@ -1,6 +1,11 @@
 "use strict";
 var _ = require('lodash'),
-    methods = require('./index.js');
+    events = require('../helpers/events.js'),
+    methods;
+
+events.once('apiLoaded', function (data) {
+    methods = data;
+});
 
 var method = function list(options) {
     var commands = "";

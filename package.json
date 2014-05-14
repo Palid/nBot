@@ -11,14 +11,17 @@
   "author": "Dariusz 'Palid' Niemczyk",
   "license": "ISC",
   "dependencies": {
-    "irc": "~0.3.6",
-    "lodash": "~2.4.1",
-    "google": "~0.3.2",
-    "request": "~2.34.0",
-    "figlet": "~1.0.8",
-    "tumblr": "^0.4.1",
     "500px": "^0.3.2",
-    "jsesc": "~0.4.3"
+    "figlet": "~1.0.8",
+    "google": "~0.3.2",
+    "irc": "~0.3.6",
+    "jsesc": "~0.4.3",
+    "lodash": "~2.4.1",
+    "mongoose": "^3.8.9",
+    "request": "~2.34.0",
+    "tingodb": "^0.2.1",
+    "tumblr": "^0.4.1",
+    "tungus": "0.0.2"
   },
   "devDependencies": {}
 }

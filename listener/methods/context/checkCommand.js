@@ -11,13 +11,21 @@ events.on('configChanged', function () {
     aliases = hotLoad(__dirname, rootDir + '/initialize/createAliasDict.js');
 });
 
+events.on('apiResponse', function (channel, message) {
+
+    if (_.isArray(message)) {
+        _.forEach(message, function (property) {
+            client.say(channel, property);
+        });
+    } else {
+        client.say(channel, message);
+    }
+
+});
+
 var RESPONSES = {
     async: function () {
-        events.once('apiResponse', function (channel, message) {
-            console.log(channel);
-            console.log(message);
-            client.say(channel, message);
-        });
+        return;
     },
     command: function (response) {
         var nickBool = !! response.nick,

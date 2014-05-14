@@ -21,16 +21,20 @@ var method = function oBoobsApi(options) {
         }
 
         try {
-            var parsed = JSON.parse(body);
+            var parsed = JSON.parse(body),
+                resp = [];
             _.forEach(parsed, function (property) {
                 var id = property.id.toString();
                 while (id.length < 5) {
                     id = 0 + id;
                 }
-                events.emit('apiResponse', channel, "http://media.oboobs.ru/noise/" +
+                resp.push(
+                    "http://media.oboobs.ru/noise/" +
                     id +
-                    ".jpg");
+                    ".jpg"
+                );
             });
+            events.emit('apiResponse', channel, resp);
         } catch (err) {
             console.log(err);
             events.emit('apiResponse', channel, "Couldn't parse received JSON.");

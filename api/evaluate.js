@@ -10,23 +10,15 @@ cluster.setupMaster({
 
 var method = function evaluate(options) {
 
-    var channel = options.to,
-        evaluation = options.message;
-
     //This will be fired when the forked process becomes online
     cluster.once("online", function (worker) {
 
         worker.once("message", function (evaledString) {
-            var stringToSay = evaledString ? evaledString.toString().replace(/[\r\n]/g, '') : null;
+            var stringToSay = evaledString.replace(/[\r\n]/g, '').trim();
 
             clearTimeout(timer);
             worker.destroy();
-
-            if (!evaledString) {
-                events.emit('apiResponse', channel, "null");
-            } else {
-                events.emit('apiResponse', channel, stringToSay);
-            }
+            events.emit('apiResponse', options.to, stringToSay);
 
         });
 
@@ -34,14 +26,14 @@ var method = function evaluate(options) {
         var timer = setTimeout(function () {
             cluster.removeAllListeners();
             worker.destroy();
-            events.emit('apiResponse', channel, "null");
-        }, 200);
+            events.emit('apiResponse', options.to, "Execution timed out.");
+        }, 2000);
 
     });
 
     var worker = cluster.fork();
 
-    worker.send(evaluation);
+    worker.send(options.message);
 
     return {
         type: "async"

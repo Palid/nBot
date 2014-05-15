@@ -26,6 +26,11 @@ module.exports = {
         "commandCharacter": ",",
         "defaultLang": "en",
         "urlScrapeTitle": "↳ title: ",
-        "root": "palid"
+        "root": "palid",
+        "database": {
+            "type": "tingodb",
+            "url": undefined
+        },
+        "deleteMe": true
     }
 };

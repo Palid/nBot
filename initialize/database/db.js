@@ -2,16 +2,19 @@
 var _ = require('lodash'),
     fs = require('fs'),
     path = require('path'),
-<<<<<<< Updated upstream:initialize/database/db.js
     loadDir = require('../../helpers/loadDirectory.js'),
     client = require('../../config/bot.js'),
     db = path.resolve(__dirname, '../../database/db.json'),
-=======
-    config = require('../../../config/bot.js'),
-    db = path.resolve(__dirname, '../../../database/db.json'),
->>>>>>> Stashed changes:core/initialize/database/db.js
     data;
 
+// TODO
+// Create this damn database.
+
+// var b = loadDir('../../database', {
+//     currentDir: __dirname,
+//     type: 'json',
+//     maxDepth: 2
+// });
 
 // Try to parse JSON
 try {
@@ -25,11 +28,7 @@ if (!data.channels) data.channels = {};
 if (!data.users) data.users = {};
 
 // Generate entries for each channel
-<<<<<<< Updated upstream:initialize/database/db.js
 _.forEach(client.opt.channels, function (property, key) {
-=======
-_.forEach(config.irc.channels, function (property) {
->>>>>>> Stashed changes:core/initialize/database/db.js
     var propertyLower = property.toLowerCase();
     if (!data.channels[propertyLower]) data.channels[propertyLower] = {};
     if (!data.channels[propertyLower].users) data.channels[propertyLower].users = {};

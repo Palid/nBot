@@ -15,9 +15,15 @@ process.on('message', function clusterData(data) {
     response = script.runInNewContext(ctx);
 
     if (_.isString(response)) {
-        process.send(response);
+        process.send(response.replace(/[\r\n]/g, '').trim());
     } else if (_.isFunction(response)) {
         process.send(response.toString());
+    } else if (_.isArray(response)) {
+        process.send(response.join(""));
+    } else if (_.isObject(response)) {
+        process.send(JSON.stringify(response));
+    } else if (_.isNaN(response)) {
+        process.send("NaN");
     } else if (!process) {
         process.send(false);
     }

@@ -14,11 +14,10 @@ var method = function evaluate(options) {
     cluster.once("online", function (worker) {
 
         worker.once("message", function (evaledString) {
-            var stringToSay = evaledString.replace(/[\r\n]/g, '').trim();
 
             clearTimeout(timer);
             worker.destroy();
-            events.emit('apiResponse', options.to, stringToSay);
+            events.emit('apiResponse', options.to, evaledString);
 
         });
 

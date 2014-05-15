@@ -9,8 +9,10 @@ var fs = require('fs'),
  * @param  {String} dir      Synchronically read directory
  * @param  {String} resolved Resolved path from which files will be required
  * @param  {Object} options  Options object
- * - {Regexp} type           Chosen files extension
- * - {Number} maxDepth       Maximum depth for recursive file loads
+ * - {Regexp} re            Regexp to match for files
+ * - {Number} maxDepth      Maximum depth for recursive file loads
+ * - {String} type          File type/extension
+ * - {Boolean} goDeeper      Defines if function should go to another nested dir
  * @return {Object}          Returns a dictionary of all required files.
  */
 function loadDirectory(dir, resolved, options) {
@@ -47,10 +49,14 @@ function loadDirectory(dir, resolved, options) {
 
 
 /**
- * [prepareFunction description]
- * @param  {[type]} destinationDir [description]
- * @param  {[type]} required       [description]
- * @return {[type]}                [description]
+ * prepareFunction prepares request for the directory loading.
+ * @param  {String}     destinationDir  Relative path to the directory to load
+ * @param  {Options}    required        Options object
+ * -       {String}     type            File extension to load
+ * -       {String}     currentDir      __dirname
+ * -       {Number}     maxDepth        Maximum nested depth to load from
+ * -       {String}     event           Event to emit after loading's finished
+ * @return {function}   Callbacks helper function, loadDirectory
  */
 function prepareFunction(destinationDir, required) {
     if (!required.type) throw "You didn't specify file type/extension!";

@@ -1,6 +1,5 @@
 "use strict";
-var _ = require('lodash'),
-    vm = require('vm');
+var vm = require('vm');
 
 var context = {
     math: Math
@@ -16,23 +15,7 @@ process.on('message', function clusterData(data) {
     try {
         script = vm.createScript(data, null, true);
         response = script.runInNewContext(ctx);
-
-        if (_.isString(response)) {
-            process.send(response.replace(/[\r\n]/g, '').trim());
-        } else if (_.isFunction(response)) {
-            process.send(response.toString());
-        } else if ((_.isArray(response))) {
-            process.send(response.join(""));
-        } else if (_.isNaN(response)) {
-            process.send("NaN");
-        } else if (!_.isFinite(response)) {
-            process.send("Infinity");
-        } else if (_.isNumber(response)) {
-            process.send(response.toString());
-        } else if (!process) {
-            process.send(false);
-        }
-
+        process.send(String(response).replace(/[\r\n]/g, '').trim());
     } catch (err) {
         console.log(err);
         process.send("Error: " + err.message);

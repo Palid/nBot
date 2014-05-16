@@ -21,6 +21,8 @@ process.on('message', function clusterData(data) {
             process.send(response.replace(/[\r\n]/g, '').trim());
         } else if (_.isFunction(response)) {
             process.send(response.toString());
+        } else if ((_.isArray(response))) {
+            process.send(response.join(""));
         } else if (_.isNaN(response)) {
             process.send("NaN");
         } else if (!process) {

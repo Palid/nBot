@@ -34,8 +34,8 @@ var _ = require('lodash'),
                 }
             });
         } else {
-            var match = CONTEXTDEPENDANT.command.re.test(message);
-            if (match) CONTEXTDEPENDANT.command.method(from, to, message);
+            var match = message.match(CONTEXTDEPENDANT.command.re);
+            if (match) CONTEXTDEPENDANT.command.method(from, to, message, match);
         }
     };
 module.exports = method;

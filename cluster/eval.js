@@ -25,11 +25,14 @@ process.on('message', function clusterData(data) {
             process.send(response.join(""));
         } else if (_.isNaN(response)) {
             process.send("NaN");
+        } else if (!_.isFinite(response)) {
+            process.send("Infinity");
+        } else if (_.isNumber(response)) {
+            process.send(response.toString());
         } else if (!process) {
             process.send(false);
         }
 
-        process.send(response);
     } catch (err) {
         console.log(err);
         process.send("Error: " + err.message);

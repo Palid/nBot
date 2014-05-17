@@ -4,6 +4,28 @@ var fs = require('fs'),
     _ = require('lodash'),
     events = require('./events.js');
 
+var walk = function (dir, done) {
+    var results = [];
+    fs.readdir(dir, function (err, list) {
+        if (err) return done(err);
+        var pending = list.length;
+        if (!pending) return done(null, results);
+        list.forEach(function (file) {
+            file = dir + '/' + file;
+            fs.stat(file, function (err, stat) {
+                if (stat && stat.isDirectory()) {
+                    walk(file, function (err, res) {
+                        results = results.concat(res);
+                        if (!--pending) done(null, results);
+                    });
+                } else {
+                    results.push(file);
+                    if (!--pending) done(null, results);
+                }
+            });
+        });
+    });
+};
 /**
  * loadDirectory loads whole directory as an object and exports it from module
  * @param  {String} dir      Synchronically read directory
@@ -16,6 +38,7 @@ var fs = require('fs'),
  * @return {Object}          Returns a dictionary of all required files.
  */
 function loadDirectory(dir, resolved, options) {
+
     for (var i = 0, len = dir.length; i < len; i++) {
         var file = dir[i],
             currentFileDirectory = path.resolve(resolved, file),
@@ -48,7 +71,7 @@ function loadDirectory(dir, resolved, options) {
             //         currentDepth: 1
             //     });
             // }
-            if (options.iterator < options.maxDepth) {
+            if (options.iterator <= options.maxDepth) {
                 loadDirectory(fs.readdirSync(currentFileDirectory), currentFileDirectory, {
                     re: options.re,
                     maxDepth: options.maxDepth,

@@ -1,13 +1,13 @@
 "use strict";
 var path = require('path'),
-    Engine = require('tingodb')(),
-    db = new Engine.Db('../../database/', {}),
     config = require('../../config/bot.js'),
-    mongoose, tungus, Schema;
+    mongoose;
 
 
 if (config.options.database.type === "tingodb") {
-    tungus = require('tungus');
+    var Engine = require('tingodb')(),
+        db = new Engine.Db('../../database/', {}),
+        tungus = require('tungus');
     mongoose = require('mongoose');
     mongoose.connect('tingodb://' + path.resolve(__dirname, '../database'));
 } else if (config.options.database.type === "mongodb") {
@@ -16,8 +16,6 @@ if (config.options.database.type === "tingodb") {
 } else {
     throw config.options.database.type + " database type is not supported.";
 }
-
-Schema = mongoose.Schema;
 
 
 console.log('Running mongoose version %s', mongoose.version);

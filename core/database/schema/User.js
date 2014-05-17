@@ -6,7 +6,8 @@ var mongoose = require('../init.js'),
 var user = new Schema({
     nick: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     preferences: {
         language: {
@@ -30,19 +31,23 @@ var user = new Schema({
         }
     },
     aliases: [{
-        alias: String,
+        alias: {
+            type: String
+            // unique: true
+        },
         addedBy: {
             type: String,
-            default: config.options.root
+            // default: config.options.root
         },
         date: {
             type: Date,
-            default: Date.now
+            // default: Date.now
         }
     }],
     seen: [{
         channel: String,
-        date: Date
+        date: Date,
+        message: String
     }],
     memo: [{
         from: String,
@@ -53,6 +58,14 @@ var user = new Schema({
         }
     }]
 });
+
+user.statics.upsert = function (query, update) {
+    this.findOneAndUpdate(query, update, {
+        upsert: true
+    }, function (err) {
+        if (err) console.log(err);
+    });
+};
 
 var Model = mongoose.model('User', user);
 

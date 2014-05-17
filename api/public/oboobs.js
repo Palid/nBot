@@ -1,7 +1,7 @@
 "use strict";
 var _ = require('lodash'),
     request = require('request'),
-    events = require('../helpers/events.js'),
+    events = require('../../helpers/events.js'),
     defUrl = 'http://api.oboobs.ru/noise/',
     requestOptions = {
         method: 'GET'
@@ -41,10 +41,6 @@ var method = function oBoobsApi(options) {
         }
 
     });
-
-    return {
-        type: "async"
-    };
 };
 
 var defaults = {

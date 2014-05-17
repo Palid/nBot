@@ -1,6 +1,6 @@
 "use strict";
 var cluster = require('cluster'),
-    events = require('../helpers/events.js');
+    events = require('../../helpers/events.js');
 
 cluster.setupMaster({
     exec: "cluster/eval.js",

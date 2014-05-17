@@ -1,6 +1,6 @@
 "use strict";
 var request = require('request'),
-    events = require('../helpers/events.js');
+    events = require('../../helpers/events.js');
 
 var message,
     requestOptions = {

@@ -1,8 +1,8 @@
 "use strict";
 var _ = require('lodash'),
-    db = require('../core/database/'),
-    events = require('../helpers/events.js'),
-    config = require('../config/bot.js');
+    db = require('../../core/database/'),
+    events = require('../../helpers/events.js'),
+    config = require('../../config/bot.js');
 
 var botNick = config.irc.nick.toLowerCase();
 

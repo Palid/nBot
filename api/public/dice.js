@@ -1,6 +1,6 @@
 "use strict";
 var _ = require('lodash'),
-    events = require('../helpers/events.js');
+    events = require('../../helpers/events.js');
 
 var method = function dice(options) {
 

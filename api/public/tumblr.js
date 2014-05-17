@@ -1,7 +1,7 @@
 "use strict";
 var _ = require('lodash'),
-    events = require('../helpers/events.js'),
-    oauth = require('../config/oAuth.js').tumblr,
+    events = require('../../helpers/events.js'),
+    oauth = require('../../config/oAuth.js').tumblr,
     tumblr = require('tumblr'),
     tagged = new tumblr.Tagged(oauth);
 
@@ -42,11 +42,6 @@ var method = function tumblr(options) {
         }
 
     });
-
-
-    return {
-        type: "async"
-    };
 };
 
 //

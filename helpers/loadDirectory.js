@@ -32,16 +32,38 @@ function loadDirectory(dir, resolved, options) {
                 }
             }
         } else {
+            // TODO
+            ////////////////////
+            // REAL MAXDEPTH. //
+            //////////////////////
+            // It's broken ATM. //
+            //////////////////////
+            // if (_.find(options.directories, function (dirName) {
+            //     return dirName === currentFileDirectory;
+            // })) {
+            //     options.directories.currentDepth++;
+            // } else {
+            //     options.directories.push({
+            //         directory: currentFileDirectory,
+            //         currentDepth: 1
+            //     });
+            // }
             if (options.iterator < options.maxDepth) {
                 loadDirectory(fs.readdirSync(currentFileDirectory), currentFileDirectory, {
                     re: options.re,
                     maxDepth: options.maxDepth,
                     goDeeper: true,
-                    data: options.data
+                    data: options.data,
+                    type: options.type
                 });
                 options.iterator++;
             }
         }
+    }
+    if (options.flat) {
+        _.forEach(options.data, function (property) {
+            options.data = _.merge(property);
+        });
     }
     if (options.event) events.emit(options.event, options.data);
     return options.data;
@@ -55,6 +77,7 @@ function loadDirectory(dir, resolved, options) {
  * -       {String}     type            File extension to load
  * -       {String}     currentDir      __dirname
  * -       {Number}     maxDepth        Maximum nested depth to load from
+ * -       {Boolean}    flat            Decides if the returned structure is flat
  * -       {String}     event           Event to emit after loading's finished
  * @return {function}   Callbacks helper function, loadDirectory
  */
@@ -72,10 +95,13 @@ function prepareFunction(destinationDir, required) {
         type: required.type,
         re: re,
         maxDepth: required.maxDepth,
+        flat: required.flat,
         data: {},
         iterator: 0,
         event: required.event
-
+        // TODO
+        // REAL MAXDEPTH
+        // directories: []
     });
 
 }

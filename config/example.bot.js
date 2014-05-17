@@ -29,6 +29,9 @@ module.exports = {
         root: "palid",
         database: {
             type: "tingodb",
+            // If the database is tingodb you can either specify absolute path
+            // to the database, or leave it undefined to create a database dir
+            // in bot's directory
             url: undefined
         },
         deleteMe: true

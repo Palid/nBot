@@ -17,7 +17,7 @@ var method = function evaluate(options) {
 
             clearTimeout(timer);
             worker.destroy();
-            events.emit('apiResponse', options.to, evaledString);
+            events.emit('apiSay', options.to, evaledString);
 
         });
 
@@ -25,7 +25,7 @@ var method = function evaluate(options) {
         var timer = setTimeout(function () {
             cluster.removeAllListeners();
             worker.destroy();
-            events.emit('apiResponse', options.to, "Execution timed out.");
+            events.emit('apiSay', options.to, "Execution timed out.");
         }, 2000);
 
     });

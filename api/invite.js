@@ -1,25 +1,15 @@
 "use strict";
-var _ = require('lodash');
+var events = require('../helpers/events.js');
+
 
 var method = function invite(options) {
-    var channel = options.from,
-        nick = options.to,
-        data = options.message;
 
-    if (_.isString(channel) && _.isString(nick)) {
-        return {
-            type: "command",
-            command: "INVITE",
-            to: nick,
-            nick: channel
-        };
-    } else {
-        return {
-            type: "say",
-            to: channel,
-            message: "Invite error."
-        };
-    }
+    events.emit('apiCommand', {
+        type: "command",
+        command: "INVITE",
+        to: options.to,
+        nick: options.message.trim().toLowerCase()
+    });
 };
 
 var defaults = {

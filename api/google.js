@@ -30,7 +30,7 @@ function nodeJSSaysHelloToRetardedLibraries(data, channel) {
             if (_.isString(description)) {
                 searchResult += "\r\n" + description;
             }
-            events.emit('apiResponse', channel, searchResult);
+            events.emit('apiSay', channel, searchResult);
 
         }
 

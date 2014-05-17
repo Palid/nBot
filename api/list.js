@@ -14,11 +14,8 @@ var method = function list(options) {
         commands = commands + key + " ";
     });
 
-    return {
-        type: "say",
-        to: options.to,
-        message: "Available commands: " + commands
-    };
+    events.emit('apiSay', options.to, "Available commands: " + commands);
+
 };
 
 var defaults = {

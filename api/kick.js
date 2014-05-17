@@ -1,5 +1,6 @@
 "use strict";
 var _ = require('lodash'),
+    events = require('../helpers/events.js'),
     client = require('../config/bot.js');
 
 var method = function kick(options) {
@@ -13,24 +14,22 @@ var method = function kick(options) {
             data.toLowerCase(),
         body = firstWhitespace > 0 ? data.substring(firstWhitespace + 1) : "";
 
-    console.log("Whitespace: %s, Nick to: %s, body to: %s", firstWhitespace, nick, body);
-
     if (nick === client.nick || body === client.nick) {
-        return {
+        events.emit('apiCommand', {
             type: "command",
             command: "KICK",
             to: channel,
             nick: commandGiver,
             message: "Why are you trying to kick " + client.nick + "? ;_;"
-        };
+        });
     } else {
-        return {
+        events.emit('apiCommand', {
             type: "command",
             command: "KICK",
             to: channel,
             nick: nick,
             message: body
-        };
+        });
     }
 };
 

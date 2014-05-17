@@ -28,7 +28,7 @@ var method = function dogecoin(options) {
                 "low: " + response.markets.DOGE_BTC.marketstat['24h'].l,
                 "volume: " + response.markets.DOGE_BTC.marketstat['24h'].volume
             ];
-            events.emit("apiResponse", channel, message.join(" "));
+            events.emit("apiSay", channel, message.join(" "));
         }
     });
 

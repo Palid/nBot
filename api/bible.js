@@ -18,7 +18,7 @@ var method = function bible(options) {
             console.log(err);
             message = err;
         }
-        events.emit('apiResponse', channel, message);
+        events.emit('apiSay', channel, message);
     });
 
     return {

@@ -25,9 +25,9 @@ var method = function fivehundred_px(options) {
                 url = photo.image_url,
                 width = photo.width,
                 height = photo.height;
-            events.emit('apiResponse', channel, url);
+            events.emit('apiSay', channel, url);
         } else {
-            events.emit('apiResponse', channel, 'Images not found.');
+            events.emit('apiSay', channel, 'Images not found.');
         }
     });
 

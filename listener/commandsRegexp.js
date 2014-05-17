@@ -1,7 +1,7 @@
 "use strict";
 var _ = require('lodash'),
     jsesc = require('jsesc'),
-    commandChar = require('../config/bot.js').options.commandCharacter,
+    config = require('../config/bot.js'),
     // Regular methods which will fire every received message
     REGULAR = {
         lastSeen: {
@@ -12,8 +12,8 @@ var _ = require('lodash'),
     // through the regex tests
     CONTEXTDEPENDANT = {
         command: {
-            re: new RegExp("^[" + jsesc(commandChar) +
-                "]{" + commandChar.length + "}"),
+            re: new RegExp("^[" + jsesc(config.options.commandCharacter) +
+                "]{" + config.options.commandCharacter.length + "}"),
             method: require('./methods/context/checkCommand.js')
         },
         urlTitle: {
@@ -22,17 +22,24 @@ var _ = require('lodash'),
         },
     },
     method = function regexStarter(from, to, message) {
-        if (_.indexOf(to, '#') !== -1) {
-            _.forEach(REGULAR, function (property) {
-                property.method(from, to, message);
-            });
-            _.forEach(CONTEXTDEPENDANT, function (property) {
-                var match = message.match(property.re);
-                if (match) {
-                    property.method(from, to, message, match);
-                }
-            });
-        } else {
+        var priv = true;
+        _.forEach(config.irc.channelPrefixes, function (property) {
+            console.log(to, property);
+            console.log(_.indexOf(to, property));
+            if (_.indexOf(to, property) !== -1) {
+                priv = false;
+                _.forEach(REGULAR, function (property) {
+                    property.method(from, to, message);
+                });
+                _.forEach(CONTEXTDEPENDANT, function (property) {
+                    var match = message.match(property.re);
+                    if (match) {
+                        property.method(from, to, message, match);
+                    }
+                });
+            }
+        });
+        if (priv) {
             var match = message.match(CONTEXTDEPENDANT.command.re);
             if (match) CONTEXTDEPENDANT.command.method(from, to, message, match);
         }

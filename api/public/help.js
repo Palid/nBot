@@ -1,12 +1,12 @@
 "use strict";
 var _ = require('lodash'),
-    config = require('../config/bot.js'),
-    events = require('../helpers/events.js'),
+    config = require('../../config/bot.js'),
+    events = require('../../helpers/events.js'),
     hotLoad = require('node-hotload').hotLoad,
-    config = hotLoad(__dirname, '../core/initialize/parseJSON.js');
+    config = hotLoad(__dirname, '../../core/initialize/parseJSON.js');
 
 events.on('configChanged', function () {
-    config = hotLoad(__dirname, '../core/initialize/parseJSON.js');
+    config = hotLoad(__dirname, '../../core/initialize/parseJSON.js');
 });
 
 var method = function help(options) {

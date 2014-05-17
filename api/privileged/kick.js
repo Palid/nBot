@@ -1,7 +1,7 @@
 "use strict";
 var _ = require('lodash'),
-    events = require('../helpers/events.js'),
-    client = require('../config/bot.js');
+    events = require('../../helpers/events.js'),
+    client = require('../../config/bot.js');
 
 var method = function kick(options) {
     var channel = options.to,

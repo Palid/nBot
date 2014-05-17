@@ -1,7 +1,7 @@
 "use strict";
 var crypto = require('crypto'),
     _ = require('lodash'),
-    events = require('../helpers/events.js');
+    events = require('../../helpers/events.js');
 
 
 

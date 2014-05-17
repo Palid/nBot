@@ -1,6 +1,6 @@
 "use strict";
 var figlet = require('figlet'),
-    events = require('../helpers/events.js');
+    events = require('../../helpers/events.js');
 
 
 
@@ -20,10 +20,6 @@ var method = function shout(options) {
             events.emit('apiSay', channel, data.split('/n'));
         }
     });
-
-    return {
-        type: "async"
-    };
 
 };
 

@@ -24,8 +24,6 @@ var _ = require('lodash'),
     method = function regexStarter(from, to, message) {
         var priv = true;
         _.forEach(config.irc.channelPrefixes, function (property) {
-            console.log(to, property);
-            console.log(_.indexOf(to, property));
             if (_.indexOf(to, property) !== -1) {
                 priv = false;
                 _.forEach(REGULAR, function (property) {

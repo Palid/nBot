@@ -7,7 +7,10 @@ var link = new Schema({
     channel: String,
     count: Number,
     lastPost: Date,
-    link: String,
+    link: {
+        type: String,
+        unique: true
+    },
     firstPost: {
         by: String,
         date: {

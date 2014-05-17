@@ -1,13 +1,8 @@
 "use strict";
+var events = require('../helpers/events.js');
 
 var method = function say(options) {
-    var channel = options.to,
-        data = options.message;
-    return {
-        type: "say",
-        to: channel,
-        message: data
-    };
+    events.emit('apiSay', options.to, options.message);
 };
 
 var defaults = {

@@ -11,38 +11,34 @@ events.on('configChanged', function () {
     aliases = hotLoad(__dirname, rootDir + '/core/initialize/createAliasDict.js');
 });
 
-var RESPONSES = {
-    async: function () {
-        events.once('apiResponse', function (channel, message) {
-            if (_.isArray(message)) {
-                _.forEach(message, function (property) {
-                    client.say(channel, property);
-                });
-            } else {
-                client.say(channel, message);
-            }
-
+events.on('apiSay', function (channel, message) {
+    if (_.isArray(message)) {
+        _.forEach(message, function (property) {
+            client.say(channel, property);
         });
-    },
-    command: function (response) {
-        var nickBool = !! response.nick,
-            messageBool = !! response.message;
-        if (nickBool && messageBool) {
-            return client.send(response.command, response.to, response.nick, response.message);
-        } else if (messageBool) {
-            return client.send(response.command, response.to, response.message);
+    } else {
+        if (message.length > 300) {
+            client.say(channel, "I don't want to flood the channel.");
         } else {
-            return client.send(response.command, response.to, response.nick);
+            client.say(channel, message);
         }
-    },
-    say: function (response) {
-        if (response.message.length > 300) {
-            return client.say(response.to, "Response too long.");
-        } else {
-            return client.say(response.to, response.message);
-        }
+
     }
-};
+
+});
+
+events.on('apiCommand', function (response) {
+    var nickBool = !! response.nick,
+        messageBool = !! response.message;
+    if (nickBool && messageBool) {
+        return client.send(response.command, response.to, response.nick, response.message);
+    } else if (messageBool) {
+        return client.send(response.command, response.to, response.message);
+    } else {
+        return client.send(response.command, response.to, response.nick);
+    }
+});
+
 
 /**
  * [activateCommand description]
@@ -89,8 +85,6 @@ var method = function activateCommand(from, to, message, match) {
                     to: to
                 });
             }
-
-            RESPONSES[response.type](response);
 
         } catch (err) {
             console.log(err);

@@ -1,5 +1,6 @@
 "use strict";
-var _ = require('lodash');
+var _ = require('lodash'),
+    events = require('../helpers/events.js');
 
 var method = function dice(options) {
 
@@ -23,18 +24,20 @@ var method = function dice(options) {
             resultsList += x.toString() + ", ";
         }
 
-        return {
-            type: "say",
-            to: channel,
-            message: "Throw results for " + data + ": " + resultsList + "with final result of: " + finalResult
-        };
+        events.emit('apiSay', channel, [
+            "Throw results for",
+            data,
+            ":",
+            resultsList,
+            "with final result of:",
+            finalResult
+        ].join(" "));
 
     } else {
-        return {
-            type: "say",
-            to: channel,
-            message: "Throw result is too long or is not a number. Example of valid dice throw: 2d10"
-        };
+        events.emit('apiSay',
+            channel,
+            "Throw result is too long or is not a number. Example of valid dice throw: 2d10"
+        );
     }
 
 };

@@ -13,9 +13,9 @@ var method = function catsApi(options) {
         if (err) {
             console.log(err);
             r.abort();
-            events.emit('apiResponse', channel, "Something's wrong with CatAPI");
+            events.emit('apiSay', channel, "Something's wrong with CatAPI");
         }
-        events.emit('apiResponse', channel, response.request.uri.href);
+        events.emit('apiSay', channel, response.request.uri.href);
         r.abort();
     });
 

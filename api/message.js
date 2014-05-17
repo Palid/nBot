@@ -1,28 +1,24 @@
 "use strict";
-var _ = require('lodash');
+var _ = require('lodash'),
+    events = require('../helpers/events.js'),
+    config = require('../config/bot.js');
+
+var len = config.irc.channelPrefixes.length;
 
 var method = function message(options) {
-    var channel = options.to,
-        data = options.message;
 
-    if (data.substring(0, 1) !== '#') {
+    _.forEach(config.irc.channelPrefixes, function (property, index) {
+        if (options.message.substring(0, 1) === property) {
+            events.emit('apiSay', options.to, "It's not a user.");
 
-        var firstWhitespace = _.indexOf(data, ' '),
-            nick = data.substring(0, firstWhitespace),
-            body = data.substring(firstWhitespace + 1);
+        } else if (index === len - 1) {
+            var firstWhitespace = _.indexOf(options.message, ' '),
+                nick = options.message.substring(0, firstWhitespace),
+                body = options.message.substring(firstWhitespace + 1);
+            events.emit('apiSay', nick, body);
+        }
+    });
 
-        return {
-            type: "say",
-            to: nick,
-            message: body
-        };
-
-    }
-    return {
-        type: "say",
-        to: channel,
-        message: "Couldn't send text message."
-    };
 };
 
 var defaults = {

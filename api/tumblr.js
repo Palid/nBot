@@ -29,7 +29,7 @@ var method = function tumblr(options) {
                         url = photoList.url,
                         width = photoList.width,
                         height = photoList.height;
-                    events.emit('apiResponse', channel, url);
+                    events.emit('apiSay', channel, url);
                 } else {
                     photos = response[iterations].photos;
                     photosNotExist = _.isUndefined(photos);
@@ -38,7 +38,7 @@ var method = function tumblr(options) {
             while (photosNotExist && iterations <= len);
 
         } else {
-            return events.emit('apiResponse', channel, 'Images not found.');
+            return events.emit('apiSay', channel, 'Images not found.');
         }
 
     });

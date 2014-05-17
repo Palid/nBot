@@ -1,6 +1,8 @@
 "use strict";
 var crypto = require('crypto'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    events = require('../helpers/events.js');
+
 
 
 function encrypt(word) {
@@ -16,7 +18,7 @@ var method = function pick(options) {
     var channel = options.to,
         data = options.message,
         arr = [],
-        arr2 = [],
+        sorted = [],
         string = data.split(" ");
 
 
@@ -25,18 +27,14 @@ var method = function pick(options) {
             index = _.sortedIndex(arr, encrypted);
         if (index >= 1) {
             arr.push(encrypted);
-            arr2.push(item);
+            sorted.push(item);
         } else {
             arr.unshift(encrypted);
-            arr2.unshift(item);
+            sorted.unshift(item);
         }
     });
 
-    return {
-        type: "say",
-        to: channel,
-        message: arr2.join(" > ")
-    };
+    events.emit('apiSay', channel, sorted.join(" > "));
 
 };
 

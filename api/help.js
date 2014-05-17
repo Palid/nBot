@@ -1,11 +1,11 @@
 "use strict";
 var _ = require('lodash'),
-    client = require('../config/bot.js'),
-    watch = require('../helpers/events.js'),
+    config = require('../config/bot.js'),
+    events = require('../helpers/events.js'),
     hotLoad = require('node-hotload').hotLoad,
     config = hotLoad(__dirname, '../core/initialize/parseJSON.js');
 
-watch.on('configChanged', function () {
+events.on('configChanged', function () {
     config = hotLoad(__dirname, '../core/initialize/parseJSON.js');
 });
 
@@ -19,17 +19,13 @@ var method = function help(options) {
         firstWhitespace = _.indexOf(data, ' ');
         command = (firstWhitespace > 0) ? data.substring(0, firstWhitespace) : data;
         getLang = data.substring(firstWhitespace + 1);
-        lang = (firstWhitespace > 0) ? getLang : client.options.defaultLang;
+        lang = (firstWhitespace > 0) ? getLang : config.options.defaultLang;
         response = (!_.isUndefined(config[command])) ? config[command].description[lang] :
             "Couldn't find " + lang + " description for " + command;
     } else {
-        response = config.help.description[client.options.defaultLang];
+        response = config.help.description[config.options.defaultLang];
     }
-    return {
-        type: "say",
-        to: channel,
-        message: response
-    };
+    events.emit('apiSay', channel, response);
 
 };
 

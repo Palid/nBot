@@ -59,14 +59,6 @@ var user = new Schema({
     }]
 });
 
-user.statics.upsert = function (query, update) {
-    this.findOneAndUpdate(query, update, {
-        upsert: true
-    }, function (err) {
-        if (err) console.log(err);
-    });
-};
-
 var Model = mongoose.model('User', user);
 
 module.exports = Model;

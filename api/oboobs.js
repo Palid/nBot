@@ -17,7 +17,7 @@ var method = function oBoobsApi(options) {
         if (err) {
             console.log(err);
             r.abort();
-            events.emit('apiResponse', channel, "Something's wrong with api.oboobs.ru.");
+            events.emit('apiSay', channel, "Something's wrong with api.oboobs.ru.");
         }
 
         try {
@@ -34,10 +34,10 @@ var method = function oBoobsApi(options) {
                     ".jpg"
                 );
             });
-            events.emit('apiResponse', channel, resp);
+            events.emit('apiSay', channel, resp);
         } catch (err) {
             console.log(err);
-            events.emit('apiResponse', channel, "Couldn't parse received JSON.");
+            events.emit('apiSay', channel, "Couldn't parse received JSON.");
         }
 
     });

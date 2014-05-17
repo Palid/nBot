@@ -11,13 +11,13 @@ var method = function shout(options) {
     figlet(data, function (err, data) {
         if (err) {
             console.dir(err);
-            events.emit('apiReponse', channel, "Error: " + err.message);
+            events.emit('apiSay', channel, "Error: " + err.message);
         }
         console.log(data);
         if (data.length > 500) {
-            events.emit('apiResponse', channel, "String is too long.");
+            events.emit('apiSay', channel, "String is too long.");
         } else {
-            events.emit('apiResponse', channel, data.split('/n'));
+            events.emit('apiSay', channel, data.split('/n'));
         }
     });
 

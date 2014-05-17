@@ -1,14 +1,14 @@
 "use strict";
+var events = require('../helpers/events.js');
+
 
 var method = function topic(options) {
-    var channel = options.to,
-        data = options.message;
-    return {
+    events.emit('apiCommand', {
         type: "command",
         command: "TOPIC",
-        to: channel,
-        message: data
-    };
+        to: options.to,
+        message: options.message
+    });
 };
 
 var defaults = {

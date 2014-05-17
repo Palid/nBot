@@ -1,9 +1,13 @@
+"use strict";
 var mongoose = require('../init.js'),
     config = require('../../../config/bot.js'),
     Schema = mongoose.Schema;
 
 var user = new Schema({
-    nick: String,
+    nick: {
+        type: String,
+        required: true
+    },
     preferences: {
         language: {
             type: String,
@@ -11,8 +15,15 @@ var user = new Schema({
         },
     },
     permissions: {
-        group: String,
-        level: Number,
+        group: {
+            type: String,
+            required: true
+        },
+        level: {
+            default: 0,
+            type: Number,
+            required: true
+        },
         api: {
             command: String,
             level: Number
@@ -43,4 +54,6 @@ var user = new Schema({
     }]
 });
 
-module.exports = mongoose.model('User', user);
+var Model = mongoose.model('User', user);
+
+module.exports = Model;

@@ -4,6 +4,6 @@ var loadDir = require('../../helpers/loadDirectory.js');
 module.exports = loadDir('./schema', {
     currentDir: __dirname,
     type: '.js',
-    maxDepth: 0,
+    recursive: false,
     event: 'schemaLoaded'
 });

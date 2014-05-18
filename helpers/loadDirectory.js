@@ -4,32 +4,10 @@ var fs = require('fs'),
     _ = require('lodash'),
     events = require('./events.js');
 
-var walk = function (dir, done) {
-    var results = [];
-    fs.readdir(dir, function (err, list) {
-        if (err) return done(err);
-        var pending = list.length;
-        if (!pending) return done(null, results);
-        list.forEach(function (file) {
-            file = dir + '/' + file;
-            fs.stat(file, function (err, stat) {
-                if (stat && stat.isDirectory()) {
-                    walk(file, function (err, res) {
-                        results = results.concat(res);
-                        if (!--pending) done(null, results);
-                    });
-                } else {
-                    results.push(file);
-                    if (!--pending) done(null, results);
-                }
-            });
-        });
-    });
-};
 /**
  * loadDirectory loads whole directory as an object and exports it from module
- * @param  {String} dir      Synchronically read directory
- * @param  {String} resolved Resolved path from which files will be required
+ * @param  {String} fileList      List of all files(and directories) from current dir
+ * @param  {String} dir Resolved path from which files will be required
  * @param  {Object} options  Options object
  * - {Regexp} re            Regexp to match for files
  * - {Number} maxDepth      Maximum depth for recursive file loads
@@ -37,59 +15,33 @@ var walk = function (dir, done) {
  * - {Boolean} goDeeper      Defines if function should go to another nested dir
  * @return {Object}          Returns a dictionary of all required files.
  */
-function loadDirectory(dir, resolved, options) {
+function loadDirectory(fileList, dir, options) {
+    var pending = fileList.length;
 
-    for (var i = 0, len = dir.length; i < len; i++) {
-        var file = dir[i],
-            currentFileDirectory = path.resolve(resolved, file),
-            isDir = fs.lstatSync(currentFileDirectory).isDirectory();
-        if (!isDir) {
+    _.forEach(fileList, function (file) {
+        var fileDir = dir + '/' + file;
+        var stat = fs.lstatSync(fileDir);
+        if (stat && stat.isDirectory() && options.recursive) {
+            loadDirectory(fs.readdirSync(fileDir), fileDir, options);
+        } else {
             if (!_.isNull(file.match(options.re)) && file !== 'index.js' && file !== "package.json") {
                 var name = file.replace(options.type, '');
-                if (options.goDeeper) {
-                    var deepDir = path.basename(resolved);
-                    if (!_.isObject(options.data[deepDir])) options.data[deepDir] = {};
-                    options.data[deepDir][name] = require(currentFileDirectory);
-                } else {
-                    options.data[name] = require(currentFileDirectory);
-                }
-            }
-        } else {
-            // TODO
-            ////////////////////
-            // REAL MAXDEPTH. //
-            //////////////////////
-            // It's broken ATM. //
-            //////////////////////
-            // if (_.find(options.directories, function (dirName) {
-            //     return dirName === currentFileDirectory;
-            // })) {
-            //     options.directories.currentDepth++;
-            // } else {
-            //     options.directories.push({
-            //         directory: currentFileDirectory,
-            //         currentDepth: 1
-            //     });
-            // }
-            if (options.iterator <= options.maxDepth) {
-                loadDirectory(fs.readdirSync(currentFileDirectory), currentFileDirectory, {
-                    re: options.re,
-                    maxDepth: options.maxDepth,
-                    goDeeper: true,
-                    data: options.data,
-                    type: options.type
+                options.results.push({
+                    directory: fileDir,
+                    name: name
                 });
-                options.iterator++;
             }
         }
-    }
-    if (options.flat) {
-        _.forEach(options.data, function (property) {
-            options.data = _.merge(property);
+    });
+
+    if (options.results.length >= pending) {
+        var resultsMap = {};
+        _.forEach(options.results, function (property) {
+            resultsMap[property.name] = require(property.directory);
         });
+        if (options.event) events.emit(options.event, resultsMap);
+        return resultsMap;
     }
-    if (options.event) events.emit(options.event, options.data);
-    return options.data;
 }
 
 
@@ -111,20 +63,15 @@ function prepareFunction(destinationDir, required) {
     }
 
     var re = new RegExp(".+" + [required.type], "g"),
-        resolved = path.resolve(required.currentDir, destinationDir),
-        dir = fs.readdirSync(resolved);
+        dir = path.resolve(required.currentDir, destinationDir),
+        fileList = fs.readdirSync(dir);
 
-    return loadDirectory(dir, resolved, {
+    return loadDirectory(fileList, dir, {
         type: required.type,
+        recursive: required.recursive,
+        event: required.event,
         re: re,
-        maxDepth: required.maxDepth,
-        flat: required.flat,
-        data: {},
-        iterator: 0,
-        event: required.event
-        // TODO
-        // REAL MAXDEPTH
-        // directories: []
+        results: [],
     });
 
 }

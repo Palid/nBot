@@ -17,7 +17,7 @@ var _ = require('lodash'),
             method: require('./methods/context/checkCommand.js')
         },
         urlTitle: {
-            re: new RegExp(/[-a-zA-Z0-9:_\+.~#?&//=]{2,256}\.[^@\ ][a-z]{2,12}\b(\/[-a-zA-Z0-9:%_\+.~#?&//=]*)?/i),
+            re: new RegExp(/[-a-zA-Z0-9:_\+.~#?&//=]{1,256}\.[^@\ ][a-z]{1,12}\b(\/[-a-zA-Z0-9:%_\+.~#?&//=]*)?/i),
             method: require('./methods/context/urlScrape.js')
         },
     },
@@ -28,7 +28,6 @@ var _ = require('lodash'),
             });
             _.forEach(CONTEXTDEPENDANT, function (property) {
                 var match = message.match(property.re);
-                console.log(match);
                 if (match) {
                     property.method(from, to, message, match);
                 }

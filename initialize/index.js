@@ -5,6 +5,15 @@ var makeDirs = require('../helpers/makeDirs.js');
  * That's the main reason why things can't really be automatic.
  */
 
+// Create log directories
+makeDirs({
+    logs: 'logs',
+    users: 'logs/users',
+    urls: 'logs/urls',
+    channels: 'logs/channels'
+});
+
+// Create database directories if DB type is "JSON"
 makeDirs({
     database: 'database',
     users: 'database/users',

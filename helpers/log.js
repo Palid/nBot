@@ -1,15 +1,7 @@
 "use strict";
 var _ = require('lodash'),
     fs = require('fs'),
-    path = require('path'),
-    makeDirs = require('../helpers/makeDirs.js');
-
-makeDirs({
-    logs: 'logs',
-    users: 'logs/users',
-    urls: 'logs/urls',
-    channels: 'logs/channels'
-});
+    path = require('path');
 
 var method = function (options) {
 

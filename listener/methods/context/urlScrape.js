@@ -3,6 +3,7 @@ var path = require('path'),
     _ = require('lodash'),
     request = require('request'),
     rootDir = path.dirname(require.main.filename),
+    logger = require(rootDir + '/helpers/log.js'),
     client = require(rootDir + '/config/bot.js'),
     db = require(rootDir + '/initialize/database/index.js'),
     scrapeTitle = client.options.urlScrapeTitle,
@@ -22,9 +23,16 @@ function errors(err, channel) {
 
 function getTitle(channel, str) {
     if (str.replace(/\s/, '').length > 0) {
-        client.say(channel, scrapeTitle + (str = (str.length <= 80) ?
-            str :
-            (str.substr(0, (80 - titleStringLen - 3))) + '...'));
+        logger({
+            timeStamp: true,
+            fileName: 'urls/' + channel,
+            data: str + '\r\n'
+        });
+        client.say(channel, scrapeTitle +
+            (str = (str.length <= 80) ?
+                str :
+                (str.substr(0, (80 - titleStringLen - 3))) + '...')
+        );
     } else {
         errors(null, channel);
     }

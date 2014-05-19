@@ -16,14 +16,14 @@ client.addListener('message', function (from, to, message) {
     if (nick === toLower) {
         logger({
             timeStamp: true,
-            fileName: fromLower,
+            fileName: 'users/' + fromLower,
             data: '<' + fromLower + '> ' + message + '\r\n'
         });
         commandsRe(toLower, fromLower, message);
     } else {
         logger({
             timeStamp: true,
-            fileName: toLower,
+            fileName: 'channels/' + toLower,
             data: '<' + fromLower + '> ' + message + '\r\n'
         });
         commandsRe(fromLower, toLower, message);

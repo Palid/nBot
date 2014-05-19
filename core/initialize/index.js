@@ -9,9 +9,9 @@ var makeDirs = require('../../helpers/makeDirs.js');
 
 makeDirs({
     database: 'database',
-    users: 'database/users',
-    urls: 'database/urls',
-    channels: 'database/channels'
+    // users: 'database/users',
+    // urls: 'database/urls',
+    // channels: 'database/channels'
 });
 
 console.info("Initializing database");

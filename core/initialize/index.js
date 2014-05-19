@@ -7,20 +7,14 @@ var makeDirs = require('../../helpers/makeDirs.js');
  * That's the main reason why things can't really be automatic.
  */
 
-// Create log directories
+// Create directories
 makeDirs({
     logs: 'logs',
     users: 'logs/users',
     urls: 'logs/urls',
-    channels: 'logs/channels'
+    channels: 'logs/channels',
+	database: 'database
 });
-
-// Create database directories if DB type is "JSON"
-makeDirs({
-    database: 'database'
-});
-
-
 
 console.info("Initializing database");
 require('./database/backup.js');

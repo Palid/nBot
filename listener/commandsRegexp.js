@@ -17,8 +17,7 @@ var _ = require('lodash'),
             method: require('./methods/context/checkCommand.js')
         },
         urlTitle: {
-            re: new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/),
-            // re: new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})*\/?/),
+            re: new RegExp(/[-a-zA-Z0-9:_\+.~#?&//=]{2,256}\.[^@\ ][a-z]{2,12}\b(\/[-a-zA-Z0-9:%_\+.~#?&//=]*)?/ig),
             method: require('./methods/context/urlScrape.js')
         },
     },

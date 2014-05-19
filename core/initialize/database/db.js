@@ -2,8 +2,8 @@
 var _ = require('lodash'),
     fs = require('fs'),
     path = require('path'),
-    client = require('../../config/bot.js'),
-    db = path.resolve(__dirname, '../../database/db.json'),
+    config = require('../../../config/bot.js'),
+    db = path.resolve(__dirname, '../../../database/db.json'),
     data;
 
 // Try to parse JSON

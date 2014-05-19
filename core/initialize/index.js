@@ -13,7 +13,7 @@ makeDirs({
     users: 'logs/users',
     urls: 'logs/urls',
     channels: 'logs/channels',
-	database: 'database
+    database: 'database'
 });
 
 console.info("Initializing database");

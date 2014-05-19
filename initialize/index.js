@@ -15,11 +15,10 @@ makeDirs({
 
 // Create database directories if DB type is "JSON"
 makeDirs({
-    database: 'database',
-    users: 'database/users',
-    urls: 'database/urls',
-    channels: 'database/channels'
+    database: 'database'
 });
+
+
 
 console.info("Initializing database");
 require('./database/backup.js');

@@ -2,19 +2,9 @@
 var _ = require('lodash'),
     fs = require('fs'),
     path = require('path'),
-    loadDir = require('../../helpers/loadDirectory.js'),
     client = require('../../config/bot.js'),
     db = path.resolve(__dirname, '../../database/db.json'),
     data;
-
-// TODO
-// Create this damn database.
-
-// var b = loadDir('../../database', {
-//     currentDir: __dirname,
-//     type: 'json',
-//     maxDepth: 2
-// });
 
 // Try to parse JSON
 try {

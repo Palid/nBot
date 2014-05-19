@@ -1,28 +1,27 @@
 {
-  "name": "noBot",
-  "version": "0.1.0",
-  "description": "node.js IRC bot using IRC library",
-  "main": "bot.js",
-  "scripts": {},
-  "repository": {
-    "type": "git",
-    "url": "ssh://git@bitbucket.org/palid/nobot.git"
-  },
-  "author": "Dariusz 'Palid' Niemczyk",
-  "license": "ISC",
-  "dependencies": {
-    "500px": "^0.3.2",
-    "figlet": "~1.0.8",
-    "google": "~0.3.2",
-    "irc": "~0.3.6",
-    "jsesc": "~0.4.3",
-    "lodash": "~2.4.1",
-    "mongoose": "^3.8.9",
-    "node-hotload": "0.0.1",
-    "request": "~2.34.0",
-    "tingodb": "^0.2.1",
-    "tumblr": "^0.4.1",
-    "tungus": "0.0.2"
-  },
-  "devDependencies": {}
+    "name": "nBot",
+    "version": "0.2.5",
+    "description": "node.js IRC bot",
+    "main": "bot.js",
+    "scripts": {},
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Palid/nBot.git"
+    },
+    "author": "Dariusz 'Palid' Niemczyk",
+    "license": "ISC",
+    "dependencies": {
+        "500px": "^0.3.2",
+        "figlet": "~1.0.8",
+        "google": "~0.3.2",
+        "irc": "~0.3.6",
+        "jsesc": "~0.4.3",
+        "lodash": "~2.4.1",
+        "mongoose": "^3.8.9",
+        "node-hotload": "0.0.1",
+        "request": "~2.34.0",
+        "tingodb": "^0.2.1",
+        "tumblr": "^0.4.1",
+        "tungus": "0.0.2"
+    }
 }

@@ -1,29 +1,18 @@
 "use strict";
+var events = require('../../helpers/events.js');
 
+/**
+ * [method Your New API Function]
+ * @param  {Object} options Options object always returned on API call
+ * -       {String} to      Channel or user to which the API should respond
+ * -       {String} from    User who made the API call
+ * -       {String} message Parsed message without the command
+ * @return {Emitter}        Returns an event when function's finished for parsing
+ */
 var method = function nameYourFunctionForDebugging(options) {
-    var to = options.to,
-        message = options.message,
-        from = options.from;
 
-    //Choose one depending on command's type
-    /*
-    return {
-        type: "command",
-        command: command,
-        to: to,
-        nick: from,
-        message: message
-    }
-    ||  return {
-        type: "say",
-        to: to,
-        nick: from,
-        message: message
-    }
-    || return {
-        type: "async"
-    };
-    */
+    events.emit("apiSay", options.to, options.message);
+    // events.emit("apiCommand", command, options.to, options.from, options.message);
 };
 
 //

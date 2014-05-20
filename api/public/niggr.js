@@ -1,6 +1,6 @@
 "use strict";
 var request = require('request'),
-    events = require('../helpers/events.js');
+    events = require('../../helpers/events.js');
 
 var requestOptions = {
     method: 'GET'
@@ -9,13 +9,11 @@ var requestOptions = {
 var method = function niggrUrlShortener(options) {
     var url = 'http://nig.gr/src/web/api/' + options.message.trim();
 
-    console.log(url);
-
     request(url, requestOptions, function (err, res, body) {
         var shortened = 'http://nig.gr/' + body;
         if (err) {
             console.log(err);
-            events.emit("apiSay", options.to, err);
+            events.emit("apiSay", options.to, "Something's wrong with nig.gr");
         } else {
             events.emit("apiSay", options.to, shortened);
         }

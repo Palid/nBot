@@ -6,4 +6,4 @@ module.exports = loadDir('./schema', {
     type: '.js',
     recursive: false,
     event: 'schemaLoaded'
-});
+});;

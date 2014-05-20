@@ -48,6 +48,4 @@ var method = function logLastActivity(from, to, message) {
     });
 };
 
-
-
 module.exports = method;

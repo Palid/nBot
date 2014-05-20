@@ -1,5 +1,5 @@
 "use strict";
-var mongoose = require('../init.js'),
+var mongoose = require('../config.js'),
     Schema = mongoose.Schema;
 
 

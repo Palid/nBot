@@ -1,7 +1,6 @@
 "use strict";
 var makeDirs = require('../../helpers/makeDirs.js');
 
-
 /**
  * Requires order is really important here.
  * That's the main reason why things can't really be automatic.
@@ -15,6 +14,9 @@ makeDirs({
     channels: 'logs/channels',
     database: 'database'
 });
+
+console.info("Initializing database documents");
+require('../database/init.js');
 
 console.info("Initializing database");
 require('./database/backup.js');

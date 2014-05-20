@@ -1,6 +1,5 @@
 "use strict";
-var mongoose = require('../init.js'),
-    config = require('../../../config/bot.js'),
+var mongoose = require('../config.js'),
     Schema = mongoose.Schema;
 
 var user = new Schema({
@@ -18,12 +17,13 @@ var user = new Schema({
     permissions: {
         group: {
             type: String,
-            required: true
+            required: true,
+            default: "guest"
         },
         level: {
-            default: 0,
             type: Number,
-            required: true
+            required: true,
+            default: 0
         },
         api: {
             command: String,

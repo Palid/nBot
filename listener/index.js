@@ -1,8 +1,15 @@
 "use strict";
 var client = require('../core/bot.js'),
     logger = require('../helpers/log.js'),
-    commandsRe = require('./commandsRegexp.js'),
-    sayError = require('./sayError.js');
+    commandsRe = require('./commandsRegexp.js');
+
+
+function sayError(message) {
+    var length = message.args.length;
+    if (length === 4) {
+        return client.say(message.args[2], message.args[1] + ' ' + message.args[length - 1]);
+    }
+}
 
 // from = messaging user
 // to = channel OR bot

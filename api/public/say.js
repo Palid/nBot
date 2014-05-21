@@ -1,5 +1,5 @@
 "use strict";
-var events = require('../../helpers/events.js');
+var events = require('../../core/events.js');
 
 var method = function say(options) {
     events.emit('apiSay', options.to, options.message);

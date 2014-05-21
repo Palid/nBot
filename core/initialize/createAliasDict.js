@@ -1,14 +1,8 @@
 "use strict";
 var _ = require('lodash'),
     methods = require('../../api/'),
-    hotLoad = require('node-hotload').hotLoad,
-    watch = require('../../helpers/events.js'),
-    config = hotLoad(__dirname, './parseJSON.js');
-
-
-watch.on('configChanged', function () {
-    config = hotLoad(__dirname, './parseJSON.js');
-});
+    events = require('../events.js'),
+    config = require('./parseJSON.js');
 
 /**
  * [createList description]
@@ -38,7 +32,6 @@ var createList = function createList(data) {
         });
     });
 
-    console.log(aliasesList);
     return aliasesList;
 };
 

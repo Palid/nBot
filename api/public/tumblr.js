@@ -1,6 +1,6 @@
 "use strict";
 var _ = require('lodash'),
-    events = require('../../helpers/events.js'),
+    events = require('../../core/events.js'),
     oauth = require('../../config/oAuth.js').tumblr,
     tumblr = require('tumblr'),
     tagged = new tumblr.Tagged(oauth);

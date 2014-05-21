@@ -2,7 +2,7 @@
 var fs = require('fs'),
     path = require('path'),
     _ = require('lodash'),
-    events = require('./events.js');
+    events = require('../core/events.js');
 
 /**
  * loadDirectory loads whole directory as an object and exports it from module

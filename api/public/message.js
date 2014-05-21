@@ -1,6 +1,6 @@
 "use strict";
 var _ = require('lodash'),
-    events = require('../../helpers/events.js'),
+    events = require('../../core/events.js'),
     config = require('../../config/bot.js');
 
 var len = config.irc.channelPrefixes.length;

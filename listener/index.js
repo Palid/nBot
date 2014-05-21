@@ -26,14 +26,14 @@ client.addListener('message', function (from, to, message) {
             fileName: 'users/' + fromLower,
             data: '<' + fromLower + '> ' + message + '\r\n'
         });
-        commandsRe(toLower, fromLower, message);
+        commandsRe(toLower, fromLower, message.trim());
     } else {
         logger({
             timeStamp: true,
             fileName: 'channels/' + toLower,
             data: '<' + fromLower + '> ' + message + '\r\n'
         });
-        commandsRe(fromLower, toLower, message);
+        commandsRe(fromLower, toLower, message.trim());
     }
 
 });

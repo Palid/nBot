@@ -1,6 +1,6 @@
 "use strict";
 var request = require('request'),
-    events = require('../../helpers/events.js'),
+    events = require('../../core/events.js'),
     url = "http://thecatapi.com/api/images/get",
     requestOptions = {
         method: 'HEAD'

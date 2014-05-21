@@ -1,32 +1,27 @@
 "use strict";
 var _ = require('lodash'),
+    events = require('../../core/events.js'),
     config = require('../../config/bot.js'),
-    events = require('../../helpers/events.js'),
-    hotLoad = require('node-hotload').hotLoad,
-    config = hotLoad(__dirname, '../../core/initialize/parseJSON.js');
-
-events.on('configChanged', function () {
-    config = hotLoad(__dirname, '../../core/initialize/parseJSON.js');
-});
+    API = require('../../core/initialize/parseJSON.js');
 
 var method = function help(options) {
-    var firstWhitespace, command, getLang, lang, response,
-        channel = options.to,
-        data = options.message;
 
+    if (options.message.length > 0) {
+        var firstWhitespace = _.indexOf(options.message, ' ');
+        var command = (firstWhitespace > 0) ? options.message.substring(0, firstWhitespace) : options.message;
+        var getLang = options.message.substring(firstWhitespace + 1);
+        var lang = (firstWhitespace > 0) ? getLang : config.options.defaultLang;
+        var description = API[command].description[lang];
 
-    if (data.length > 0) {
-        firstWhitespace = _.indexOf(data, ' ');
-        command = (firstWhitespace > 0) ? data.substring(0, firstWhitespace) : data;
-        getLang = data.substring(firstWhitespace + 1);
-        lang = (firstWhitespace > 0) ? getLang : config.options.defaultLang;
-        response = (!_.isUndefined(config[command])) ? config[command].description[lang] :
-            "Couldn't find " + lang + " description for " + command;
+        if (description) {
+            events.emit('apiSay', options.to, description);
+        } else {
+            events.emit('apiSay', options.to, "Couldn't find " + lang + " description for " + command);
+        }
+
     } else {
-        response = config.help.description[config.options.defaultLang];
+        events.emit('apiSay', options.to, API.help.description[config.options.defaultLang]);
     }
-    events.emit('apiSay', channel, response);
-
 };
 
 var defaults = {

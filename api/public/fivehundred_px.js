@@ -1,5 +1,5 @@
 "use strict";
-var events = require('../../helpers/events.js'),
+var events = require('../../core/events.js'),
     oauth = require('../../config/oAuth.js')['500px'],
     API500px = require('500px').API500px,
     api500px = new API500px(oauth.consumer_key);

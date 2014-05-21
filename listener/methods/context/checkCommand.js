@@ -1,15 +1,11 @@
 "use strict";
-var path = require('path'),
-    _ = require('lodash'),
+var _ = require('lodash'),
+    path = require('path'),
     rootDir = path.dirname(require.main.filename),
-    events = require(rootDir + '/helpers/events.js'),
+    events = require(rootDir + '/core/events.js'),
     client = require(rootDir + '/core/bot.js'),
-    hotLoad = require('node-hotload').hotLoad,
-    aliases = hotLoad(__dirname, rootDir + '/core/initialize/createAliasDict.js');
+    aliases = require(rootDir + '/core/initialize/createAliasDict.js');
 
-events.on('configChanged', function () {
-    aliases = hotLoad(__dirname, rootDir + '/core/initialize/createAliasDict.js');
-});
 
 events.on('apiSay', function (channel, message) {
     if (_.isArray(message)) {

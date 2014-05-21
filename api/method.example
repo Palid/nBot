@@ -1,5 +1,5 @@
 "use strict";
-var events = require('../../helpers/events.js');
+var events = require('../../core/events.js');
 
 /**
  * [method Your New API Function]

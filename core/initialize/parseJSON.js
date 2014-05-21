@@ -10,12 +10,12 @@ var method = function (dir) {
             parsed;
         try {
             parsed = JSON.parse(aliases);
+            return parsed;
         } catch (err) {
             console.log(err);
-            parsed = {};
             fs.writeFileSync(dir, "{}");
         }
-        return parsed;
+        return {};
 
     } else {
         fs.writeFileSync(dir, "{}");

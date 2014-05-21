@@ -1,6 +1,6 @@
 "use strict";
 var figlet = require('figlet'),
-    events = require('../../helpers/events.js');
+    events = require('../../core/events.js');
 
 
 

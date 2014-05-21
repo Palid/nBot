@@ -1,46 +1,37 @@
 "use strict";
 var _ = require('lodash'),
-    events = require('../../helpers/events.js'),
-    hotLoad = require('node-hotload').hotLoad,
-    config = hotLoad(__dirname, '../../core/initialize/parseJSON.js');
-
-events.on('configChanged', function () {
-    config = hotLoad(__dirname, '../../core/initialize/parseJSON.js');
-});
+    events = require('../../core/events.js'),
+    config = require('../../core/initialize/parseJSON.js');
 
 var method = function alias(options) {
-    var channel = options.to,
-        data = options.message;
 
-    if (_.has(config, data)) {
-        var list = "",
-            objList = "";
-        _.forEach(config[data].aliases, function (property) {
+    if (_.has(config, options.message)) {
+        var list = [],
+            objList = [];
+        _.forEach(config[options.message].aliases, function (property) {
             if (_.isObject(property)) {
-                objList = objList + (property.alias + " ");
+                objList.push(property.alias);
             } else {
-                list = list + (property + " ");
+                list.push(property);
             }
 
         });
+        var response = [
+            list.length > 0 ? "Simple aliases for " + options.message + ": " + list.join(', ') : '',
+            objList.length > 0 ? "Complex aliases for " + options.message + ": " + objList.join(', ') : ''
+        ].join("\n\r");
+        events.emit('apiSay', options.to, response);
 
-        return {
-            type: "say",
-            to: channel,
-            message: [
-                "Simple aliases for " + data + ": " + list,
-                "Complex aliases for " + data + ": " + objList
-            ].join("\n\r")
-        };
     } else {
-        return {
-            type: "say",
-            to: channel,
-            message: "Command not found."
-        };
+        events.emit('apiSay', options.to, 'Command not found.');
     }
 
 };
+method({
+    to: '#nbot',
+    from: 'palid',
+    message: 'help'
+});
 
 var defaults = {
     description: {

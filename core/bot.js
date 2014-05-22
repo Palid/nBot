@@ -14,6 +14,7 @@ var client = new irc.Client(config.irc.network, config.irc.nick, {
     floodProtection: config.irc.floodProtection,
     floodProtectionDelay: config.irc.floodProtectionDelay,
     messageSplit: config.irc.messageSplit,
+    sasl: config.irc.sasl,
     login: config.irc.login,
     password: config.irc.password,
     secure: config.irc.secure,

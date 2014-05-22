@@ -14,6 +14,7 @@ module.exports = {
         floodProtection: true,
         floodProtectionDelay: 100,
         messageSplit: 512,
+        sasl: true,
         login: "login",
         password: "password",
         secure: false,

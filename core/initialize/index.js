@@ -15,9 +15,6 @@ makeDirs({
     database: 'database'
 });
 
-console.info("Initializing database documents");
-require('../database/init.js');
-
 console.info("Initializing database");
 require('./database/backup.js');
 

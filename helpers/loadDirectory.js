@@ -8,7 +8,8 @@ var BANNED = [
     'index.js',
     '*example',
     'package.json',
-    '__test__'
+    '__test__',
+    '__mocks__'
 ];
 
 /**

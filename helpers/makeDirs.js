@@ -20,8 +20,8 @@ var method = function makeDirs(directories) {
             checkDirs(property);
         });
     } else {
-        checkDirs(dirname);
+        checkDirs(directories);
     }
-}
+};
 
 module.exports = method;

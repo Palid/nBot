@@ -1,6 +1,6 @@
 "use strict";
-var path = require('path'),
-    _ = require('lodash'),
+var _ = require('lodash'),
+    path = require('path'),
     request = require('request'),
     rootDir = path.dirname(require.main.filename),
     logger = require(rootDir + '/helpers/log.js'),
@@ -8,7 +8,7 @@ var path = require('path'),
     events = require(rootDir + '/core/events.js'),
     db = require(rootDir + '/core/initialize/database/index.js'),
     titleStringLen = config.options.urlScrapeTitle.length,
-    re = new RegExp(/(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/g);
+    titleRe = new RegExp(/(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/g);
 
 // This somehow fixes memory leaks...
 // looks like a failed cookie, uh?
@@ -110,7 +110,7 @@ function method(from, channel, data, match) {
         r.on('data', function (chunk) {
             buffer += chunk;
             var str = chunk.toString(),
-                match = re.exec(str);
+                match = titleRe.exec(str);
             if (match && match[2]) {
                 if (match[2].replace(/\s/, '').length > 0) {
                     getTitle(channel, match[2]);

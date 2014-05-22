@@ -23,6 +23,7 @@ var user = new Schema({
         level: {
             type: Number,
             required: true,
+            max: 10,
             default: 0
         },
         api: {

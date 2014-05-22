@@ -4,6 +4,13 @@ var fs = require('fs'),
     _ = require('lodash'),
     events = require('../core/events.js');
 
+var BANNED = [
+    'index.js',
+    'example',
+    'package.json',
+    '__test__'
+];
+
 /**
  * loadDirectory loads whole directory as an object and exports it from module
  * @param  {String} fileList    List of all files(and directories) from current dir
@@ -17,9 +24,10 @@ var fs = require('fs'),
  */
 function loadDirectory(fileList, dir, options) {
     _.remove(fileList, function (item) {
-        if (item.search('example') !== -1 ||
-            item === 'index.js' ||
-            item === 'package.json') {
+        var found = _.find(BANNED, function (value) {
+            return value === item;
+        });
+        if (!found) {
             return item;
         }
     });

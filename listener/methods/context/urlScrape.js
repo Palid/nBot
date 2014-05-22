@@ -4,10 +4,10 @@ var path = require('path'),
     request = require('request'),
     rootDir = path.dirname(require.main.filename),
     logger = require(rootDir + '/helpers/log.js'),
-    client = require(rootDir + '/core/bot.js'),
+    config = require(rootDir + '/core/bot.js'),
+    events = request(rootDir + 'core/events.js'),
     db = require(rootDir + '/core/initialize/database/index.js'),
-    scrapeTitle = client.options.urlScrapeTitle,
-    titleStringLen = scrapeTitle.length,
+    titleStringLen = config.options.urlScrapeTitle.length,
     re = new RegExp(/(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/g);
 
 // This somehow fixes memory leaks...
@@ -16,30 +16,21 @@ request = request.defaults({
     jar: request.jar()
 });
 
-
-function errors(err, channel) {
-    if (err) console.log(err);
-}
-
 function getTitle(channel, str) {
-    if (str.replace(/\s/, '').length > 0) {
-        logger({
-            timeStamp: true,
-            fileName: 'urls/' + channel,
-            data: str + '\r\n'
-        });
-        client.say(channel, scrapeTitle +
-            (str = (str.length <= 80) ?
-                str :
-                (str.substr(0, (80 - titleStringLen - 3))) + '...')
-        );
-    } else {
-        errors(null, channel);
-    }
+    logger({
+        timeStamp: true,
+        fileName: 'urls/' + channel,
+        data: str + '\r\n'
+    });
+    events.emit('apiSay', channel, config.options.urlScrapeTitle +
+        (str = (str.length <= 80) ?
+            str :
+            (str.substr(0, (80 - titleStringLen - 3))) + '...')
+    );
 }
 
 
-function saveToDatabase(from, channel, data, link) {
+function saveToDatabase(from, channel, link) {
     var lastSlash = _.lastIndexOf(link, '/'),
         dbLink = db.get("channelLink", {
             to: channel,
@@ -63,17 +54,18 @@ function saveToDatabase(from, channel, data, link) {
             link: link
         });
     } else {
-        client.say(channel,
-            "Link was just posted " +
-            dbLink.count +
-            " times."
-        );
-        client.say(channel,
-            "Originally by: " +
-            dbLink.firstPost.by +
-            " on: " +
-            dbLink.firstPost.date
-        );
+        var response = [
+            [
+                "Link was posted",
+                dbLink.count > 1 ? dbLink.count + " times" : " once"
+            ].join(" "), [
+                "Originally by",
+                dbLink.firstPost.by,
+                "on:",
+                dbLink.firstPost.date
+            ].join(" ")
+        ];
+        events.emit('apiSay', channel, response);
     }
     db.set("linkDate", {
         from: from,
@@ -106,14 +98,10 @@ function method(from, channel, data, match) {
         } else {
             url = link;
         }
-        // console.log('www: %s, http: %s, https: %s', www, http, https);
-        // console.log(url);
 
-        saveToDatabase(from, channel, data, url);
         var r = request(url, function (err, resp) {
-            console.log(url);
             if (err) {
-                errors(err, channel);
+                console.log(err);
             } else if (resp.headers['content-type'].search('text/html') === -1) {
                 r.abort();
             }
@@ -124,7 +112,10 @@ function method(from, channel, data, match) {
             var str = chunk.toString(),
                 match = re.exec(str);
             if (match && match[2]) {
-                getTitle(channel, match[2]);
+                if (match[2].replace(/\s/, '').length > 0) {
+                    getTitle(channel, match[2]);
+                    saveToDatabase(from, channel, url);
+                }
                 r.abort();
             }
             if (buffer.length > (10240)) {

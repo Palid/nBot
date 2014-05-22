@@ -1,9 +1,9 @@
 "use strict";
-var mongoose = require('../config.js'),
+var mongoose = require('../init.js'),
     Schema = mongoose.Schema;
 
 
-var channel = new Schema({
+var unit = new Schema({
     channel: String,
     count: Number,
     lastPost: Date,
@@ -17,6 +17,4 @@ var channel = new Schema({
     }
 });
 
-var Model = mongoose.model('Channel', channel);
-
-module.exports = Model;
+mongoose.model('Unit', unit);

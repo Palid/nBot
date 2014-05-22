@@ -2,11 +2,12 @@
 var _ = require('lodash'),
     path = require('path'),
     request = require('request'),
+    mongoose = require('mongoose'),
+    Link = mongoose.model('Link'),
     rootDir = path.dirname(require.main.filename),
     logger = require(rootDir + '/helpers/log.js'),
     config = require(rootDir + '/config/bot.js'),
     events = require(rootDir + '/core/events.js'),
-    db = require(rootDir + '/core/initialize/database/index.js'),
     titleStringLen = config.options.urlScrapeTitle.length,
     titleRe = new RegExp(/(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/g);
 
@@ -31,11 +32,7 @@ function getTitle(channel, str) {
 
 
 function saveToDatabase(from, channel, link) {
-    var lastSlash = _.lastIndexOf(link, '/'),
-        dbLink = db.get("channelLink", {
-            to: channel,
-            link: link
-        });
+    var lastSlash = _.lastIndexOf(link, '/');
 
     if (lastSlash === link.length - 1) {
         link = link.substr(0, lastSlash);
@@ -43,40 +40,59 @@ function saveToDatabase(from, channel, link) {
 
     link = link.replace('https://', 'http://');
 
-    if (!_.isObject(dbLink)) {
-        db.set("link", {
-            from: from,
-            to: channel,
-            link: link
-        });
-        dbLink = db.get("channelLink", {
-            to: channel,
-            link: link
-        });
-    } else {
-        var response = [
-            [
-                "Link was posted",
-                dbLink.count > 1 ? dbLink.count + " times" : " once"
-            ].join(" "), [
-                "Originally by",
-                dbLink.firstPost.by,
-                "on:",
-                dbLink.firstPost.date
-            ].join(" ")
-        ];
-        events.emit('apiSay', channel, response);
-    }
-    db.set("linkDate", {
-        from: from,
-        to: channel,
-        link: link
-    });
-    db.set("linkCount", {
-        from: from,
-        to: channel,
+    Link.findOne({
         link: link,
-        value: parseInt(dbLink.count, 10) + 1
+        channel: channel
+    }, function (err, doc) {
+        if (err) {
+            console.log(err);
+        }
+        if (!doc) {
+            new Link({
+                channel: channel,
+                count: 1,
+                lastPost: {
+                    date: Date.now(),
+                    by: from
+                },
+                link: link,
+                firstPost: {
+                    by: from,
+                    date: Date.now()
+                }
+            }).save();
+
+        } else {
+            var response = [
+                [
+                    "Link was posted",
+                    doc.count > 1 ? doc.count + " times" : "once"
+                ].join(" "), [
+                    "Last by",
+                    doc.lastPost.by,
+                    "on:",
+                    doc.lastPost.date
+                ].join(" "), [
+                    "Originally by",
+                    doc.firstPost.by,
+                    "on:",
+                    doc.firstPost.date
+                ].join(" ")
+            ];
+            events.emit('apiSay', channel, response);
+            Link.update({
+                link: link
+            }, {
+                count: doc.count + 1,
+                lastPost: {
+                    date: Date.now(),
+                    by: from
+                }
+            }, function (err) {
+                if (err) console.log(err);
+            });
+        }
+
     });
 }
 

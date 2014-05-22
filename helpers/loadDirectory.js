@@ -6,7 +6,7 @@ var fs = require('fs'),
 
 var BANNED = [
     'index.js',
-    'example',
+    '*example',
     'package.json',
     '__test__'
 ];
@@ -25,9 +25,12 @@ var BANNED = [
 function loadDirectory(fileList, dir, options) {
     _.remove(fileList, function (item) {
         var found = _.find(BANNED, function (value) {
+            if (value[0] === '*') {
+                return item.search(value.substring(1)) > 0;
+            }
             return value === item;
         });
-        if (!found) {
+        if (found) {
             return item;
         }
     });

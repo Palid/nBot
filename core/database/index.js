@@ -1,9 +1,9 @@
 "use strict";
 var loadDir = require('../../helpers/loadDirectory.js');
 
-module.exports = loadDir('./schema', {
+module.exports = loadDir('./models', {
     currentDir: __dirname,
     type: '.js',
     recursive: false,
-    event: 'schemaLoaded'
+    event: 'modelsLoaded'
 });

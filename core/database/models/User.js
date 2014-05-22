@@ -1,5 +1,5 @@
 "use strict";
-var mongoose = require('../config.js'),
+var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var user = new Schema({
@@ -60,6 +60,4 @@ var user = new Schema({
     }]
 });
 
-var Model = mongoose.model('User', user);
-
-module.exports = Model;
+module.exports = mongoose.model('User', user);

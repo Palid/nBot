@@ -1,16 +1,13 @@
 "use strict";
-var mongoose = require('../config.js'),
+var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 
-var link = new Schema({
+var channel = new Schema({
     channel: String,
     count: Number,
     lastPost: Date,
-    link: {
-        type: String,
-        unique: true
-    },
+    link: String,
     firstPost: {
         by: String,
         date: {
@@ -20,6 +17,4 @@ var link = new Schema({
     }
 });
 
-var Model = mongoose.model('Link', link);
-
-module.exports = Model;
+module.exports = mongoose.model('Channel', channel);

@@ -1,20 +1,19 @@
 "use strict";
-var path = require('path'),
-    rootDir = path.dirname(require.main.filename),
-    db = require(rootDir + '/core/database/');
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 
 var method = function logLastActivity(from, to, message) {
 
-    db.User.findOne({
+    User.findOne({
         $and: [{
             nick: from
         }, {
             'seen.channel': to
         }]
-    }, function (err, resp) {
+    }, function (err, doc) {
         if (err) console.log(err);
-        if (!resp || resp.length < 1) {
-            db.User.update({
+        if (!doc || doc.length < 1) {
+            User.update({
                 nick: from
             }, {
                 $set: {
@@ -33,7 +32,7 @@ var method = function logLastActivity(from, to, message) {
                 if (err) console.log(err);
             });
         } else {
-            db.User.update({
+            User.update({
                 nick: from,
                 'seen.channel': to
             }, {

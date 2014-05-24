@@ -1,8 +1,9 @@
 "use strict";
-var _ = require('lodash'),
-    db = require('../../core/database/'),
-    events = require('../../core/events.js'),
-    config = require('../../config/bot.js');
+var _ = require('lodash');
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
+var events = require('../../core/events.js');
+var config = require('../../config/bot.js');
 
 var botNick = config.irc.nick.toLowerCase();
 
@@ -15,14 +16,12 @@ var method = function seen(options) {
             "I'm right here. :)"
         );
     } else {
-        db.User.findOne({
+        User.findOne({
             $and: [{
                 nick: nick
             }, {
                 'seen.channel': options.to
             }]
-        }, {
-            _id: 0
         }, function (err, resp) {
             if (err) console.log(err);
             if (resp) {
@@ -35,15 +34,26 @@ var method = function seen(options) {
                 // var currentChannel = _.find(resp.seen, function (channels) {
                 //     return channels.channel === options.to;
                 // });
-                var response = [
-                    nick,
-                    "was last seen",
-                    max.date,
-                    "on channel",
-                    max.channel,
-                    "while saying",
-                    max.message
-                ].join(" ");
+                var response;
+                if (max.message) {
+                    response = [
+                        nick,
+                        "was last seen",
+                        max.date,
+                        "on channel",
+                        max.channel,
+                        "while saying",
+                        max.message
+                    ].join(" ");
+                } else {
+                    response = [
+                        nick,
+                        "was last seen",
+                        max.date,
+                        "while joining channel",
+                        max.channel
+                    ].join(" ");
+                }
                 events.emit('apiSay', options.to, response);
             } else {
                 events.emit('apiSay',
@@ -53,10 +63,6 @@ var method = function seen(options) {
             }
         });
     }
-
-    return {
-        type: "async"
-    };
 
 };
 

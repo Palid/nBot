@@ -6,6 +6,9 @@ var _ = require('lodash'),
     REGULAR = {
         lastSeen: {
             method: require('./methods/regular/lastSeen.js')
+        },
+        memo: {
+            method: require('./methods/regular/memo.js')
         }
     },
     // Context dependant message which will fire only when message passed
@@ -29,15 +32,17 @@ var _ = require('lodash'),
                 _.forEach(REGULAR, function (property) {
                     property.method(from, to, message);
                 });
-                _.forEach(CONTEXTDEPENDANT, function (property) {
-                    var match = message.match(property.re);
-                    if (match) {
-                        property.method(from, to, message, match);
-                    }
-                });
+                if (message) {
+                    _.forEach(CONTEXTDEPENDANT, function (property) {
+                        var match = message.match(property.re);
+                        if (match) {
+                            property.method(from, to, message, match);
+                        }
+                    });
+                }
             }
         });
-        if (priv) {
+        if (priv && message) {
             var match = message.match(CONTEXTDEPENDANT.command.re);
             if (match) CONTEXTDEPENDANT.command.method(from, to, message, match);
         }

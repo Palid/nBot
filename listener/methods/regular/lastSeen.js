@@ -23,7 +23,7 @@ var method = function logLastActivity(from, to, message) {
                     seen: {
                         channel: to,
                         date: Date.now(),
-                        message: message
+                        message: message ? message : ''
                     }
                 },
             }, {

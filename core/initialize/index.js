@@ -15,6 +15,9 @@ makeDirs({
     database: 'database'
 });
 
+console.info("Initializing database");
+require('../database/init.js');
+
 console.info("Creating Aliases JSON");
 require('./createAliasesJSON.js');
 

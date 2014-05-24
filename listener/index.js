@@ -20,6 +20,8 @@ client.addListener('message', function (from, to, message) {
         toLower = to.toLowerCase(),
         nick = client.nick.toLowerCase();
 
+    console.log(message);
+
     if (nick === toLower) {
         logger({
             timeStamp: true,
@@ -48,6 +50,7 @@ client.addListener('ctcp', function (nick, message) {
 
 client.addListener('join', function (channel, who) {
     console.log('%s has joined %s', who, channel);
+    commandsRe(channel, who);
 });
 
 client.addListener('part', function (channel, who, reason) {

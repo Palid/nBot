@@ -12,7 +12,7 @@ var method = function dice(options) {
         diceThrows = parseInt(data.substring(firstWhitespace, d), 10),
         dices = parseInt(data.substring(d + 1, data.length), 10),
         finalResult = null,
-        resultsList = "";
+        resultsList = [];
 
     if (!_.isNaN(dices) && !_.isNaN(diceThrows) &&
         dices.toString().split("").length < 3 &&
@@ -20,15 +20,14 @@ var method = function dice(options) {
 
         for (var i = 0; i < diceThrows; i++) {
             var x = Math.floor(Math.random() * dices + 1);
-            finalResult += x;
-            resultsList += x.toString() + ", ";
+            finalResult += resultsList.push(x.toString());
         }
 
         events.emit('apiSay', channel, [
             "Throw results for",
             data,
             ":",
-            resultsList,
+            resultsList.join(", "),
             "with final result of:",
             finalResult
         ].join(" "));

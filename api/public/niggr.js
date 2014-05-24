@@ -23,7 +23,7 @@ var method = function niggrUrlShortener(options) {
 
 var defaults = {
     description: {
-        pl: ",nigrr [url] - Returns nig.gr shortened url",
+        pl: ",niggr [url] - Zwraca skrócony url przez stronę nig.gr",
         en: ",nigrr [url] - Returns nig.gr shortened url"
     },
     aliases: [

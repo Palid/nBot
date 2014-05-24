@@ -1,4 +1,3 @@
-/** undef: false **/
 "use strict";
 jest.dontMock('../say.js');
 

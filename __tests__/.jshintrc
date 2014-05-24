@@ -113,10 +113,13 @@
     "maxerr": 100, // Maximum errors before stopping.
     // "maxlen": 80,
     "predef": [
+        "jest",
+        "jasmine",
         "describe",
-        "it",
+        "spyOn",
         "expect",
-        "jest"
+        "it",
+        "beforeEach"
     ],
     "indent": 4 // Specify indentation spacing
 }

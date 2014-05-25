@@ -16,22 +16,26 @@ var method = function alias(options) {
             }
 
         });
-        var response = [
-            list.length > 0 ? "Simple aliases for " + options.message + ": " + list.join(', ') : '',
-            objList.length > 0 ? "Complex aliases for " + options.message + ": " + objList.join(', ') : ''
-        ].join("\n\r");
-        events.emit('apiSay', options.to, response);
+        if (list.length > 0) {
+            events.emit(
+                'apiSay',
+                options.to,
+                "Simple aliases for " + options.message + ": " + list.join(', ')
+            );
+        }
+        if (objList.length > 0) {
+            events.emit(
+                'apiSay',
+                options.to,
+                "Complex aliases for " + options.message + ": " + objList.join(', ')
+            );
+        }
 
     } else {
         events.emit('apiSay', options.to, 'Command not found.');
     }
 
 };
-method({
-    to: '#nbot',
-    from: 'palid',
-    message: 'help'
-});
 
 var defaults = {
     description: {

@@ -31,7 +31,6 @@ module.exports = {
         database: {
             type: "mongodb",
             url: "mongodb://localhost/nBot"
-        },
-        deleteMe: true
+        }
     }
 };

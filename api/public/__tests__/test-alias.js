@@ -15,16 +15,16 @@ describe('Public API Say', function () {
     });
 
     it('tests for channel call', function () {
-        var say = require('../alias.js');
-        spyOn(say, 'method');
-        say.method({
+        var method = require('../alias.js');
+        spyOn(method, 'method');
+        method.method({
             from: 'palid',
             to: '#nbot',
             message: 'alias'
         });
 
-        expect(say.method).toHaveBeenCalled();
-        expect(say.method).toHaveBeenCalledWith({
+        expect(method.method).toHaveBeenCalled();
+        expect(method.method).toHaveBeenCalledWith({
             from: 'palid',
             to: '#nbot',
             message: 'alias'
@@ -32,8 +32,8 @@ describe('Public API Say', function () {
     });
 
     it('tests for simple aliases only response', function () {
-        var say = require('../alias.js');
-        say.method({
+        var method = require('../alias.js');
+        method.method({
             from: 'palid',
             to: '#nbot',
             message: 'say'
@@ -44,8 +44,8 @@ describe('Public API Say', function () {
     });
 
     it('tests for complex aliases only response', function () {
-        var say = require('../alias.js');
-        say.method({
+        var method = require('../alias.js');
+        method.method({
             from: 'palid',
             to: '#nbot',
             message: 'complexMock'
@@ -56,8 +56,8 @@ describe('Public API Say', function () {
     });
 
     it('tests for simple aliases only response', function () {
-        var say = require('../alias.js');
-        say.method({
+        var method = require('../alias.js');
+        method.method({
             from: 'palid',
             to: '#nbot',
             message: 'fivehundred_px'

@@ -3,7 +3,7 @@ jest.dontMock('lodash');
 jest.dontMock('crypto');
 jest.dontMock('../pick.js');
 
-describe('Public API Say', function () {
+describe('Public API Pick', function () {
 
     var eventsSpy;
     var events;

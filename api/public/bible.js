@@ -1,6 +1,6 @@
 "use strict";
-var request = require('request'),
-    events = require('../../core/events.js');
+var request = require('request');
+var events = require('../../core/events.js');
 
 var method = function bible(options) {
     var channel = options.to,

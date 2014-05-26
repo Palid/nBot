@@ -2,7 +2,7 @@
 jest.dontMock('lodash');
 jest.dontMock('../alias.js');
 
-describe('Public API Say', function () {
+describe('Public API Alias', function () {
 
     var eventsSpy;
     var events;

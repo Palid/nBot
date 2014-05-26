@@ -3,6 +3,9 @@
   "version": "0.2.5",
   "description": "node.js IRC bot",
   "main": "bot.js",
+  "jest": {
+    "collectCoverage": true
+  },
   "scripts": {
     "test": "jest"
   },
@@ -24,7 +27,10 @@
     "tumblr": "^0.4.1"
   },
   "devDependencies": {
-    "jest-cli": "^0.1.11",
-    "mockgoose": "^1.10.0"
+    "coverage-badge": "0.0.5",
+    "gulp": "^3.6.2",
+    "jest-cli": "^0.1.13",
+    "mockgoose": "^1.10.0",
+    "nock": "^0.32.1"
   }
 }

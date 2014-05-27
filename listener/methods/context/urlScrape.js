@@ -11,12 +11,6 @@ var _ = require('lodash'),
     titleStringLen = config.options.urlScrapeTitle.length,
     titleRe = new RegExp(/(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/g);
 
-// This somehow fixes memory leaks...
-// looks like a failed cookie, uh?
-request = request.defaults({
-    jar: request.jar()
-});
-
 function getTitle(channel, str) {
     logger({
         timeStamp: true,
@@ -134,7 +128,7 @@ function method(from, channel, data, match) {
                 }
                 r.abort();
             }
-            if (buffer.length > (10240)) {
+            if (buffer.length > (20480)) {
                 console.log("Buffer was too long, aborted!");
                 r.abort();
             }

@@ -1,6 +1,6 @@
 module.exports = {
     irc: {
-        network: "chat.freenode.net",
+        network: "localhost",
         port: 6667,
         showErrors: false,
         autoRejoin: true,
@@ -33,8 +33,6 @@ module.exports = {
         root: "palid",
         database: {
             type: "mongodb",
-            user: "chomis",
-            password: "iLikeTrains",
             url: "mongodb://localhost/nBot"
         }
     }

@@ -67,7 +67,7 @@ function saveToDatabase(from, channel, link, title) {
             }).save();
 
             events.emit('apiSay', channel,
-                config.options.urlScrapeTitle +
+                config.options.urlScrapeTitle.begin +
                 formatTitle(title)
             );
         } else {

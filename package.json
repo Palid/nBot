@@ -27,7 +27,6 @@
     "tumblr": "^0.4.1"
   },
   "devDependencies": {
-    "gulp": "^3.6.2",
     "jest-cli": "^0.1.14",
     "mockgoose": "^1.10.0",
     "nock": "^0.32.1"

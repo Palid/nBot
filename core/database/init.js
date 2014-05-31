@@ -12,7 +12,7 @@ mongoose.connection.once('open', function () {
             }, {
                 $set: {
                     'permissions.group': 'root',
-                    'permissions.level': 10
+                    'permissions.level': 5
                 }
             }, {
                 upsert: true
@@ -28,7 +28,7 @@ mongoose.connection.once('open', function () {
         }, {
             $set: {
                 'permissions.group': 'root',
-                'permissions.level': 10
+                'permissions.level': 5
             }
         }, {
             upsert: true

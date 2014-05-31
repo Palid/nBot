@@ -19,7 +19,8 @@ var defaults = {
     },
     aliases: [
         "inv"
-    ]
+    ],
+    level: 1
 };
 
 

@@ -15,20 +15,11 @@ var user = new Schema({
         },
     },
     permissions: {
-        group: {
-            type: String,
-            required: true,
-            default: "guest"
-        },
         level: {
             type: Number,
             required: true,
-            max: 10,
+            max: 5,
             default: 0
-        },
-        api: {
-            command: String,
-            level: Number
         }
     },
     aliases: [{

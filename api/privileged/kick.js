@@ -40,7 +40,8 @@ var defaults = {
     },
     aliases: [
         "k"
-    ]
+    ],
+    level: 4
 };
 
 

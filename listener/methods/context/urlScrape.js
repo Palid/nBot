@@ -1,31 +1,41 @@
 "use strict";
-var _ = require('lodash'),
-    path = require('path'),
-    request = require('request'),
-    mongoose = require('mongoose'),
-    Link = mongoose.model('Link'),
-    rootDir = path.dirname(require.main.filename),
-    logger = require(rootDir + '/helpers/log.js'),
-    config = require(rootDir + '/config/bot.js'),
-    events = require(rootDir + '/core/events.js'),
-    titleStringLen = config.options.urlScrapeTitle.length,
-    titleRe = new RegExp(/(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/g);
+//util
+var _ = require('lodash');
 
-function getTitle(channel, str) {
-    logger({
-        timeStamp: true,
-        fileName: 'urls/' + channel,
-        data: str + '\r\n'
-    });
-    events.emit('apiSay', channel, config.options.urlScrapeTitle +
-        (str = (str.length <= 80) ?
-            str :
-            (str.substr(0, (80 - titleStringLen - 3))) + '...')
-    );
+//paths
+var path = require('path');
+var rootDir = path.dirname(require.main.filename);
+
+//nBot
+var config = require(rootDir + '/config/bot.js');
+var events = require(rootDir + '/core/events.js');
+var logger = require(rootDir + '/helpers/log.js');
+
+
+//database
+var mongoose = require('mongoose');
+var Link = mongoose.model('Link');
+
+//API
+var request = require('request');
+var titleRe = new RegExp(/(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/g);
+
+
+// formatTitle private
+var titleRepostLen = config.options.urlScrapeTitle.repost.length;
+var length = (80 - config.options.urlScrapeTitle.begin.length - 3);
+
+function formatTitle(title, isRepost) {
+    return ((title.length <= 80) ? title :
+        (title.substr(0,
+            isRepost ?
+            (length - titleRepostLen) :
+            length
+        )) + '...');
 }
 
 
-function saveToDatabase(from, channel, link) {
+function saveToDatabase(from, channel, link, title) {
     var lastSlash = _.lastIndexOf(link, '/');
 
     if (lastSlash === link.length - 1) {
@@ -56,24 +66,18 @@ function saveToDatabase(from, channel, link) {
                 }
             }).save();
 
+            events.emit('apiSay', channel,
+                config.options.urlScrapeTitle +
+                formatTitle(title)
+            );
         } else {
-            var response = [
-                [
-                    "Link was posted",
-                    doc.count > 1 ? doc.count + " times" : "once"
-                ].join(" "), [
-                    "Last by",
-                    doc.lastPost.by,
-                    "on:",
-                    doc.lastPost.date
-                ].join(" "), [
-                    "Originally by",
-                    doc.firstPost.by,
-                    "on:",
-                    doc.firstPost.date
-                ].join(" ")
-            ];
-            events.emit('apiSay', channel, response);
+            events.emit('apiSay', channel,
+                config.options.urlScrapeTitle.begin + " " +
+                config.options.urlScrapeTitle.repost + " " + doc.count +
+                " first: " + doc.firstPost.by + ", " +
+                "title: " +
+                formatTitle(title, true)
+            );
             Link.update({
                 link: link
             }, {
@@ -87,6 +91,11 @@ function saveToDatabase(from, channel, link) {
             });
         }
 
+    });
+    logger({
+        timeStamp: true,
+        fileName: 'urls/' + channel,
+        data: title + '\r\n'
     });
 }
 
@@ -123,8 +132,7 @@ function method(from, channel, data, match) {
                 match = titleRe.exec(str);
             if (match && match[2]) {
                 if (match[2].replace(/\s/, '').length > 0) {
-                    getTitle(channel, match[2]);
-                    saveToDatabase(from, channel, url);
+                    saveToDatabase(from, channel, url, match[2]);
                 }
                 r.abort();
             }

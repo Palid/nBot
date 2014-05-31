@@ -5,7 +5,31 @@ var _ = require('lodash'),
     events = require(rootDir + '/core/events.js'),
     client = require(rootDir + '/core/bot.js'),
     aliases = require(rootDir + '/core/initialize/createAliasDict.js');
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 
+function useApi(command, from, to, body) {
+
+    try {
+        if (command.options) {
+            command.method({
+                from: command.options.from ? command.options.from : from,
+                to: command.options.to ? command.options.to : to,
+                body: command.options.data ? command.options.data : body
+            });
+        } else {
+            command.method({
+                from: from,
+                message: body,
+                to: to
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        client.say(to, "Command " + command + " exited with an error.");
+        client.say(to, "Error message:");
+    }
+}
 
 events.on('apiSay', function (channel, message) {
     if (_.isArray(message)) {
@@ -53,39 +77,28 @@ var method = function activateCommand(from, to, message, match) {
             "",
         command = (firstWhitespace !== -1) ?
             message.substring(len, firstWhitespace) :
-            message.substring(len);
+            message.substring(len),
+        item = aliases[command];
 
-    if (_.isUndefined(aliases[command])) {
+    if (!item) {
         client.say(to, "Command " + command + " not found");
     } else {
-        try {
-            var response, options,
-                isFunction = _.isFunction(aliases[command]);
-            if (!isFunction) {
-                options = aliases[command].options;
-                from = _.isUndefined(options.from) ? from : options.from;
-                to = _.isUndefined(options.to) ? to : options.to;
-                body = _.isUndefined(options.data) ? body : options.data;
-            }
-
-            if (!isFunction) {
-                response = aliases[command].method({
-                    from: from,
-                    message: body,
-                    to: to
-                });
-            } else {
-                response = aliases[command]({
-                    from: from,
-                    message: body,
-                    to: to
-                });
-            }
-
-        } catch (err) {
-            console.log(err);
-            client.say(to, "Command " + command + " exited with an error.");
+        if (item.level > 0) {
+            User.findOne({
+                nick: from
+            }, function (err, doc) {
+                if (err) console.log(err);
+                if (doc.permissions.level >= item.level) {
+                    useApi(item, from, to, body);
+                } else {
+                    client.say(to, "No permission. Your level " + doc.permissions.level + " < " +
+                        item.level);
+                }
+            });
+        } else {
+            useApi(item, from, to, body);
         }
+
     }
 
 };

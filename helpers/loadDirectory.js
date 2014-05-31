@@ -59,7 +59,7 @@ function loadDirectory(fileList, dir, options) {
             resultsMap[property.name] = require(property.directory);
         });
         if (options.event) events.emit(options.event, resultsMap);
-        return resultsMap;
+        if (options.returnDict) return resultsMap;
     }
 }
 
@@ -70,8 +70,9 @@ function loadDirectory(fileList, dir, options) {
  * @param  {Options}    required        Options object
  * -       {String}     type            File extension to load
  * -       {String}     currentDir      __dirname
- * -       {Boolean}     recursive      Should it load recursively, or just flat
+ * -       {Boolean}    recursive      Should it load recursively, or just flat
  * -       {String}     event           Event to emit after loading's finished
+ * -       {Boolean}    returnDict      Should loader return hashmap
  * @return {function}   Callbacks helper function, loadDirectory
  */
 function prepareFunction(destinationDir, required) {
@@ -79,6 +80,7 @@ function prepareFunction(destinationDir, required) {
     if (!required.currentDir || !destinationDir) {
         throw "You didn't specify directories in loadDirectory!";
     }
+    if (_.isUndefined(required.returnDict)) required.returnDict = true;
 
     var re = new RegExp(".+" + [required.type], "g"),
         dir = path.resolve(required.currentDir, destinationDir),
@@ -90,6 +92,7 @@ function prepareFunction(destinationDir, required) {
         event: required.event,
         re: re,
         results: [],
+        returnDict: required.returnDict
     });
 
 }

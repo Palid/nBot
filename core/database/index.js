@@ -5,5 +5,6 @@ module.exports = loadDir('./models', {
     currentDir: __dirname,
     type: '.js',
     recursive: false,
-    event: 'modelsLoaded'
+    event: 'modelsLoaded',
+    returnDict: true
 });

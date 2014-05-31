@@ -12,7 +12,8 @@ var method = function (data) {
         if (!_.has(data, property)) {
             data[property] = {
                 aliases: methods[property].defaults.aliases,
-                description: methods[property].defaults.description
+                description: methods[property].defaults.description,
+                level: methods[property].defaults.level || 0
             };
         }
     }

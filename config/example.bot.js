@@ -26,10 +26,15 @@ module.exports = {
     options: {
         commandCharacter: ",",
         defaultLang: "en",
-        urlScrapeTitle: "↳ title:",
+        urlScrapeTitle: {
+            begin: "↳",
+            repost: '[post]'
+        },
         root: "palid",
         database: {
             type: "mongodb",
+            user: "chomis",
+            password: "iLikeTrains",
             url: "mongodb://localhost/nBot"
         }
     }

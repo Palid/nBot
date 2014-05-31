@@ -13,25 +13,27 @@ var _ = require('lodash'),
 var createList = function createList(data) {
     var aliasesList = {},
         aliasDict = _.mapValues(data, function (property) {
-            return property.aliases;
+            return {
+                alias: property.aliases,
+                level: property.level || 0
+            };
         });
 
     _.forEach(aliasDict, function (property, key) {
         var selfKey = key;
-        aliasesList[key] = methods[key].method;
+        aliasesList[key] = {
+            method: methods[key].method,
+            level: methods[key].defaults.level || 0
+        };
 
-        _.forEach(aliasDict[key], function (property) {
-            if (_.isObject(property)) {
-                aliasesList[property.alias] = {
-                    method: methods[selfKey].method,
-                    options: property.options
-                };
-            } else {
-                aliasesList[property] = methods[selfKey].method;
-            }
+        _.forEach(aliasDict[key].alias, function (property) {
+            aliasesList[_.isObject(property) ? property.alias : property] = {
+                method: methods[selfKey].method,
+                level: methods[selfKey].defaults.level || 0,
+                options: property.options || undefined
+            };
         });
     });
-
     return aliasesList;
 };
 

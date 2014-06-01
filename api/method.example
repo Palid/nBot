@@ -24,7 +24,8 @@ var defaults = {
     aliases: [
         "command",
         "yourOwn"
-    ]
+    ],
+    level: 0
 };
 
 

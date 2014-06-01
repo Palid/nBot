@@ -25,15 +25,12 @@ var user = new Schema({
     aliases: [{
         alias: {
             type: String
-            // unique: true
         },
         addedBy: {
             type: String,
-            // default: config.options.root
         },
         date: {
             type: Date,
-            // default: Date.now
         }
     }],
     seen: [{

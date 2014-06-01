@@ -7,10 +7,9 @@ var _ = require('lodash'),
 var method = function help(options) {
 
     if (options.message.length > 0) {
-        var firstWhitespace = _.indexOf(options.message, ' ');
-        var command = (firstWhitespace > 0) ? options.message.substring(0, firstWhitespace) : options.message;
-        var getLang = options.message.substring(firstWhitespace + 1);
-        var lang = (firstWhitespace > 0) ? getLang : config.options.defaultLang;
+        var splitted = _.pull(options.message.split(" "), "");
+        var command = splitted[0];
+        var lang = splitted.length >= 2 ? splitted[1] : config.options.defaultLang;
         var description = API[command].description[lang];
 
         if (description) {

@@ -27,7 +27,6 @@ function useApi(command, from, to, body) {
     } catch (err) {
         console.log(err);
         client.say(to, "Command " + command + " exited with an error.");
-        client.say(to, "Error message:");
     }
 }
 
@@ -70,15 +69,11 @@ events.on('apiCommand', function (response) {
  * @return {string} - may return an error
  */
 var method = function activateCommand(from, to, message, match) {
-    var len = match[0].length,
-        firstWhitespace = _.indexOf(message, ' '),
-        body = (firstWhitespace !== -1) ?
-            message.substring(firstWhitespace + len) :
-            "",
-        command = (firstWhitespace !== -1) ?
-            message.substring(len, firstWhitespace) :
-            message.substring(len),
-        item = aliases[command];
+    var splitted = _.pull(message.split(" "), "");
+    var command = splitted[0].replace(match[0], '');
+    var body = splitted.length >= 2 ? splitted.slice(1, splitted.length).join(" ") : "";
+    var item = aliases[command];
+
 
     if (!item) {
         client.say(to, "Command " + command + " not found");
@@ -91,8 +86,9 @@ var method = function activateCommand(from, to, message, match) {
                 if (doc.permissions.level >= item.level) {
                     useApi(item, from, to, body);
                 } else {
-                    client.say(to, "No permission. Your level " + doc.permissions.level + " < " +
-                        item.level);
+                    client.say(to, "Access denied. Your permissions level " +
+                        doc.permissions.level + " < " + item.level
+                    );
                 }
             });
         } else {

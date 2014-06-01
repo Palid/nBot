@@ -7,9 +7,8 @@ var method = function dice(options) {
     var channel = options.to,
         data = options.message;
 
-    var firstWhitespace = _.indexOf(data, ' '),
-        d = _.indexOf(data, 'd'),
-        diceThrows = parseInt(data.substring(firstWhitespace, d), 10),
+    var d = _.indexOf(data, 'd'),
+        diceThrows = parseInt(data.substring(_.indexOf(data, ' '), d), 10),
         dices = parseInt(data.substring(d + 1, data.length), 10),
         finalResult = null,
         resultsList = [];

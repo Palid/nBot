@@ -12,9 +12,9 @@ var method = function message(options) {
             events.emit('apiSay', options.to, "It's not a user.");
 
         } else if (index === len - 1) {
-            var firstWhitespace = _.indexOf(options.message, ' '),
-                nick = options.message.substring(0, firstWhitespace),
-                body = options.message.substring(firstWhitespace + 1);
+            var splitted = _.pull(options.message.split(" "), "");
+            var nick = splitted[0];
+            var body = splitted.length >= 2 ? splitted.slice(1, splitted.length).join(" ") : "";
             events.emit('apiSay', nick, body);
         }
     });

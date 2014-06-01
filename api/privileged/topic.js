@@ -19,7 +19,7 @@ var defaults = {
     aliases: [
         "t"
     ],
-    level: 5
+    level: 4
 };
 
 

@@ -52,6 +52,7 @@ function saveToDatabase(from, channel, link, title) {
             console.log(err);
         }
         if (!doc) {
+            console.log("Link is %s", link);
             new Link({
                 channel: channel,
                 count: 1,
@@ -64,7 +65,12 @@ function saveToDatabase(from, channel, link, title) {
                     by: from,
                     date: Date.now()
                 }
-            }).save();
+            }).save(function (err, product, numberAffected) {
+                if (err) console.log(err);
+                console.log(doc);
+                console.log(numberAffected);
+            });
+            // .save();
 
             events.emit('apiSay', channel,
                 config.options.urlScrapeTitle.begin +

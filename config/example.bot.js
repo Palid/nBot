@@ -33,7 +33,9 @@ module.exports = {
         root: "palid",
         database: {
             type: "mongodb",
-            url: "mongodb://localhost/nBot"
+            url: "mongodb://localhost/nBot",
+            login: "login",
+            password: "password"
         }
     }
 };

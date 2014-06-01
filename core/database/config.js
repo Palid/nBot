@@ -1,15 +1,19 @@
 "use strict";
-var config = require('../../config/bot.js'),
+var config = require('../../config/bot.js').options.database,
     mongoose, db;
 
-if (config.options.database.type === "mongodb") {
+if (config.type === "mongodb") {
     mongoose = require('mongoose');
-    mongoose.connect(config.options.database.url, function (err) {
-        if (err) throw err;
-    });
+    mongoose.connect(config.url, {
+            user: config.login || undefined,
+            pass: config.password || undefined
+        },
+        function (err) {
+            if (err) throw err;
+        });
     db = mongoose.connection;
 } else {
-    throw config.options.database.type + " database type is not supported.";
+    throw config.type + " database type is not supported.";
 }
 
 db.on('error', console.error.bind(console, 'connection error:'));

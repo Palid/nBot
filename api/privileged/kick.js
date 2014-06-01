@@ -1,32 +1,26 @@
 "use strict";
 var _ = require('lodash'),
     events = require('../../core/events.js'),
-    client = require('../../config/bot.js');
+    client = require('../../config/bot.js').irc;
 
 var method = function kick(options) {
-    var channel = options.to,
-        commandGiver = options.from,
-        data = options.message;
+    var splitted = _.pull(options.message.split(" "), "");
+    var nick = splitted[0];
+    var body = splitted.length >= 2 ? splitted.slice(1, splitted.length).join(" ") : "";
 
-    var firstWhitespace = _.indexOf(data, ' '),
-        nick = firstWhitespace > 0 ?
-            data.substring(0, firstWhitespace).toLowerCase() :
-            data.toLowerCase(),
-        body = firstWhitespace > 0 ? data.substring(firstWhitespace + 1) : "";
-
-    if (nick === client.nick || body === client.nick) {
+    if (nick === client.nick) {
         events.emit('apiCommand', {
             type: "command",
             command: "KICK",
-            to: channel,
-            nick: commandGiver,
+            to: options.to,
+            nick: options.from,
             message: "Why are you trying to kick " + client.nick + "? ;_;"
         });
     } else {
         events.emit('apiCommand', {
             type: "command",
             command: "KICK",
-            to: channel,
+            to: options.to,
             nick: nick,
             message: body
         });

@@ -12,7 +12,6 @@ var link = new Schema({
     },
     link: {
         type: String,
-        unique: true,
         trim: true
     },
     firstPost: {

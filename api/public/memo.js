@@ -14,15 +14,15 @@ var User = mongoose.model('User');
  */
 var method = function memo(options) {
 
-    var firstWhitespace = _.indexOf(options.message, ' '),
-        nick = options.message.substring(0, firstWhitespace).toLowerCase(),
-        body = options.message.substring(firstWhitespace + 1).trim();
+    var splitted = _.pull(options.message.split(" "), "");
+    var nick = splitted[0];
+    var body = splitted.length >= 2 ? splitted.slice(1, splitted.length).join(" ") : "";
 
     User.findOne({
         nick: nick
     }, function (err, doc) {
         if (err) console.log(err);
-        if (doc) {
+        if (doc && body !== '') {
             User.update({
                 nick: nick
             }, {
@@ -40,6 +40,11 @@ var method = function memo(options) {
                     "Memo added for " + nick
                 );
             });
+        } else if (body === '') {
+            events.emit('apiSay',
+                options.to,
+                "Memo can't be blank."
+            );
         } else {
             events.emit('apiSay',
                 options.to,

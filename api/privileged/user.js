@@ -75,7 +75,7 @@ var COMMANDS = {
 var method = function user(options) {
     var splitted = _.pull(options.message.split(" "), "");
     var len = splitted.length;
-    var nick = splitted[0];
+    var nick = splitted[0].toLowerCase();
     var command = len >= 2 ? splitted[1] : "";
     var body = len >= 3 ? splitted.slice(2, len).join(" ") : "";
 

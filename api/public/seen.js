@@ -26,22 +26,22 @@ var method = function seen(options) {
             }, {
                 'seen.channel': options.to
             }]
-        }, function (err, resp) {
+        }, function (err, doc) {
             if (err) console.log(err);
-            if (resp) {
-                var max = _.max(resp.seen, function (channels) {
+            if (doc) {
+                var max = _.max(doc.seen, function (channels) {
                     return channels.date;
                 });
-                // var min = _.min(resp.seen, function (channels) {
+                // var min = _.min(doc.seen, function (channels) {
                 //     return channels.date;
                 // });
-                // var currentChannel = _.find(resp.seen, function (channels) {
+                // var currentChannel = _.find(doc.seen, function (channels) {
                 //     return channels.channel === options.to;
                 // });
                 var response;
                 if (max.message) {
                     response = [
-                        nick,
+                        doc.nick,
                         "was last seen",
                         max.date,
                         "on channel",
@@ -51,7 +51,7 @@ var method = function seen(options) {
                     ].join(" ");
                 } else {
                     response = [
-                        nick,
+                        doc.nick,
                         "was last seen",
                         max.date,
                         "while joining channel",

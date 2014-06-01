@@ -79,7 +79,7 @@ function saveToDatabase(from, channel, link, title) {
         } else {
             events.emit('apiSay', channel,
                 config.options.urlScrapeTitle.begin + " " +
-                config.options.urlScrapeTitle.repost + " " + doc.count +
+                config.options.urlScrapeTitle.repost + " [" + doc.count + "]" +
                 " first: " + doc.firstPost.by + ", " +
                 "title: " +
                 formatTitle(title, true)

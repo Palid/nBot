@@ -7,7 +7,11 @@ var events = require('../../../core/events.js');
 var method = function sayMemo(from, to) {
 
     User.findOne({
-        nick: from
+        $or: [{
+            nick: from
+        }, {
+            'aliases.alias': from
+        }]
     }, function (err, doc) {
         if (err) console.log(err);
         if (doc) {

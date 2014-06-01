@@ -9,7 +9,6 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
 function useApi(command, from, to, body) {
-
     try {
         if (command.options) {
             command.method({

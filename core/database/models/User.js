@@ -23,14 +23,11 @@ var user = new Schema({
         }
     },
     aliases: [{
-        alias: {
-            type: String
-        },
-        addedBy: {
-            type: String,
-        },
+        alias: String,
+        addedBy: String,
         date: {
             type: Date,
+            default: Date.now()
         }
     }],
     seen: [{

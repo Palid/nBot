@@ -18,7 +18,11 @@ var method = function seen(options) {
     } else {
         User.findOne({
             $and: [{
-                nick: nick
+                $or: [{
+                    nick: nick
+                }, {
+                    'aliases.alias': nick
+                }]
             }, {
                 'seen.channel': options.to
             }]

@@ -19,12 +19,20 @@ var method = function memo(options) {
     var body = splitted.length >= 2 ? splitted.slice(1, splitted.length).join(" ") : "";
 
     User.findOne({
-        nick: nick
+        $or: [{
+            nick: nick
+        }, {
+            'aliases.alias': nick
+        }]
     }, function (err, doc) {
         if (err) console.log(err);
         if (doc && body !== '') {
             User.update({
-                nick: nick
+                $or: [{
+                    nick: nick
+                }, {
+                    'aliases.alias': nick
+                }]
             }, {
                 $addToSet: {
                     memo: {

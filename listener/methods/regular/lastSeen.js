@@ -17,13 +17,18 @@ var method = function logLastActivity(from, to, message) {
                 nick: from
             }, {
                 $set: {
-                    nick: from
+                    nick: from,
                 },
                 $addToSet: {
                     seen: {
                         channel: to,
                         date: Date.now(),
                         message: message ? message : ''
+                    },
+                    aliases: {
+                        alias: from,
+                        addedBy: 'seen',
+                        date: Date.now()
                     }
                 },
             }, {

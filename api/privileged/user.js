@@ -157,7 +157,7 @@ var COMMANDS = {
 };
 
 /**
- * [method Your New API Function]
+ * user - main method acting as a hub for all user API calls
  * @param  {Object} options Options object always returned on API call
  * -       {String} to      Channel or user to which the API should respond
  * -       {String} from    User who made the API call

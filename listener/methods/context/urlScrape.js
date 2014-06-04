@@ -76,8 +76,7 @@ function saveToDatabase(from, channel, link, title) {
             logger({
                 timeStamp: true,
                 fileName: 'urls/' + channel,
-                data: "[" + doc.count + "]" + doc.lastPost.by + " " +
-                    link + formatTitle(title) + '\r\n'
+                data: logData
             });
         } else {
             var logData = [
@@ -95,7 +94,8 @@ function saveToDatabase(from, channel, link, title) {
             logger({
                 timeStamp: true,
                 fileName: 'urls/' + channel,
-                data: logData
+                data: "[" + doc.count + "]" + doc.lastPost.by + " " +
+                    link + formatTitle(title) + '\r\n'
             });
             events.emit('apiSay', channel,
                 config.options.urlScrapeTitle.begin + " " +

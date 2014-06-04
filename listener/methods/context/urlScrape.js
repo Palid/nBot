@@ -67,16 +67,36 @@ function saveToDatabase(from, channel, link, title) {
                 }
             }).save(function (err, product, numberAffected) {
                 if (err) console.log(err);
-                console.log(doc);
-                console.log(numberAffected);
             });
-            // .save();
 
             events.emit('apiSay', channel,
                 config.options.urlScrapeTitle.begin +
                 formatTitle(title)
             );
+            logger({
+                timeStamp: true,
+                fileName: 'urls/' + channel,
+                data: "[" + doc.count + "]" + doc.lastPost.by + " " +
+                    link + formatTitle(title) + '\r\n'
+            });
         } else {
+            var logData = [
+                "[" + doc.count + "]",
+                "by:",
+                from,
+                "first:",
+                doc.firstPost.by,
+                "title:",
+                formatTitle(title, true),
+                "link:",
+                link,
+                '\r\n'
+            ].join(" ");
+            logger({
+                timeStamp: true,
+                fileName: 'urls/' + channel,
+                data: logData
+            });
             events.emit('apiSay', channel,
                 config.options.urlScrapeTitle.begin + " " +
                 config.options.urlScrapeTitle.repost + " [" + doc.count + "]" +
@@ -97,11 +117,6 @@ function saveToDatabase(from, channel, link, title) {
             });
         }
 
-    });
-    logger({
-        timeStamp: true,
-        fileName: 'urls/' + channel,
-        data: title + '\r\n'
     });
 }
 

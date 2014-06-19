@@ -8,28 +8,27 @@ var _ = require('lodash'),
 google.resultsPerPage = 1;
 
 function nodeJSSaysHelloToRetardedLibraries(data, channel) {
+    var searchResult = [];
     google(data, function (err, next, links) {
         if (err) {
             console.error(err);
         }
 
         for (var i = 0, length = links.length; i < length; ++i) {
-            var title = links[i].title.substring(0, 96) + "...",
-                description = links[i].description.substring(0, 196) + "...",
-                searchResult = [];
+            var link = links[i].link + " --- ",
+                linkLen = link.length,
+                title = links[i].title.substring(0, 100 - (linkLen + 3 + 2)) + "...",
+                description = links[i].description.substring(0, 300 - (title.length + linkLen + 3 + 2)) + "...",
+                result = [];
 
-            if (_.isString(title)) {
-                searchResult.push(title);
-            }
+            result.push(link.replace(/\r?\n/, ''));
+            result.push(title.replace(/\r?\n/, ''));
+            result.push(description.replace(/\r?\n/, ''));
 
-            if (_.isString(description)) {
-                searchResult.push(description);
-            }
-
-            events.emit('apiSay', channel, searchResult);
+            searchResult.push(result.join(" "));
 
         }
-
+        events.emit('apiSay', channel, searchResult);
     });
 }
 

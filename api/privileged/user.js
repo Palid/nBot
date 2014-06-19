@@ -4,18 +4,37 @@ var events = require('../../core/events.js');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
-function _updateBanStatus(doc, to, status) {
-    User.update({
-        _id: doc._id
-    }, {
-        'permissions.isBanned': status
-    }, function (err) {
-        if (err) console.log(err);
-        events.emit('apiSay', to,
-            "Ban status for user " + doc.nick +
-            " changed to: " + status);
-    });
-}
+
+var PRIVATE = {
+    ban: {
+        setBanStatus: function setBanStatus(doc, to, status) {
+            User.update({
+                _id: doc._id
+            }, {
+                'permissions.isBanned': status
+            }, function (err) {
+                if (err) console.log(err);
+                events.emit('apiSay', to,
+                    "Ban status for user " + doc.nick +
+                    " changed to: " + status);
+            });
+        },
+        status: function getBanStatus(doc, to) {
+            events.emit('apiSay', to,
+                doc.permissions.isBanned ?
+                "This user is banned." :
+                "This user isn't banned."
+            );
+        },
+        "false": function (doc, to) {
+            return PRIVATE.ban.setBanStatus(doc, to, false);
+        },
+        "true": function (doc, to) {
+            return PRIVATE.ban.setBanStatus(doc, to, true);
+        }
+    }
+};
+
 
 var COMMANDS = {
     list: {
@@ -167,30 +186,28 @@ var COMMANDS = {
     },
     ban: {
         level: 4,
+        /**
+         * ban Sets flag or tells ban status.
+         * @param  {Object} options Object options passed from user function
+         * @return {Boolean}         Sets isBanned flag depending on
+         */
         method: function ban(options) {
-            var keyWords = [
-                'true',
-                'false',
-            ];
-            var usedKey = _.find(keyWords, function (item) {
-                return options.body.indexOf(item) !== -1;
-            });
-
             User.findByOptions(options, function (err, doc) {
                 if (err) console.log(err);
                 if (doc) {
-                    if (!usedKey) {
+                    if (!options.body) {
                         events.emit('apiSay', options.to,
-                            doc.permissions.isBanned ?
-                            "This user is banned." :
-                            "This user isn't banned."
-                        );
-                    }
-                    if (doc.permissions.isBanned) {
-                        _updateBanStatus(doc, options.to, false);
+                            'Ban takes one of available arguments:' +
+                            ' false, true, status');
                     } else {
-                        _updateBanStatus(doc, options.to, true);
+                        PRIVATE.ban[options.body] ?
+                            PRIVATE.ban[options.body](doc, options.to) :
+                            events.emit('apiSay', options.to,
+                                "Command not found. ");
                     }
+                } else {
+                    events.emit('apiSay', options.to,
+                        "User wasn't specified.");
                 }
             });
         }
@@ -222,7 +239,7 @@ var method = function user(options) {
                 to: options.to,
                 from: options.from,
                 nick: nick,
-                body: body,
+                body: body.trim(),
                 alias: body.trim().split(' ')[0],
                 doc: doc
             });

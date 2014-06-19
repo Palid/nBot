@@ -15,21 +15,17 @@ function nodeJSSaysHelloToRetardedLibraries(data, channel) {
 
         for (var i = 0, length = links.length; i < length; ++i) {
             var title = links[i].title.substring(0, 96) + "...",
-                link = links[i].link,
                 description = links[i].description.substring(0, 196) + "...",
-                searchResult = "";
-
-            if (_.isString(link)) {
-                searchResult += link + " --- ";
-            }
+                searchResult = [];
 
             if (_.isString(title)) {
-                searchResult += title + " ";
+                searchResult.push(title);
             }
 
             if (_.isString(description)) {
-                searchResult += "\r\n" + description;
+                searchResult.push(description);
             }
+
             events.emit('apiSay', channel, searchResult);
 
         }

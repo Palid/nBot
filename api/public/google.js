@@ -14,9 +14,9 @@ function nodeJSSaysHelloToRetardedLibraries(data, channel) {
         }
 
         for (var i = 0, length = links.length; i < length; ++i) {
-            var title = links[i].title.substring(0, 100) + "...",
+            var title = links[i].title.substring(0, 96) + "...",
                 link = links[i].link,
-                description = links[i].description.substring(0, 200) + "...",
+                description = links[i].description.substring(0, 196) + "...",
                 searchResult = "";
 
             if (_.isString(link)) {

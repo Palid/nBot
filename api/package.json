@@ -1,4 +1,4 @@
 {
     "name": "api",
-    "main": "./index.js"
+    "main": "index.js"
 }

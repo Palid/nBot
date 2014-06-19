@@ -91,7 +91,6 @@ var COMMANDS = {
             }, function (err, doc) {
                 if (err) console.log(err);
                 if (doc) {
-                    console.log(doc);
                     var aliasFound = _.find(doc.aliases, function (item) {
                         return item.alias === options.alias;
                     });
@@ -119,6 +118,42 @@ var COMMANDS = {
                             );
                         });
                     }
+                }
+            });
+        }
+    },
+    aliasDelete: {
+        level: 3,
+        method: function aliasDelete(options) {
+            var alias = options.nick || options.alias;
+            User.findOne({
+                $or: [{
+                    'aliases.alias': alias
+                }, {
+                    nick: alias
+                }]
+            }, function (err, doc) {
+                if (err) console.log(err);
+                if (doc) {
+                    User.update({
+                        _id: options.doc._id
+                    }, {
+                        $pull: {
+                            aliases: {
+                                alias: alias
+                            }
+                        }
+                    }, function (err) {
+                        if (err) console.log(err);
+                        else events.emit('apiSay', options.to,
+                            "Alias " + options.alias + " removed for " +
+                            options.nick + "."
+                        );
+                    });
+                } else {
+                    events.emit('apiSay', options.to,
+                        'Alias not found'
+                    );
                 }
             });
         }

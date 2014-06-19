@@ -15,7 +15,7 @@ var User = mongoose.model('User');
 var method = function memo(options) {
 
     var splitted = _.pull(options.message.split(" "), "");
-    var nick = splitted[0];
+    var nick = splitted[0].toLowerCase();
     var body = splitted.length >= 2 ? splitted.slice(1, splitted.length).join(" ") : "";
 
     User.findOne({

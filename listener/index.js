@@ -3,6 +3,9 @@ var client = require('../core/bot.js'),
     logger = require('../helpers/log.js'),
     commandsRe = require('./commandsRegexp.js');
 
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
+
 
 function sayError(message) {
     var length = message.args.length;
@@ -20,23 +23,28 @@ client.addListener('message', function (from, to, message) {
         toLower = to.toLowerCase(),
         nick = client.nick.toLowerCase();
 
-    console.log(message);
-
-    if (nick === toLower) {
-        logger({
-            timeStamp: true,
-            fileName: 'users/' + fromLower,
-            data: '<' + fromLower + '> ' + message + '\r\n'
+    User.findUser(from)
+        .select('permissions.isBanned')
+        .exec()
+        .then(function (doc) {
+            if (!doc.permissions.isBanned) {
+                if (nick === toLower) {
+                    logger({
+                        timeStamp: true,
+                        fileName: 'users/' + fromLower,
+                        data: '<' + fromLower + '> ' + message + '\r\n'
+                    });
+                    commandsRe(toLower, fromLower, message.trim());
+                } else {
+                    logger({
+                        timeStamp: true,
+                        fileName: 'channels/' + toLower,
+                        data: '<' + fromLower + '> ' + message + '\r\n'
+                    });
+                    commandsRe(fromLower, toLower, message.trim());
+                }
+            }
         });
-        commandsRe(toLower, fromLower, message.trim());
-    } else {
-        logger({
-            timeStamp: true,
-            fileName: 'channels/' + toLower,
-            data: '<' + fromLower + '> ' + message + '\r\n'
-        });
-        commandsRe(fromLower, toLower, message.trim());
-    }
 
 });
 

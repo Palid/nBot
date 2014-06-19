@@ -4,6 +4,19 @@ var events = require('../../core/events.js');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
+function _updateBanStatus(doc, to, status) {
+    User.update({
+        _id: doc._id
+    }, {
+        'permissions.isBanned': status
+    }, function (err) {
+        if (err) console.log(err);
+        events.emit('apiSay', to,
+            "Ban status for user " + doc.nick +
+            " changed to: " + status);
+    });
+}
+
 var COMMANDS = {
     list: {
         level: 0,
@@ -17,17 +30,7 @@ var COMMANDS = {
     level: {
         level: 0,
         method: function getLevel(options) {
-            User.findOne({
-                $or: [{
-                    'aliases.alias': options.nick
-                }, {
-                    'aliases.alias': options.alias
-                }, {
-                    nick: options.alias
-                }, {
-                    nick: options.nick
-                }]
-            }, function (err, doc) {
+            User.findByOptions(options, function (err, doc) {
                 if (err) console.log(err);
                 if (doc) {
                     events.emit("apiSay", options.to,
@@ -78,17 +81,7 @@ var COMMANDS = {
     aliasAdd: {
         level: 3,
         method: function aliasAdd(options) {
-            User.findOne({
-                $or: [{
-                    'aliases.alias': options.nick
-                }, {
-                    'aliases.alias': options.alias
-                }, {
-                    nick: options.alias
-                }, {
-                    nick: options.nick
-                }]
-            }, function (err, doc) {
+            User.findByOptions(options, function (err, doc) {
                 if (err) console.log(err);
                 if (doc) {
                     var aliasFound = _.find(doc.aliases, function (item) {
@@ -125,22 +118,15 @@ var COMMANDS = {
     aliasDelete: {
         level: 3,
         method: function aliasDelete(options) {
-            var alias = options.nick || options.alias;
-            User.findOne({
-                $or: [{
-                    'aliases.alias': alias
-                }, {
-                    nick: alias
-                }]
-            }, function (err, doc) {
+            User.findByOptions(options, function (err, doc) {
                 if (err) console.log(err);
                 if (doc) {
                     User.update({
-                        _id: options.doc._id
+                        _id: doc._id
                     }, {
                         $pull: {
                             aliases: {
-                                alias: alias
+                                alias: options.nick || options.alias
                             }
                         }
                     }, function (err) {
@@ -161,17 +147,7 @@ var COMMANDS = {
     alias: {
         level: 0,
         method: function alias(options) {
-            User.findOne({
-                $or: [{
-                    'aliases.alias': options.nick
-                }, {
-                    'aliases.alias': options.alias
-                }, {
-                    nick: options.alias
-                }, {
-                    nick: options.nick
-                }]
-            }, function (err, doc) {
+            User.findByOptions(options, function (err, doc) {
                 if (err) console.log(err);
                 if (doc) {
                     var aliases = _(doc.aliases).map(function (item) {
@@ -185,6 +161,36 @@ var COMMANDS = {
                     events.emit('apiSay', options.to,
                         "No user found."
                     );
+                }
+            });
+        }
+    },
+    ban: {
+        level: 4,
+        method: function ban(options) {
+            var keyWords = [
+                'true',
+                'false',
+            ];
+            var usedKey = _.find(keyWords, function (item) {
+                return options.body.indexOf(item) !== -1;
+            });
+
+            User.findByOptions(options, function (err, doc) {
+                if (err) console.log(err);
+                if (doc) {
+                    if (!usedKey) {
+                        events.emit('apiSay', options.to,
+                            doc.permissions.isBanned ?
+                            "This user is banned." :
+                            "This user isn't banned."
+                        );
+                    }
+                    if (doc.permissions.isBanned) {
+                        _updateBanStatus(doc, options.to, false);
+                    } else {
+                        _updateBanStatus(doc, options.to, true);
+                    }
                 }
             });
         }

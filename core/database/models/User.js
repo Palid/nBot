@@ -20,7 +20,8 @@ var user = new Schema({
             required: true,
             max: 5,
             default: 0
-        }
+        },
+        isBanned: Boolean
     },
     aliases: [{
         alias: String,
@@ -43,6 +44,30 @@ var user = new Schema({
             default: Date.now
         }
     }]
+});
+
+user.static('findUser', function (nickOrAlias, callback) {
+    return this.findOne({
+        $or: [{
+            'aliases.alias': nickOrAlias
+        }, {
+            nick: nickOrAlias
+        }]
+    }, callback);
+});
+
+user.static('findByOptions', function (options, callback) {
+    return this.findOne({
+        $or: [{
+            'aliases.alias': options.nick
+        }, {
+            'aliases.alias': options.alias
+        }, {
+            nick: options.alias
+        }, {
+            nick: options.nick
+        }]
+    }, callback);
 });
 
 module.exports = mongoose.model('User', user);

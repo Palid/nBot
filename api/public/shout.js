@@ -1,6 +1,7 @@
 "use strict";
-var figlet = require('figlet'),
-    events = require('../../core/events.js');
+var figlet = require('figlet');
+var rek = require('rekuire');
+var events = rek('/bot.js').events;
 
 
 

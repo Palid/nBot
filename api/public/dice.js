@@ -1,39 +1,45 @@
 "use strict";
-var _ = require('lodash'),
-    events = require('../../core/events.js');
+var _ = require('lodash');
+var rek = require('rekuire');
+var events = rek('/bot.js').events;
 
-var method = function dice(options) {
+// Lol overkill
+function checkDice(dice) {
+    if (_.isArray(dice)) {
+        var map = _.map(dice, function (item) {
+            return (!_.isNaN(parseInt(item, 10)) && item.length < 3);
+        });
+        return _.isUndefined(_.find(map, function (item) {
+            return !item;
+        }));
+    } else return false;
+}
 
-    var channel = options.to,
-        data = options.message;
+var method = function rollDice(options) {
 
-    var d = _.indexOf(data, 'd'),
-        diceThrows = parseInt(data.substring(_.indexOf(data, ' '), d), 10),
-        dices = parseInt(data.substring(d + 1, data.length), 10),
-        finalResult = null,
-        resultsList = [];
+    var resultsList = [];
+    var dice = options.message ? options.message.split('d', 2) : undefined;
 
-    if (!_.isNaN(dices) && !_.isNaN(diceThrows) &&
-        dices.toString().split("").length < 3 &&
-        diceThrows.toString().split("").length < 3) {
-
-        for (var i = 0; i < diceThrows; i++) {
-            var x = Math.floor(Math.random() * dices + 1);
-            finalResult += resultsList.push(x.toString());
+    if (checkDice(dice)) {
+        for (var i = 0; i < dice[1]; i++) {
+            var x = Math.floor(Math.random() * dice[0] + 1);
+            resultsList.push(x);
         }
 
-        events.emit('apiSay', channel, [
+        events.emit('apiSay', options.to, [
             "Throw results for",
-            data,
+            options.message,
             ":",
             resultsList.join(", "),
             "with final result of:",
-            finalResult
+            _.reduce(resultsList, function (sum, number) {
+                return sum + number;
+            })
         ].join(" "));
 
     } else {
         events.emit('apiSay',
-            channel,
+            options.to,
             "Throw result is too long or is not a number. Example of valid dice throw: 2d10"
         );
     }
@@ -42,8 +48,8 @@ var method = function dice(options) {
 
 var defaults = {
     description: {
-        pl: ",dice [i]d[n] - Rzuca [n] koścmi [i] razy.",
-        en: ",dice [i]d[n] - Throws [n] dices [i] times."
+        pl: ",dice [i]d[n] - Rzuca [n](max 99) koścmi [i](max 99) razy.",
+        en: ",dice [i]d[n] - Throws [n](max 99) dice [i](max 99) times."
     },
     aliases: [
         "d",

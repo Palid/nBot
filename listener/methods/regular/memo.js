@@ -1,8 +1,9 @@
 "use strict";
 var _ = require('lodash');
+var rek = require('rekuire');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var events = require('../../../core/events.js');
+var events = rek('/bot.js').events;
 
 var method = function sayMemo(from, to) {
 

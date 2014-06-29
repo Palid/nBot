@@ -1,9 +1,10 @@
 "use strict";
-var cluster = require('cluster'),
-    events = require('../../core/events.js');
+var cluster = require('cluster');
+var rek = require('rekuire');
+var events = rek('/bot.js').events;
 
 cluster.setupMaster({
-    exec: "cluster/eval.js",
+    exec: "api/public/__evaluate.js",
     args: process.argv.slice(2),
     silent: false
 });
@@ -33,10 +34,6 @@ var method = function evaluate(options) {
     var worker = cluster.fork();
 
     worker.send(options.message);
-
-    return {
-        type: "async"
-    };
 };
 
 var defaults = {

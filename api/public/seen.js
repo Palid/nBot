@@ -2,10 +2,12 @@
 var _ = require('lodash');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var events = require('../../core/events.js');
-var config = require('../../config/bot.js');
 
-var botNick = config.irc.nick.toLowerCase();
+var rek = require('rekuire');
+var bot = rek('/bot.js');
+var events = bot.events;
+
+var botNick = bot.getConfig('nick').toLowerCase();
 
 var method = function seen(options) {
     var nick = options.message.trim().toLowerCase();

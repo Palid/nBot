@@ -1,6 +1,7 @@
 "use strict";
 var _ = require('lodash');
-var events = require('../../core/events.js');
+var rek = require('rekuire');
+var events = rek('/bot.js').events;
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 

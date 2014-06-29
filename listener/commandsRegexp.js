@@ -1,7 +1,8 @@
 "use strict";
 var _ = require('lodash'),
+    rekuire = require('rekuire'),
     jsesc = require('jsesc'),
-    config = require('../config/bot.js'),
+    config = rekuire('config/bot.js'),
     // Regular methods which will fire every received message
     REGULAR = {
         lastSeen: {

@@ -25,4 +25,4 @@ var link = new Schema({
     }
 });
 
-module.exports = mongoose.model('Link', link);
+mongoose.model('Link', link);

@@ -1,46 +1,49 @@
+/*jshint multistr: true */
 "use strict";
-var _ = require('lodash'),
-    events = require('../../core/events.js'),
-    config = require('../../core/initialize/parseJSON.js');
+var _ = require('lodash');
+var rek = require('rekuire');
+var events = rek('/bot.js').events;
+
+var mongoose = require('mongoose');
+var Command = mongoose.model('Command');
 
 var method = function alias(options) {
 
-    if (_.has(config, options.message)) {
-        var list = [],
-            objList = [];
-        _.forEach(config[options.message].aliases, function (property) {
-            if (_.isObject(property)) {
-                objList.push(property.alias);
-            } else {
-                list.push(property);
-            }
-
-        });
-        if (list.length > 0) {
+    Command.findOne({
+        'aliases.alias': options.message.trim()
+    }).exec().then(function (doc) {
+        if (doc) {
+            var aliases = _.map(doc.aliases, function (item) {
+                var prepend = '';
+                if (item.options.data) {
+                    prepend += "d";
+                }
+                if (item.options.to) {
+                    prepend += "t";
+                }
+                if (item.options.from) {
+                    prepend += "f";
+                }
+                return ((prepend ? "[" + prepend + "]" : '') + item.alias);
+            });
             events.emit(
                 'apiSay',
                 options.to,
-                "Simple aliases for " + options.message + ": " + list.join(', ')
+                "Aliases for " + doc.command + ": " + aliases.join(", ")
             );
+        } else {
+            events.emit('apiSay', options.to, 'Command or alias "' + options.message + '" not found.');
         }
-        if (objList.length > 0) {
-            events.emit(
-                'apiSay',
-                options.to,
-                "Complex aliases for " + options.message + ": " + objList.join(', ')
-            );
-        }
-
-    } else {
-        events.emit('apiSay', options.to, 'Command not found.');
-    }
+    });
 
 };
 
 var defaults = {
     description: {
-        pl: ",alias [cmd]- Wyświetla listę aliasów dla komendy.",
-        en: ",alias [cmd]- Lists all aliases for command."
+        pl: ",alias [cmd]- Wyświetla listę aliasów dla komendy.\
+            [d] - zmienione dane wejściowe. [t] - zmieniony odbiorca. [f] - zmieniony adresat",
+        en: ",alias [cmd]- Lists all aliases for command.\
+            [d] - changed input. [t] - changed destination. [f] - changed sender."
     },
     aliases: [
         "aliases"

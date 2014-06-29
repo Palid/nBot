@@ -1,7 +1,9 @@
 "use strict";
-var _ = require('lodash'),
-    events = require('../../core/events.js'),
-    oauth = require('../../config/oAuth.js').tumblr,
+var _ = require('lodash');
+var rek = require('rekuire');
+var bot = rek('/bot.js');
+var events = bot.events;
+var oauth = bot.getAuth('tumblr'),
     tumblr = require('tumblr'),
     tagged = new tumblr.Tagged(oauth);
 

@@ -2,14 +2,13 @@
 var fs = require('fs'),
     path = require('path'),
     _ = require('lodash'),
-    events = require('../core/events.js');
+    events = require('../bot.js').events;
 
 var BANNED = [
     'index.js',
     '*example',
     'package.json',
-    '__tests__',
-    '__mocks__'
+    '*__'
 ];
 
 /**

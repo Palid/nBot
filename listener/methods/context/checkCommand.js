@@ -1,23 +1,26 @@
 "use strict";
-var _ = require('lodash'),
-    path = require('path'),
-    rootDir = path.dirname(require.main.filename),
-    events = require(rootDir + '/core/events.js'),
-    client = require(rootDir + '/core/bot.js'),
-    aliases = require(rootDir + '/core/initialize/createAliasDict.js');
+var _ = require('lodash');
+var rek = require('rekuire');
+
+var events = rek('/bot.js').events,
+    client = rek('core/bot.js');
+
+var API = rek('api');
+
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var Command = mongoose.model('Command');
 
-function useApi(command, from, to, body) {
+function useApi(commandMap, from, to, body) {
     try {
-        if (command.options) {
-            command.method({
-                from: command.options.from ? command.options.from : from,
-                to: command.options.to ? command.options.to : to,
-                body: command.options.data ? command.options.data : body
+        if (commandMap.options) {
+            API[commandMap.command].method({
+                from: commandMap.options.from ? commandMap.options.from : from,
+                to: commandMap.options.to ? commandMap.options.to : to,
+                body: commandMap.options.data ? commandMap.options.data : body
             });
         } else {
-            command.method({
+            API[commandMap.command].method({
                 from: from,
                 message: body,
                 to: to
@@ -25,7 +28,7 @@ function useApi(command, from, to, body) {
         }
     } catch (err) {
         console.log(err);
-        client.say(to, "Command " + command + " exited with an error.");
+        client.say(to, "Command " + commandMap.command + " exited with an error.");
     }
 }
 
@@ -71,31 +74,41 @@ var method = function activateCommand(from, to, message, match) {
     var splitted = _.pull(message.split(" "), "");
     var command = splitted[0].replace(match[0], '');
     var body = splitted.length >= 2 ? splitted.slice(1, splitted.length).join(" ") : "";
-    var item = aliases[command];
 
+    Command.findOne({
+        'aliases.alias': command,
+    }).exec()
+        .then(function (cmdDoc) {
+            if (!cmdDoc) {
+                client.say(to, "Command " + command + " not found");
+            } else {
+                var options = _.find(cmdDoc.aliases, function (item) {
+                    return item.options.data || item.options.to || item.options.from;
+                });
+                var commandMap = {
+                    command: cmdDoc.command,
+                    options: options ? options.options : undefined
+                };
 
-    if (!item) {
-        client.say(to, "Command " + command + " not found");
-    } else {
-        if (item.level > 0) {
-            User.findOne({
-                nick: from
-            }, function (err, doc) {
-                if (err) console.log(err);
-                if (doc.permissions.level >= item.level) {
-                    useApi(item, from, to, body);
+                if (cmdDoc.level > 0) {
+                    User.findOne({
+                        nick: from
+                    }, function (err, doc) {
+                        if (err) console.log(err);
+                        if (doc.permissions.level >= cmdDoc.level) {
+                            useApi(commandMap, from, to, body);
+                        } else {
+                            client.say(to, "Access denied. Your permissions level " +
+                                doc.permissions.level + " < " + cmdDoc.level
+                            );
+                        }
+                    });
                 } else {
-                    client.say(to, "Access denied. Your permissions level " +
-                        doc.permissions.level + " < " + item.level
-                    );
+                    useApi(commandMap, from, to, body);
                 }
-            });
-        } else {
-            useApi(item, from, to, body);
-        }
 
-    }
-
+            }
+        });
 };
 
 module.exports = method;

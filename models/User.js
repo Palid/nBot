@@ -21,7 +21,10 @@ var user = new Schema({
             max: 5,
             default: 0
         },
-        isBanned: Boolean
+        isBanned: {
+            type: Boolean,
+            default: false
+        }
     },
     aliases: [{
         alias: String,
@@ -33,7 +36,10 @@ var user = new Schema({
     }],
     seen: [{
         channel: String,
-        date: Date,
+        date: {
+            type: Date,
+            default: Date.now()
+        },
         message: String
     }],
     memo: [{
@@ -70,4 +76,10 @@ user.static('findByOptions', function (options, callback) {
     }, callback);
 });
 
-module.exports = mongoose.model('User', user);
+user.static('createNew', function (nick, channel, callback) {
+    return this.create({
+        nick: nick
+    }, callback);
+});
+
+mongoose.model('User', user);

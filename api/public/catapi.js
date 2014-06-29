@@ -1,6 +1,7 @@
 "use strict";
-var request = require('request'),
-    events = require('../../core/events.js'),
+var request = require('request');
+var rek = require('rekuire');
+var events = rek('/bot.js').events,
     url = "http://thecatapi.com/api/images/get",
     requestOptions = {
         method: 'HEAD'

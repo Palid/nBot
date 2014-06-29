@@ -1,7 +1,8 @@
 "use strict";
-var _ = require('lodash'),
-    google = require('google'),
-    events = require('../../core/events.js');
+var _ = require('lodash');
+var google = require('google');
+var rek = require('rekuire');
+var events = rek('/bot.js').events;
 
 // Links amount to display
 // per search

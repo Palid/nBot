@@ -1,13 +1,15 @@
 "use strict";
-var _ = require('lodash'),
-    events = require('../../core/events.js'),
-    config = require('../../config/bot.js');
+var _ = require('lodash');
+var rek = require('rekuire');
+var bot = rek('/bot.js'),
+    events = bot.events,
+    channelPrefixes = bot.getConfig('channelPrefixes');
 
-var len = config.irc.channelPrefixes.length;
+var len = channelPrefixes.length;
 
 var method = function message(options) {
 
-    _.forEach(config.irc.channelPrefixes, function (property, index) {
+    _.forEach(channelPrefixes, function (property, index) {
         if (options.message.substring(0, 1) === property) {
             events.emit('apiSay', options.to, "It's not a user.");
 

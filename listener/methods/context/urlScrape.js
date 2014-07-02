@@ -26,6 +26,7 @@ var titleRepostLen = config.options.urlScrapeTitle.repost.length;
 var length = (80 - config.options.urlScrapeTitle.begin.length - 3);
 
 function formatTitle(title, isRepost) {
+    title = _.unescape(title);
     return ((title.length <= 80) ? title :
         (title.substr(0,
             isRepost ?

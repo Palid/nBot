@@ -36,6 +36,8 @@ var method = function () {
                     level: item.defaults.level || 0,
                     aliases: aliases,
                     description: description
+                }, function (err) {
+                    if (err) console.log(err);
                 });
             }
         });

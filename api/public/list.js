@@ -1,21 +1,21 @@
 "use strict";
-var _ = require('lodash'),
-    events = require('../../core/events.js'),
-    commands = [],
-    methods;
+var _ = require('lodash');
+var rek = require('rekuire');
+var events = rek('/bot.js').events;
 
-events.once('apiLoaded', function (data) {
-    methods = data;
-
-    _.forEach(methods, function (property, key) {
-        commands.push(key);
-    });
-});
+var mongoose = require('mongoose');
+var Command = mongoose.model('Command');
 
 var method = function list(options) {
-
-
-    events.emit('apiSay', options.to, "Available commands: " + commands.join(" "));
+    Command.find()
+        .select('command')
+        .exec()
+        .then(function (doc) {
+            var commands = _.map(doc, function (item) {
+                return item.command;
+            });
+            events.emit('apiSay', options.to, "Available commands: " + commands.join(" "));
+        });
 
 };
 

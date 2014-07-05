@@ -1,8 +1,8 @@
 "use strict";
-var crypto = require('crypto'),
-    _ = require('lodash'),
-    events = require('../../core/events.js');
-
+var _ = require('lodash');
+var crypto = require('crypto');
+var rek = require('rekuire');
+var events = rek('/bot.js').events;
 
 
 function encrypt(word) {

@@ -1,15 +1,14 @@
 "use strict";
 //util
 var _ = require('lodash');
+var rek = require('rekuire');
 
-//paths
-var path = require('path');
-var rootDir = path.dirname(require.main.filename);
 
 //nBot
-var config = require(rootDir + '/config/bot.js');
-var events = require(rootDir + '/core/events.js');
-var logger = require(rootDir + '/helpers/log.js');
+var bot = rek('/bot.js');
+var events = bot.events;
+var logger = rek('helpers/log.js');
+var urlScrapeTitle = bot.getOption('urlScrapeTitle');
 
 
 //database
@@ -22,8 +21,8 @@ var titleRe = new RegExp(/(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/g);
 
 
 // formatTitle private
-var titleRepostLen = config.options.urlScrapeTitle.repost.length;
-var length = (80 - config.options.urlScrapeTitle.begin.length - 3);
+var titleRepostLen = urlScrapeTitle.repost.length;
+var length = (80 - urlScrapeTitle.begin.length - 3);
 
 function formatTitle(title, isRepost) {
     title = _.unescape(title);
@@ -71,7 +70,7 @@ function saveToDatabase(from, channel, link, title) {
             });
 
             events.emit('apiSay', channel,
-                config.options.urlScrapeTitle.begin +
+                urlScrapeTitle.begin +
                 formatTitle(title)
             );
             logger({
@@ -99,8 +98,8 @@ function saveToDatabase(from, channel, link, title) {
                     link + formatTitle(title) + '\r\n'
             });
             events.emit('apiSay', channel,
-                config.options.urlScrapeTitle.begin + " " +
-                config.options.urlScrapeTitle.repost + " [" + doc.count + "]" +
+                urlScrapeTitle.begin + " " +
+                urlScrapeTitle.repost + " [" + doc.count + "]" +
                 " first: " + doc.firstPost.by + ", " +
                 "title: " +
                 formatTitle(title, true)

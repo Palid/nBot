@@ -1,7 +1,9 @@
 "use strict";
-var _ = require('lodash'),
-    events = require('../../core/events.js'),
-    client = require('../../config/bot.js').irc;
+var rek = require('rekuire');
+var _ = require('lodash');
+
+var events = rek('/bot.js').events,
+    client = rek('config/bot.js').irc;
 
 var method = function kick(options) {
     var splitted = _.pull(options.message.split(" "), "");

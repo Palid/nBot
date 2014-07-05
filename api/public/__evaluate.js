@@ -3,7 +3,6 @@ var vm = require('vm');
 var _ = require('lodash');
 
 var context = {};
-
 //The runner.js is ran in a separate process and just listens for the message which contains code to be executed
 process.on('message', function clusterData(data) {
     var ctx, script, response;

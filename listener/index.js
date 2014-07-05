@@ -1,6 +1,8 @@
 "use strict";
-var client = require('../core/bot.js'),
-    logger = require('../helpers/log.js'),
+var rek = require('rekuire');
+
+var client = rek('core/bot.js'),
+    logger = rek('helpers/log.js'),
     commandsRe = require('./commandsRegexp.js');
 
 var mongoose = require('mongoose');
@@ -16,7 +18,7 @@ function sayError(message) {
 
 // from = messaging user
 // to = channel OR bot
-// message = message$
+// message = message
 
 client.addListener('message', function (from, to, message) {
     var fromLower = from.toLowerCase(),
@@ -58,7 +60,6 @@ client.addListener('ctcp', function (nick, message) {
 
 client.addListener('join', function (channel, who) {
     console.log('%s has joined %s', who, channel);
-    commandsRe(channel, who);
 });
 
 client.addListener('part', function (channel, who, reason) {
@@ -95,4 +96,7 @@ client.addListener('raw', function (message) {
         data: JSON.stringify(message, null, 4)
     });
 });
-console.info('nBot start');
+
+client.once('join', function (channel, who) {
+
+});

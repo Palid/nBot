@@ -5,5 +5,3 @@ logs/
 database/*
 config/bot.js
 config/oAuth.js
-.meteor
-packages

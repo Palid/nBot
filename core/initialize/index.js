@@ -1,25 +1,48 @@
 "use strict";
-var makeDirs = require('../../helpers/makeDirs.js');
+var _ = require('lodash');
+var rek = require('rekuire');
 
-/**
- * Requires order is really important here.
- * That's the main reason why things can't really be automatic.
- */
+var mongoose = require('mongoose'),
+    User = mongoose.model('User');
+var root = rek('/bot.js').getOption('root');
 
-// Create directories
-makeDirs({
-    logs: 'logs',
-    users: 'logs/users',
-    urls: 'logs/urls',
-    channels: 'logs/channels',
-    database: 'database'
+function createRoot(nick) {
+    User.findOne({
+        nick: nick
+    }, function (err, doc) {
+        if (err) console.log(err);
+        if (!doc || doc.length < 1) {
+            User.create({
+                nick: nick,
+                permissions: {
+                    group: 'root',
+                    level: 5
+                }
+            }, function (err) {
+                if (err) console.log(err);
+                console.log("Creating root document for %s", nick);
+
+            });
+        } else {
+            doc.permissions = {
+                level: 5
+            };
+            doc.save(function (err) {
+                if (err) console.log(err);
+            });
+            console.log("Creating root document for %s", nick);
+        }
+    });
+}
+
+mongoose.connection.once('open', function () {
+    if (_.isArray(root)) {
+        _.forEach(root, function (value) {
+            createRoot(value);
+        });
+    } else {
+        createRoot(root);
+
+    }
+
 });
-
-console.info("Initializing database");
-require('../database/init.js');
-
-console.info("Creating Aliases JSON");
-require('./createAliasesJSON.js');
-
-console.info("Initializing listener events");
-require('../../listener/');

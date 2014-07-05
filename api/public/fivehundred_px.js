@@ -1,6 +1,8 @@
 "use strict";
-var events = require('../../core/events.js'),
-    oauth = require('../../config/oAuth.js')['500px'],
+var rek = require('rekuire');
+var bot = rek('/bot.js');
+var events = bot.events,
+    oauth = bot.getAuth('500px'),
     API500px = require('500px').API500px,
     api500px = new API500px(oauth.consumer_key);
 

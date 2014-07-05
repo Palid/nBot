@@ -1,5 +1,7 @@
 "use strict";
-var config = require('../../config/bot.js').options.database,
+var rek = require('rekuire');
+var bot = rek('/bot.js');
+var config = bot.getOption('database'),
     mongoose, db;
 
 if (config.type === "mongodb") {
@@ -22,5 +24,3 @@ db.once('open', function callback() {
 });
 
 console.log('Running mongoose version %s', mongoose.version);
-
-module.exports = mongoose;

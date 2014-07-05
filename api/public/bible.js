@@ -1,6 +1,7 @@
 "use strict";
 var request = require('request');
-var events = require('../../core/events.js');
+var rek = require('rekuire');
+var events = rek('/bot.js').events;
 
 var method = function bible(options) {
     var channel = options.to,

@@ -1,39 +1,36 @@
 "use strict";
+var _ = require('lodash');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
 var method = function logLastActivity(from, to, message) {
 
     User.findOne({
-        $and: [{
-            nick: from
-        }, {
-            'seen.channel': to
-        }]
+        nick: from
     }, function (err, doc) {
         if (err) console.log(err);
-        if (!doc || doc.length < 1) {
-            User.update({
-                nick: from
-            }, {
-                $set: {
-                    nick: from,
-                },
-                $addToSet: {
-                    seen: {
-                        channel: to,
-                        date: Date.now(),
-                        message: message ? message : ''
-                    },
-                    aliases: {
-                        alias: from,
-                        addedBy: 'seen',
-                        date: Date.now()
-                    }
-                },
-            }, {
-                upsert: true
-            }, function (err) {
+        if (doc && doc.seen) {
+            var channelIndex = _.findIndex(doc.seen, {
+                channel: to
+            });
+            if (channelIndex !== -1) {
+                doc.seen[channelIndex].message = message;
+                doc.seen[channelIndex].date = Date.now();
+                doc.save(function (err) {
+                    if (err) console.log(err);
+                });
+            } else if (channelIndex === -1) {
+                doc.seen.push({
+                    channel: to,
+                    message: message,
+                    date: Date.now()
+                });
+                doc.save(function (err) {
+                    if (err) console.log(err);
+                });
+            }
+        } else if (!doc) {
+            User.createNew(from, to, function (err, user) {
                 if (err) console.log(err);
             });
         } else {

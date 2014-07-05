@@ -1,6 +1,6 @@
 "use strict";
 
-var oAuth = {
+module.exports = {
     'tumblr': {
         consumer_key: 'oAuth consumer key',
         consumer_secret: 'oAuth consumer secret',
@@ -12,5 +12,3 @@ var oAuth = {
         consumer_secret: 'oAuth consumer secret',
     }
 };
-
-module.exports = oAuth;

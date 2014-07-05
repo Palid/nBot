@@ -1,7 +1,8 @@
 "use strict";
-var _ = require('lodash'),
-    request = require('request'),
-    events = require('../../core/events.js'),
+var _ = require('lodash');
+var request = require('request');
+var rek = require('rekuire');
+var events = rek('/bot.js').events,
     defUrl = 'http://api.oboobs.ru/noise/',
     requestOptions = {
         method: 'GET'

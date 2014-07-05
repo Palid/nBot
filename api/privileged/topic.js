@@ -1,5 +1,6 @@
 "use strict";
-var events = require('../../core/events.js');
+var rek = require('rekuire');
+var events = rek('/bot.js').events;
 
 
 var method = function topic(options) {

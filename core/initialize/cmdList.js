@@ -30,7 +30,9 @@ var method = function () {
             aliases.push({
                 alias: key
             });
-            if (!_.has(doc, key)) {
+            if (!_.findWhere(doc, {
+                command: key
+            })) {
                 Command.create({
                     command: key,
                     level: item.defaults.level || 0,

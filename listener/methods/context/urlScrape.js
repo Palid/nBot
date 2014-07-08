@@ -42,6 +42,7 @@ function saveToDatabase(from, channel, link, title) {
         link = link.substr(0, lastSlash);
     }
 
+    from = from.substr(0, 1) + '\u200C' + from.substr(1);
     link = link.replace('https://', 'http://');
 
     Link.findOne({

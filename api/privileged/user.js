@@ -171,8 +171,8 @@ var COMMANDS = {
                 if (err) console.log(err);
                 if (doc) {
                     var aliases = _(doc.aliases).map(function (item) {
-                        return item.alias;
-                    }).pull(doc.nick)
+                            return item.alias;
+                        }).pull(doc.nick)
                         .value();
                     events.emit('apiSay', options.to,
                         "Aliases for " + doc.nick + " are: " + aliases.join(", ")
@@ -235,19 +235,21 @@ var method = function user(options) {
     }, function (err, doc) {
         if (err) console.log(err);
         var currentCommand = command ? COMMANDS[command] : COMMANDS.list;
-        if (currentCommand && doc && doc.permissions.level >= currentCommand.level) {
-            currentCommand.method({
-                to: options.to,
-                from: options.from,
-                nick: nick,
-                body: body.trim(),
-                alias: body.trim().split(' ')[0],
-                doc: doc
-            });
-        } else if (doc.permissions.level < currentCommand.level) {
-            events.emit(options.to, "Access denied. Your permissions level " +
-                doc.permissions.level + " < " + currentCommand.level
-            );
+        if (currentCommand) {
+            if (doc && doc.permissions.level >= currentCommand.level) {
+                currentCommand.method({
+                    to: options.to,
+                    from: options.from,
+                    nick: nick,
+                    body: body.trim(),
+                    alias: body.trim().split(' ')[0],
+                    doc: doc
+                });
+            } else if (doc.permissions.level < currentCommand.level) {
+                events.emit(options.to, "Access denied. Your permissions level " +
+                    doc.permissions.level + " < " + currentCommand.level
+                );
+            }
         } else {
             COMMANDS.list.method(options.to);
         }

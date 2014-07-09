@@ -42,7 +42,7 @@ function saveToDatabase(from, channel, link, title) {
         link = link.substr(0, lastSlash);
     }
 
-    from = from.substr(0, 1) + '\u200C' + from.substr(1);
+    from = from.substr(0, 1) + '\u200B' + from.substr(1);
     link = link.replace('https://', 'http://');
 
     Link.findOne({
@@ -53,7 +53,6 @@ function saveToDatabase(from, channel, link, title) {
             console.log(err);
         }
         if (!doc) {
-            console.log("Link is %s", link);
             new Link({
                 channel: channel,
                 count: 1,

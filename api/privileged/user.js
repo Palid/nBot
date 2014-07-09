@@ -53,8 +53,8 @@ var COMMANDS = {
             User.findByOptions(options, function (err, doc) {
                 if (err) console.log(err);
                 if (doc) {
-                    events.emit("apiSay", options.to,
-                        "[" + options.nick + "]" + doc.nick +
+                    events.emit("apiSay", options.to, ((doc.nick !== options.nick) ?
+                            "[" + doc.nick + "]" + options.nick : options.nick) +
                         "'s permission level is: " +
                         doc.permissions.level
                     );
@@ -70,7 +70,6 @@ var COMMANDS = {
         level: 3,
         method: function setLevel(options) {
             var newLevel = parseInt(options.body.trim().split(' ')[0], 10);
-            console.log(newLevel);
             if (newLevel > 5) newLevel = 5;
             if (!_.isNaN(newLevel)) {
                 User.findOne({
@@ -86,6 +85,8 @@ var COMMANDS = {
                         events.emit("apiSay", options.to,
                             "You can't change permission to higher rank than your own."
                         );
+                    } else if (doc.permissions.level === 5) {
+                        events.emit("apiSay", options.to, "You can't change root permissions.");
                     } else {
                         self.permissions.level = newLevel;
                         self.save();
@@ -95,6 +96,8 @@ var COMMANDS = {
                         );
                     }
                 });
+            } else {
+                events.emit("apiSay", options.to, "Level is not a number.");
             }
         }
     },
@@ -251,7 +254,7 @@ var method = function user(options) {
                 );
             }
         } else {
-            COMMANDS.list.method(options.to);
+            COMMANDS.list.method(options);
         }
     });
 };

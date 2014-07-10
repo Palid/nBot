@@ -17,7 +17,7 @@ var method = function letMeGoogleThatForYou(options) {
     if (split && split.length >= 2) {
         var nick = split[0];
         var query = split.slice(1).join(" ");
-        events.emit("apiSay", options.to, [nick, ":", " http://lmgtfy.com/?q=", query]);
+        events.emit("apiSay", options.to, [nick, ":", " http://lmgtfy.com/?q=", query].join(""));
 
     } else {
         events.emit("apiSay", options.to, "You need to provide two arguments: nick and query, both seperated by space.");

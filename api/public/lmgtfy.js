@@ -1,8 +1,9 @@
 "use strict";
-var _ = require('lodash');
 var rek = require('rekuire');
 var events = rek('/bot.js').events;
 
+
+var url = require('url');
 /**
  * method letMeGoogleThatForYou
  * @param  {Object} options Options object always returned on API call
@@ -17,8 +18,8 @@ var method = function letMeGoogleThatForYou(options) {
     if (split && split.length >= 2) {
         var nick = split[0];
         var query = split.slice(1).join(" ");
-        events.emit("apiSay", options.to, [nick, ":", " http://lmgtfy.com/?q=", query].join(""));
-
+        var urlObj = url.parse("http://lmgtfy.com/?q=" + query, true);
+        events.emit("apiSay", options.to, [nick, ": ", url.format(urlObj)].join(""));
     } else {
         events.emit("apiSay", options.to, "You need to provide two arguments: nick and query, both seperated by space.");
     }

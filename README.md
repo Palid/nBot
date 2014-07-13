@@ -42,7 +42,7 @@ To start bot up you need to create two files in `config` directory: `bot.js` and
 
 
 ## API ##
-The `nBot` has is built with an idea to easily extend his current public methods amount. At the moment `nBot` has an impressive amount of 22 public methods (private module for eval included) and 4 private methods. 
+The `nBot` is built with an idea to easily extend his current public methods amount. At the moment `nBot` has an impressive amount of 22 public methods (private module for eval included) and 4 private methods. 
 
 Adding new method is as easy as copying `example.method` file in `api` directory and adding your own functionality to the `method` variable. In the end save your file anywhere in api directory with filename same as call method for users.
 
@@ -64,11 +64,11 @@ Adding new method is as easy as copying `example.method` file in `api` directory
 * `catapi` Returns a link to random cat picture using [catapi](http://thecatapi.com/)
 * `dice` Returns called dice throws.
 * `dogecoin` Returns current dogecoin rates
-* `fivehundred_px` Returns link to a random picture from provided tag using [500px api][http://developers.500px.com/]
+* `fivehundred_px` Returns link to a random picture from provided tag using [500px api](http://developers.500px.com/)
 * `google` Returns first google result for provided string
 * `help` Returns help for provided command
 * `list` Lists all currently available methods
-* `lmgtfy` Hilights `user` with [Let Me Google This For You](http://lmgtfy.com)link query
+* `lmgtfy` Shows link to [Let Me Google This For You](http://lmgtfy.com) query
 * `memo` Creates memo for a `user`.
 * `message` Sends private message to a `user`
 * `niggr` Shortens URL using the [nig.gr url shortener](http://nig.gr)
@@ -85,5 +85,5 @@ Adding new method is as easy as copying `example.method` file in `api` directory
 * `topic` Changes current channel's topic
 * `user` Users configuration collective command
 
-### Why nBot ###
+### Why nBot? ###
 I always really wanted to create an easily extandable irc bot that can be forked and hacked on by beginners. Right not the code isn't really tested, but it works well and is quite safe.

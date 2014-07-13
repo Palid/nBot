@@ -3,6 +3,7 @@ module.exports = {
         network: "localhost",
         port: 6667,
         showErrors: false,
+        //* debug: false,
         autoRejoin: true,
         autoConnect: true,
         retryCount: null,
@@ -14,9 +15,9 @@ module.exports = {
         floodProtection: true,
         floodProtectionDelay: 100,
         messageSplit: 512,
-        sasl: true,
-        login: "login",
-        password: "password",
+        //* sasl: true,
+        //* login: "login",
+        //* password: "password",
         secure: false,
         selfSigned: false,
         certExpired: false,
@@ -34,8 +35,8 @@ module.exports = {
         database: {
             type: "mongodb",
             url: "mongodb://localhost/nBot",
-            login: "login",
-            password: "password"
+            //* login: "login",
+            //* password: "password"
         }
     }
 };

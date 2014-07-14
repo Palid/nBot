@@ -16,7 +16,6 @@ function init() {
         currentDir: __dirname,
         type: '.js',
         recursive: false,
-        event: 'modelsLoaded',
         returnDict: false
     });
 

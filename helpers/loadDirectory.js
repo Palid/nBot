@@ -1,8 +1,7 @@
 "use strict";
 var fs = require('fs'),
     path = require('path'),
-    _ = require('lodash'),
-    events = require('../bot.js').events;
+    _ = require('lodash');
 
 var BANNED = [
     'index.js',
@@ -57,7 +56,6 @@ function loadDirectory(fileList, dir, options) {
         _.forEach(options.results, function (property) {
             resultsMap[property.name] = require(property.directory);
         });
-        if (options.event) events.emit(options.event, resultsMap);
         if (options.returnDict) return resultsMap;
     }
 }

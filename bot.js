@@ -3,9 +3,9 @@
 "use strict";
 
 var events = require('events');
-
 var config = require('./config/bot.js');
 var oAuth = require('./config/oAuth.js');
+var dictionaries = require('./dictionaries');
 
 var bot = {
     events: new events.EventEmitter(),
@@ -17,6 +17,9 @@ var bot = {
     },
     getAuth: function getAuth(key) {
         return oAuth[key];
+    },
+    getDictionary: function getDict(key) {
+        return dictionaries[key];
     }
 };
 module.exports = bot;

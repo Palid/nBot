@@ -2,20 +2,27 @@
 var _ = require('lodash');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var util = require('util');
 
 var rek = require('rekuire');
 var bot = rek('/bot.js');
 var events = bot.events;
 
-var botNick = bot.getConfig('nick').toLowerCase();
+var moment = require('moment');
+
+var responses = bot.getDictionary('seen');
+
 
 var method = function seen(options) {
-    var nick = options.message.trim().toLowerCase();
+    var split = options.message.split(' '),
+        len = split.length,
+        nick = len >= 2 ? split[0].toLowerCase() : options.message.trim().toLowerCase(),
+        lang = len >= 2 ? split[1].trim().toLowerCase() : bot.getOption('defaultLang');
 
-    if (nick === botNick) {
+    if (nick === bot.getConfig('nick').toLowerCase()) {
         events.emit('apiSay',
             options.to,
-            "I'm right here. :)"
+            util.format(responses[lang].here)
         );
     } else {
         User.findOne({
@@ -34,37 +41,24 @@ var method = function seen(options) {
                 var max = _.max(doc.seen, function (channels) {
                     return channels.date;
                 });
+                var response;
+                var dateWrapper = moment(max.date).lang(lang);
                 // var min = _.min(doc.seen, function (channels) {
                 //     return channels.date;
                 // });
                 // var currentChannel = _.find(doc.seen, function (channels) {
                 //     return channels.channel === options.to;
                 // });
-                var response;
+                response = util.format(responses[lang].found,
+                    doc.nick, dateWrapper.fromNow(), max.channel, max.message
+                );
                 if (max.message) {
-                    response = [
-                        doc.nick,
-                        "was last seen",
-                        max.date,
-                        "on channel",
-                        max.channel,
-                        "while saying",
-                        max.message
-                    ].join(" ");
-                } else {
-                    response = [
-                        doc.nick,
-                        "was last seen",
-                        max.date,
-                        "while joining channel",
-                        max.channel
-                    ].join(" ");
+                    events.emit('apiSay', options.to, response);
                 }
-                events.emit('apiSay', options.to, response);
             } else {
                 events.emit('apiSay',
                     options.to,
-                    "I didn't see this user speak even once."
+                    util.format(responses[lang].notFound)
                 );
             }
         });
@@ -74,12 +68,11 @@ var method = function seen(options) {
 
 var defaults = {
     description: {
-        pl: ",seen [nick] - Bot podaje datę ostatniej wiadomości [nick].",
-        en: ",seen [nick] - Bot says [nick]'s last message date."
+        pl: ",seen [nick] [język] - Bot podaje datę ostatniej wiadomości [nick] w [języku]",
+        en: ",seen [nick] [lang] - Bot says [nick]'s last message date in [lang]."
     },
     aliases: []
 };
-
 
 module.exports = {
     method: method,

@@ -1,31 +1,28 @@
 {
-  "name": "nBot",
-  "version": "0.2.5",
-  "description": "node.js IRC bot",
-  "main": "bot.js",
-  "jest": {
-    "collectCoverage": true
-  },
-  "scripts": {
-    "test": "jest"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:Palid/nBot.git"
-  },
-  "author": "Dariusz 'Palid' Niemczyk",
-  "license": "ISC",
-  "dependencies": {
-    "500px": "~0.3.2",
-    "figlet": "~1.0.8",
-    "google": "~0.3.2",
-    "irc": "~0.3.6",
-    "jsesc": "~0.4.3",
-    "lodash": "~2.4.1",
-    "mongoose": "~3.8.12",
-    "rekuire": "^0.1.5",
-    "request": "~2.36.0",
-    "tumblr": "~0.4.1"
-  },
-  "devDependencies": {}
+    "name": "nBot",
+    "version": "0.3.0",
+    "description": "node.js IRC bot",
+    "main": "bot.js",
+    "scripts": {
+        "start": "node bot.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Palid/nBot.git"
+    },
+    "author": "Dariusz 'Palid' Niemczyk",
+    "license": "ISC",
+    "dependencies": {
+        "500px": "~0.3.2",
+        "figlet": "~1.0.8",
+        "google": "~0.3.2",
+        "irc": "~0.3.6",
+        "jsesc": "~0.4.3",
+        "lodash": "~2.4.1",
+        "mongoose": "~3.8.12",
+        "rekuire": "^0.1.5",
+        "request": "~2.36.0",
+        "tumblr": "~0.4.1"
+    },
+    "devDependencies": {}
 }

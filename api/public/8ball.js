@@ -59,9 +59,7 @@ var method = function eightBall(options) {
     if (len > 0) {
         var messageLang = options.message.split(' ')[0].toLowerCase();
         var lang = _.has(eightBallDictionary, messageLang) ? messageLang : bot.getOption('defaultLang');
-        console.log(messageLang);
-        console.log(_.has(eightBallDictionary, messageLang));
-        events.emit("apiSay", options.to, eightBallDictionary[lang][_.random(0, eightBallDictionary.length)]);
+        events.emit("apiSay", options.to, eightBallDictionary[lang][_.random(0, eightBallDictionary[lang].length)]);
     } else {
         events.emit("apiSay", options.to, "I need a thing to predict future on.");
     }

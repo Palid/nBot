@@ -18,8 +18,13 @@ var bot = {
     getAuth: function getAuth(key) {
         return oAuth[key];
     },
-    getDictionary: function getDict(key) {
-        return dictionaries[key];
+    getDictionary: function getDict(key, lang) {
+        if (lang) {
+            if (dictionaries[key][lang]) return dictionaries[key][lang];
+            else return dictionaries[key][bot.getOption('defaultLang')];
+        } else {
+            return dictionaries[key];
+        }
     }
 };
 module.exports = bot;

@@ -1,14 +1,15 @@
 "use strict";
+var util = require('util');
 var _ = require('lodash');
+var moment = require('moment');
+
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var util = require('util');
 
 var rek = require('rekuire');
 var bot = rek('/bot.js');
 var events = bot.events;
 
-var moment = require('moment');
 
 var responses = bot.getDictionary('seen');
 

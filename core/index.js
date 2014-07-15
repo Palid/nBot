@@ -24,8 +24,7 @@ function init() {
         logs: 'logs',
         users: 'logs/users',
         urls: 'logs/urls',
-        channels: 'logs/channels',
-        database: 'database'
+        channels: 'logs/channels'
     });
 
     console.info("Setting up database");

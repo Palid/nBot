@@ -5,7 +5,7 @@
 var events = require('events');
 var config = require('./config/bot.js');
 var oAuth = require('./config/oAuth.js');
-var dictionaries = require('./dictionaries');
+var dictionaries = require('./config/dictionaries');
 
 var bot = {
     events: new events.EventEmitter(),

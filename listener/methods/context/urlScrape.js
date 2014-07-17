@@ -73,29 +73,11 @@ function saveToDatabase(from, channel, link, title) {
                 urlScrapeTitle.begin +
                 formatTitle(title)
             );
-            logger({
-                timeStamp: true,
-                fileName: 'urls/' + channel,
-                data: logData
-            });
         } else {
-            var logData = [
-                "[" + doc.count + "]",
-                "by:",
-                from,
-                "first:",
-                doc.firstPost.by,
-                "title:",
-                formatTitle(title, true),
-                "link:",
-                link,
-                '\r\n'
-            ].join(" ");
             logger({
                 timeStamp: true,
                 fileName: 'urls/' + channel,
-                data: "[" + doc.count + "]" + doc.lastPost.by + " " +
-                    link + formatTitle(title) + '\r\n'
+                data: link
             });
             events.emit('apiSay', channel,
                 urlScrapeTitle.begin + " " +

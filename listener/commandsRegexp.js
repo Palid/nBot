@@ -2,7 +2,9 @@
 var _ = require('lodash'),
     rekuire = require('rekuire'),
     jsesc = require('jsesc'),
-    config = rekuire('config/bot.js'),
+    bot = rekuire('/bot.js'),
+    commandCharacter = bot.getOption('commandCharacter'),
+    channelPrefixes = bot.getConfig('channelPrefixes'),
     // Regular methods which will fire every received message
     REGULAR = {
         lastSeen: {
@@ -16,8 +18,8 @@ var _ = require('lodash'),
     // through the regex tests
     CONTEXTDEPENDANT = {
         command: {
-            re: new RegExp("^[" + jsesc(config.options.commandCharacter) +
-                "]{" + config.options.commandCharacter.length + "}"),
+            re: new RegExp("^[" + jsesc(commandCharacter) +
+                "]{" + commandCharacter.length + "}"),
             method: require('./methods/context/checkCommand.js')
         },
         urlTitle: {
@@ -27,7 +29,7 @@ var _ = require('lodash'),
     },
     method = function regexStarter(from, to, message) {
         var priv = true;
-        _.forEach(config.irc.channelPrefixes, function (property) {
+        _.forEach(channelPrefixes, function (property) {
             if (_.indexOf(to, property) !== -1) {
                 priv = false;
                 _.forEach(REGULAR, function (property) {

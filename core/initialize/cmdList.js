@@ -5,7 +5,6 @@ var methods = rek('api');
 
 var mongoose = require('mongoose');
 var Command = mongoose.model('Command');
-
 var method = function () {
     Command.find().exec().then(function (doc) {
         _.forEach(methods, function (item, key) {

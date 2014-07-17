@@ -29,7 +29,7 @@ client.addListener('message', function (from, to, message) {
         .select('permissions.isBanned')
         .exec()
         .then(function (doc) {
-            if (!doc || doc && doc.permissions && !doc.permissions.isBanned) {
+            if (!doc || (doc && doc.permissions && !doc.permissions.isBanned)) {
                 if (nick === toLower) {
                     logger({
                         timeStamp: true,

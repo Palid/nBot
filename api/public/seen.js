@@ -15,7 +15,7 @@ var responses = bot.getDictionary('seen');
 
 
 var method = function seen(options) {
-    var split = options.message.split(' '),
+    var split = _.pull(options.message.split(" "), ""),
         len = split.length,
         nick = len >= 2 ? split[0].toLowerCase() : options.message.trim().toLowerCase(),
         lang = len >= 2 ? split[1].trim().toLowerCase() : bot.getOption('defaultLang');

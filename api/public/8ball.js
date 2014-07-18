@@ -8,7 +8,7 @@ var method = function eightBall(options) {
     var len = options.message.trim().length;
     var eightBallDictionary = bot.getDictionary('8ball');
     if (len > 0) {
-        var messageLang = options.message.split(' ')[0].toLowerCase();
+        var messageLang = _.pull(options.message.split(" "), "")[0].toLowerCase();
         var lang = _.has(eightBallDictionary, messageLang) ? messageLang : bot.getOption('defaultLang');
         events.emit("apiSay", options.to, eightBallDictionary[lang][_.random(0, eightBallDictionary[lang].length)]);
     } else {

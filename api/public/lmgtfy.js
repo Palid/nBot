@@ -1,4 +1,5 @@
 "use strict";
+var _ = require('lodash');
 var rek = require('rekuire');
 var events = rek('/bot.js').events;
 
@@ -13,7 +14,7 @@ var url = require('url');
  * @return {Emitter}        Returns an event when function's finished for parsing
  */
 var method = function letMeGoogleThatForYou(options) {
-    var split = options.message.split(' ');
+    var split = _.pull(options.message.split(" "), "");
 
     if (split && split.length >= 2) {
         var nick = split[0];

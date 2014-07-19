@@ -50,44 +50,44 @@ client.addListener('message', function (from, to, message) {
 
 });
 
-client.addListener('pm', function (nick, message) {
-    console.log('Got private message from %s: %s', nick, message);
-});
+// client.addListener('pm', function (nick, message) {
+//     console.log('Got private message from %s: %s', nick, message);
+// });
 
-client.addListener('ctcp', function (nick, message) {
-    console.log('Got CTCP from %s: %s', nick, message);
-});
+// client.addListener('ctcp', function (nick, message) {
+//     console.log('Got CTCP from %s: %s', nick, message);
+// });
 
-client.addListener('join', function (channel, who) {
-    console.log('%s has joined %s', who, channel);
-});
+// client.addListener('join', function (channel, who) {
+//     console.log('%s has joined %s', who, channel);
+// });
 
-client.addListener('part', function (channel, who, reason) {
-    console.log('%s has left %s: %s', who, channel, reason);
-});
+// client.addListener('part', function (channel, who, reason) {
+//     console.log('%s has left %s: %s', who, channel, reason);
+// });
 
-client.addListener('kick', function (channel, who, by, reason) {
-    console.log('%s was kicked from %s by %s: %s', who, channel, by, reason);
-});
+// client.addListener('kick', function (channel, who, by, reason) {
+//     console.log('%s was kicked from %s by %s: %s', who, channel, by, reason);
+// });
 
-client.addListener('error', function (message) {
-    console.log(message);
-    sayError(message);
-    logger({
-        timeStamp: true,
-        fileName: 'error',
-        data: JSON.stringify(message, null, 4) + '\r\n'
-    });
-});
+// client.addListener('error', function (message) {
+//     console.log(message);
+//     sayError(message);
+//     logger({
+//         timeStamp: true,
+//         fileName: 'error',
+//         data: JSON.stringify(message, null, 4) + '\r\n'
+//     });
+// });
 
-client.addListener('ircError', function (message) {
-    console.log(message);
-    logger({
-        timeStamp: true,
-        fileName: 'ircError',
-        data: JSON.stringify(message, null, 4) + '\r\n'
-    });
-});
+// client.addListener('ircError', function (message) {
+//     console.log(message);
+//     logger({
+//         timeStamp: true,
+//         fileName: 'ircError',
+//         data: JSON.stringify(message, null, 4) + '\r\n'
+//     });
+// });
 
 client.addListener('raw', function (message) {
     logger({
@@ -97,6 +97,3 @@ client.addListener('raw', function (message) {
     });
 });
 
-client.once('join', function (channel, who) {
-
-});

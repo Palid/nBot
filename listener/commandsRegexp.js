@@ -23,7 +23,7 @@ var _ = require('lodash'),
             method: require('./methods/context/checkCommand.js')
         },
         urlTitle: {
-            re: new RegExp(/[-a-zA-Z0-9:_\+.~#?&//=]{1,256}\.[^@\ ][a-z]{1,12}\b(\/[-a-zA-Z0-9:%_\+.~#?&//=]*)?/i),
+            re: /[-a-zA-Z0-9:_\+.~#?&//=]{1,256}\.[^@\ ][a-z]{1,12}\b(\/[-a-zA-Z0-9:%_\+.~#?&//=]*)?(:\d+)?/i,
             method: require('./methods/context/urlScrape.js')
         },
     },

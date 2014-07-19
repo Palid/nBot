@@ -121,13 +121,20 @@ function method(from, channel, data, match) {
             url = link;
         }
 
-        var r = request(url, function (err, resp) {
+        var r = request({
+            url: url,
+            headers: {
+                'User-Agent': '(nBot)' + bot.getConfig('nick') + " autoTitle",
+                'Content-Type': 'text/plain'
+            }
+        }, function (err, resp) {
             if (err) {
                 console.log(err);
             } else if (resp.headers['content-type'].search('text/html') === -1) {
                 r.abort();
             }
         });
+
 
         r.on('data', function (chunk) {
             buffer += chunk;

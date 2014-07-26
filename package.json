@@ -25,10 +25,5 @@
     "request": "~2.36.0",
     "tumblr": "~0.4.1"
   },
-  "devDependencies": {
-    "jasmine-node": "^1.14.5",
-    "karma": "^0.12.17",
-    "karma-growl-reporter": "^0.1.1",
-    "mockgoose": "^1.10.2"
-  }
+  "devDependencies": {}
 }

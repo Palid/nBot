@@ -1,18 +1,19 @@
 "use strict";
-jest.dontMock('../say.js');
+var rek = require('rekuire');
 
 describe('Public API Say', function () {
 
     var eventsSpy;
     var events;
+    var say;
     beforeEach(function () {
-        events = require('../../../core/events.js');
+        say = rek('api/public/say.js');
+        events = rek('/bot.js').events;
         eventsSpy = jasmine.createSpy('eventsSpy');
         events.on('apiSay', eventsSpy);
     });
 
     it('tests for the right parameters', function () {
-        var say = require('../say.js');
         spyOn(say, 'method');
         say.method({
             from: 'palid',
@@ -28,7 +29,6 @@ describe('Public API Say', function () {
     });
 
     it('tests for the right callback', function () {
-        var say = require('../say.js');
         say.method({
             from: 'palid',
             to: '#nbot',
@@ -38,5 +38,4 @@ describe('Public API Say', function () {
         expect(eventsSpy).toHaveBeenCalled();
         expect(eventsSpy).toHaveBeenCalledWith('#nbot', 'potato');
     });
-
 });

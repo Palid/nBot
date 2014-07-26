@@ -42,7 +42,6 @@ function saveToDatabase(from, channel, link, title) {
         link = link.substr(0, lastSlash);
     }
 
-    from = from.substr(0, 1) + '\u200B' + from.substr(1);
     link = link.replace('https://', 'http://');
 
     Link.findOne({
@@ -82,7 +81,9 @@ function saveToDatabase(from, channel, link, title) {
             events.emit('apiSay', channel,
                 urlScrapeTitle.begin + " " +
                 urlScrapeTitle.repost + " [" + doc.count + "]" +
-                " first: " + doc.firstPost.by + ", " +
+                " first: " +
+                (doc.firstPost.by.substr(0, 1) + '\u200B' + doc.firstPost.by.substr(1))+
+                ", " +
                 "title: " +
                 formatTitle(title, true)
             );

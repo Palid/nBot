@@ -1,7 +1,4 @@
 "use strict";
-jest.dontMock('lodash');
-jest.dontMock('crypto');
-jest.dontMock('../pick.js');
 
 describe('Public API Pick', function () {
 

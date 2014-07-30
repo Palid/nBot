@@ -13,11 +13,12 @@ var Command = mongoose.model('Command');
 
 function useApi(commandMap, from, to, body) {
     try {
+        console.log(commandMap);
         if (commandMap.options) {
             API[commandMap.command].method({
                 from: commandMap.options.from ? commandMap.options.from : from,
                 to: commandMap.options.to ? commandMap.options.to : to,
-                body: commandMap.options.data ? commandMap.options.data : body
+                message: commandMap.options.data ? commandMap.options.data : body
             });
         } else {
             API[commandMap.command].method({
@@ -83,7 +84,7 @@ var method = function activateCommand(from, to, message, match) {
                 client.say(to, "Command " + command + " not found");
             } else {
                 var options = _.find(cmdDoc.aliases, function (item) {
-                    return item.options.data || item.options.to || item.options.from;
+                    return item.alias === command && (item.options.data || item.options.to || item.options.from);
                 });
                 var commandMap = {
                     command: cmdDoc.command,

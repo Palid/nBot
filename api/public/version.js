@@ -9,9 +9,11 @@ var botPackage = rek('/package.json');
 var method = function returnVersion(options) {
     var split = _.pull(options.message.split(" "), ""),
         len = split.length,
-        lang = len >= 1 ? split[1].trim().toLowerCase() : bot.getOption('defaultLang');
+        lang = len >= 1 ? split[0].trim().toLowerCase() : bot.getOption('defaultLang');
 
     var version = bot.getDictionary('version');
+    if (!version[lang]) lang = bot.getOption('defaultLang');
+
     events.emit("apiSay", options.to,
         util.format(version[lang], botPackage.version, botPackage.codename)
     );
@@ -19,8 +21,8 @@ var method = function returnVersion(options) {
 
 var defaults = {
     description: {
-        pl: ",version [data] - Bot robi [data]",
-        en: ",version [data] - Bot does [data]"
+        pl: ",version [język] - Bot zwraca swoją wersję w [języku].",
+        en: ",version [lang] - Bot returns his version in [language]."
     },
     aliases: [{
         alias: "wersja",

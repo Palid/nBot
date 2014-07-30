@@ -11,6 +11,7 @@ function getRandomPoster(len) {
 }
 
 var method = function fivehundred_px(options) {
+    console.log(options);
     var channel = options.to,
         data = options.message;
 

@@ -15,6 +15,7 @@ var responses = bot.getDictionary('seen');
 
 
 var method = function seen(options) {
+    console.log(options);
     var split = _.pull(options.message.split(" "), ""),
         len = split.length,
         nick = len >= 2 ? split[0].toLowerCase() : options.message.trim().toLowerCase(),

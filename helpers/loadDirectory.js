@@ -18,7 +18,6 @@ var BANNED = [
  * - {Regexp} re                Regexp to match for files
  * - {Boolean} recursive        Should it go recursively over all directories
  * - {String} type              File type/extension
- * - {Boolean} goDeeper         Defines if function should go to another nested dir
  * @return {Object}             Returns a dictionary of all required files.
  */
 function loadDirectory(fileList, dir, options) {

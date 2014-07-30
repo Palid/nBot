@@ -1,6 +1,7 @@
 {
   "name": "nBot",
-  "version": "0.3.0",
+  "version": "0.3.1",
+  "codename": "Stupid Hamster",
   "description": "node.js IRC bot",
   "main": "bot.js",
   "scripts": {

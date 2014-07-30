@@ -64,7 +64,6 @@ var method = function seen(options) {
             }
         });
     }
-
 };
 
 var defaults = {

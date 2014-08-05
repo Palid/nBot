@@ -75,7 +75,7 @@ function saveToDatabase(from, channel, link, title) {
         } else {
             logger({
                 timeStamp: true,
-                fileName: 'urls/' + channel,
+                fileName: 'urls/' + channel + '\r\n',
                 data: link
             });
             events.emit('apiSay', channel,

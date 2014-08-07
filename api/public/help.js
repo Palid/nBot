@@ -22,7 +22,11 @@ var method = function help(options) {
         var lang = splitted.length >= 2 ? splitted[1] : config.options.defaultLang;
 
         Command.findOne({
-            command: command
+            $or: [{
+                command: command
+            }, {
+                'aliases.alias': command
+            }]
         }).exec().then(function (doc) {
             if (doc) {
                 var description = getDescription(doc, lang);

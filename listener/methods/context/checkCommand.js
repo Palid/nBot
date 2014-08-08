@@ -13,7 +13,6 @@ var Command = mongoose.model('Command');
 
 function useApi(commandMap, from, to, body) {
     try {
-        console.log(commandMap);
         if (commandMap.options) {
             API[commandMap.command].method({
                 from: commandMap.options.from ? commandMap.options.from : from,

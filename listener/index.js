@@ -70,24 +70,24 @@ client.addListener('message', function (from, to, message) {
 //     console.log('%s was kicked from %s by %s: %s', who, channel, by, reason);
 // });
 
-// client.addListener('error', function (message) {
-//     console.log(message);
-//     sayError(message);
-//     logger({
-//         timeStamp: true,
-//         fileName: 'error',
-//         data: JSON.stringify(message, null, 4) + '\r\n'
-//     });
-// });
+client.addListener('error', function (message) {
+    console.log(message);
+    sayError(message);
+    logger({
+        timeStamp: true,
+        fileName: 'error',
+        data: JSON.stringify(message, null, 4) + '\r\n'
+    });
+});
 
-// client.addListener('ircError', function (message) {
-//     console.log(message);
-//     logger({
-//         timeStamp: true,
-//         fileName: 'ircError',
-//         data: JSON.stringify(message, null, 4) + '\r\n'
-//     });
-// });
+client.addListener('ircError', function (message) {
+    console.log(message);
+    logger({
+        timeStamp: true,
+        fileName: 'ircError',
+        data: JSON.stringify(message, null, 4) + '\r\n'
+    });
+});
 
 client.addListener('raw', function (message) {
     logger({

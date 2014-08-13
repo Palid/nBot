@@ -24,5 +24,4 @@ var _ = require('lodash'),
             });
         }
     };
-    console.log(METHODS);
 module.exports = method;

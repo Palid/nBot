@@ -49,4 +49,7 @@ var method = function logLastActivity(from, to, message) {
     });
 };
 
-module.exports = method;
+module.exports = {
+    method: method,
+    re: /^(#|!|&)/g
+};

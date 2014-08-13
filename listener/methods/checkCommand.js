@@ -1,8 +1,10 @@
 "use strict";
 var _ = require('lodash');
 var rek = require('rekuire');
+var jsesc = require('jsesc');
 
-var events = rek('/bot.js').events,
+var bot = rek('/bot.js'),
+    events = bot.events,
     client = rek('core/bot.js');
 
 var API = rek('api');
@@ -111,4 +113,8 @@ var method = function activateCommand(from, to, message, match) {
         });
 };
 
-module.exports = method;
+module.exports = {
+    method: method,
+    re: new RegExp("^[" + jsesc(bot.getOption('commandCharacter')) +
+        "]{" + bot.getOption('commandCharacter').length + "}")
+};

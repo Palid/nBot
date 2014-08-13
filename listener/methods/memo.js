@@ -28,4 +28,7 @@ var method = function sayMemo(from, to) {
     });
 };
 
-module.exports = method;
+module.exports = {
+    method: method,
+    re: /^(#|!|&)/g
+};

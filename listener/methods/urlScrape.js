@@ -155,4 +155,7 @@ function method(from, channel, data, match) {
     }
 }
 
-module.exports = method;
+module.exports = {
+    method: method,
+    re: /[-a-zA-Z0-9:_\+.~#?&//=]{1,256}\.[^@\ ][a-z]{1,12}\b(\/[-a-zA-Z0-9:%_\+.~#?&//=]*)?(:\d+)?/i
+};

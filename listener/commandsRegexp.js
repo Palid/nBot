@@ -12,14 +12,21 @@ var _ = require('lodash'),
     method = function regexStarter(from, to, message) {
         if (message) {
             _.forEach(METHODS, function (item) {
+                var match;
                 if (item.fnc) {
                     item.fnc(from, to, message);
-                }
-                if (item.re) {
-                    var match = message.match(item.re);
+                } else if (item.messageRe) {
+                    match = message.match(item.messageRe);
                     if (match) {
                         item.method(from, to, message, match);
                     }
+                } else if (item.channelRe) {
+                    match = to.match(item.channelRe);
+                    if (match) {
+                        item.method(from, to, message, match);
+                    }
+                } else {
+                    item.method(from, to, message);
                 }
             });
         }

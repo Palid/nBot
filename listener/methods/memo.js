@@ -9,7 +9,6 @@ var bot = rek('/bot.js');
 var events = bot.events;
 
 var method = function sayMemo(from, to) {
-
     User.findUser(from, function (err, doc) {
         if (err) console.log(err);
         if (doc) {
@@ -30,5 +29,5 @@ var method = function sayMemo(from, to) {
 
 module.exports = {
     method: method,
-    re: /^(#|!|&)/g
+    channelRe: /^(#|!|&)/g
 };

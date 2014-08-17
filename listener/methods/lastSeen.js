@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
 var method = function logLastActivity(from, to, message) {
-
     User.findOne({
         nick: from
     }, function (err, doc) {
@@ -51,5 +50,5 @@ var method = function logLastActivity(from, to, message) {
 
 module.exports = {
     method: method,
-    re: /^(#|!|&)/g
+    channelRe: /^(#|!|&)/g
 };

@@ -115,6 +115,6 @@ var method = function activateCommand(from, to, message, match) {
 
 module.exports = {
     method: method,
-    re: new RegExp("^[" + jsesc(bot.getOption('commandCharacter')) +
+    messageRe: new RegExp("^[" + jsesc(bot.getOption('commandCharacter')) +
         "]{" + bot.getOption('commandCharacter').length + "}")
 };

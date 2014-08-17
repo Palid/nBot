@@ -8,5 +8,5 @@ var method = function doubleDecides(from, to, message) {
 
 module.exports = {
     method: method,
-    re: /((duble decyduj)|(double decide))/g
+    messageRe: /((duble decyduj)|(double decide))/g
 };

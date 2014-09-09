@@ -34,14 +34,21 @@ var availableCommands = {
         });
     },
     list: function list(options) {
-        Drama.find(function (err, doc) {
+        Drama.find({
+        $or: [{
+            channel: options.to,
+
+        }, {
+            global: true
+        }]
+    },function (err, doc) {
             if (err) {
                 console.log(err);
                 events.emit("apiSay", options.to, err.message);
             } else {
                 var list = _.map(doc, function (item) {
                     if (!item.global){
-                        return util.format("[%s]%s", options.to, item.dramaString);
+                        return util.format("[%s]%s", item.channel, item.dramaString);
                     } else {
                         return util.format("[%s]%s", "g", item.dramaString);
                     }

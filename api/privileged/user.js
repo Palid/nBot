@@ -15,7 +15,6 @@ var PRIVATE = {
         User.findByOptions(options, function (err, doc) {
             if (err) console.log(err);
             if (doc) {
-                console.log(doc);
                 doc.permissions.isBanned = status;
                 doc.save();
                 events.emit('apiSay', options.to, util.format("User %s is now %s.", doc.nick, status ? "banned" : "unbanned"));

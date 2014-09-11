@@ -1,38 +1,29 @@
 "use strict";
+
+var util = require('util');
+
 var _ = require('lodash');
 var rek = require('rekuire');
-var events = rek('/bot.js').events;
 var mongoose = require('mongoose');
+
+var events = rek('/bot.js').events;
 var User = mongoose.model('User');
 
 
 var PRIVATE = {
-    ban: {
-        setBanStatus: function setBanStatus(doc, to, status) {
-            User.update({
-                _id: doc._id
-            }, {
-                'permissions.isBanned': status
-            }, function (err) {
-                if (err) console.log(err);
-                events.emit('apiSay', to,
-                    "Ban status for user " + doc.nick +
-                    " changed to: " + status);
-            });
-        },
-        status: function getBanStatus(doc, to) {
-            events.emit('apiSay', to,
-                doc.permissions.isBanned ?
-                "This user is banned." :
-                "This user isn't banned."
-            );
-        },
-        "false": function (doc, to) {
-            return PRIVATE.ban.setBanStatus(doc, to, false);
-        },
-        "true": function (doc, to) {
-            return PRIVATE.ban.setBanStatus(doc, to, true);
-        }
+    ban: function ban(options, status) {
+        User.findByOptions(options, function (err, doc) {
+            if (err) console.log(err);
+            if (doc) {
+                console.log(doc);
+                doc.permissions.isBanned = status;
+                doc.save();
+                events.emit('apiSay', options.to, util.format("User %s is now %s.", doc.nick, status ? "banned" : "unbanned"));
+            } else {
+                events.emit('apiSay', options.to,
+                    "User either not specified or found.");
+            }
+        });
     }
 };
 
@@ -47,16 +38,17 @@ var COMMANDS = {
             );
         }
     },
-    level: {
+    status: {
         level: 0,
-        method: function getLevel(options) {
+        method: function getStatus(options) {
             User.findByOptions(options, function (err, doc) {
                 if (err) console.log(err);
                 if (doc) {
-                    events.emit("apiSay", options.to, ((doc.nick !== options.nick) ?
-                            "[" + doc.nick + "]" + options.nick : options.nick) +
-                        "'s permission level is: " +
-                        doc.permissions.level
+                    var nick = (doc.nick !== options.nick) ?
+                        "[" + doc.nick + "]" + options.nick :
+                        options.nick;
+                    events.emit("apiSay", options.to,
+                        util.format("%s%s's permission status: level: %s", doc.permissions.isBanned ? "[BANNED]" : '', nick, doc.permissions.level)
                     );
                 } else {
                     events.emit("apiSay", options.to,
@@ -190,30 +182,14 @@ var COMMANDS = {
     },
     ban: {
         level: 4,
-        /**
-         * ban Sets flag or tells ban status.
-         * @param  {Object} options Object options passed from user function
-         * @return {Boolean}         Sets isBanned flag depending on
-         */
         method: function ban(options) {
-            User.findByOptions(options, function (err, doc) {
-                if (err) console.log(err);
-                if (doc) {
-                    if (!options.body) {
-                        events.emit('apiSay', options.to,
-                            'Ban takes one of available arguments:' +
-                            ' false, true, status');
-                    } else {
-                        PRIVATE.ban[options.body] ?
-                            PRIVATE.ban[options.body](doc, options.to) :
-                            events.emit('apiSay', options.to,
-                                "Command not found. ");
-                    }
-                } else {
-                    events.emit('apiSay', options.to,
-                        "User wasn't specified.");
-                }
-            });
+            PRIVATE.ban(options, true);
+        }
+    },
+    unban: {
+        level: 4,
+        method: function unban(options) {
+            PRIVATE.ban(options, false);
         }
     }
 };

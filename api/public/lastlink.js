@@ -21,6 +21,7 @@ var method = function nameYourFunctionForDebugging(options) {
         var linksMap = _.map(links, function (item) {
             return item.link;
         });
+        linksMap.reverse();
         events.emit("apiSay", options.to, linksMap);
     });
 };

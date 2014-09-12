@@ -14,6 +14,10 @@ var link = new Schema({
         type: String,
         trim: true
     },
+    lastTitle: {
+        type: String,
+        trim: true
+    },
     firstPost: {
         by: {
             type: String

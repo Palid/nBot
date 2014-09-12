@@ -1,5 +1,6 @@
 "use strict";
 //util
+var util = require('util');
 var _ = require('lodash');
 var rek = require('rekuire');
 
@@ -48,11 +49,12 @@ function saveToDatabase(from, channel, link, title) {
         link: link,
         channel: channel
     }, function (err, doc) {
+        var formattedTitle;
         if (err) {
             console.log(err);
-        }
-        if (!doc) {
-            new Link({
+        } else if (!doc) {
+            formattedTitle = formatTitle(title);
+            Link.create({
                 channel: channel,
                 count: 1,
                 lastPost: {
@@ -60,32 +62,32 @@ function saveToDatabase(from, channel, link, title) {
                     by: from
                 },
                 link: link,
+                lastTitle: formattedTitle,
                 firstPost: {
                     by: from,
                     date: Date.now()
                 }
-            }).save(function (err, product, numberAffected) {
+            }, function (err) {
                 if (err) console.log(err);
             });
 
             events.emit('apiSay', channel,
                 urlScrapeTitle.begin +
-                formatTitle(title)
+                formattedTitle
             );
         } else {
+            formattedTitle = formatTitle(title, title);
+
             logger({
                 timeStamp: true,
                 fileName: 'urls/' + channel + '\r\n',
                 data: link
             });
             events.emit('apiSay', channel,
-                urlScrapeTitle.begin + " " +
-                urlScrapeTitle.repost + " [" + doc.count + "]" +
-                " first: " +
-                (doc.firstPost.by.substr(0, 1) + '\u200B' + doc.firstPost.by.substr(1))+
-                ", " +
-                "title: " +
-                formatTitle(title, true)
+                util.format("%s %s [%s] first: %s, title: %s",
+                    urlScrapeTitle.begin, urlScrapeTitle.repost, doc.count, (doc.firstPost.by.substr(0, 1) + '\u200B' + doc.firstPost.by.substr(1)),
+                    formattedTitle
+                )
             );
             Link.update({
                 link: link
@@ -94,7 +96,8 @@ function saveToDatabase(from, channel, link, title) {
                 lastPost: {
                     date: Date.now(),
                     by: from
-                }
+                },
+                lastTitle: formattedTitle
             }, function (err) {
                 if (err) console.log(err);
             });

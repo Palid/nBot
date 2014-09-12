@@ -18,10 +18,7 @@ var availableCommands = {
         Drama.create({
             channel: options.to,
             addedBy: options.from,
-            addDate: {
-                type: Date,
-                default: Date.now
-            },
+            addDate: Date.now(),
             global: globalFlag,
             dramaString: options.message.join(" ")
         }, function (err) {
@@ -96,7 +93,6 @@ var method = function dramaMain(options) {
         callDrama(options.to);
     } else if (availableCommands[command]) {
         split.splice(0, 1);
-        console.log(split);
         availableCommands[command]({
             to: options.to,
             from: options.from,

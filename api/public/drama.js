@@ -12,7 +12,7 @@ var events = rek('/bot.js').events;
 var availableCommands = {
     add: function add(options) {
         var globalFlag = options.message[0] === "global" ? true : false;
-        if (options.message[0] === "global"){
+        if (options.message[0] === "global") {
             options.message.splice(0, 1);
         }
         Drama.create({
@@ -21,7 +21,7 @@ var availableCommands = {
             addDate: Date.now(),
             global: globalFlag,
             dramaString: options.message.join(" ")
-        }, function (err) {
+        }, function(err) {
             if (err) {
                 console.log(err);
                 events.emit("apiSay", options.to, err.message);
@@ -32,19 +32,19 @@ var availableCommands = {
     },
     list: function list(options) {
         Drama.find({
-        $or: [{
-            channel: options.to,
+            $or: [{
+                channel: options.to,
 
-        }, {
-            global: true
-        }]
-    },function (err, doc) {
+            }, {
+                global: true
+            }]
+        }, function(err, doc) {
             if (err) {
                 console.log(err);
                 events.emit("apiSay", options.to, err.message);
             } else {
-                var list = _.map(doc, function (item) {
-                    if (!item.global){
+                var list = _.map(doc, function(item) {
+                    if (!item.global) {
                         return util.format("[%s]%s", item.channel, item.dramaString);
                     } else {
                         return util.format("[%s]%s", "g", item.dramaString);
@@ -58,19 +58,45 @@ var availableCommands = {
 };
 
 
-function callDrama(to) {
+function getNthDrama(options) {
     Drama.find({
         $or: [{
-            channel: to,
+            channel: options.to,
 
         }, {
             global: true
         }]
-    }, function (err, doc) {
+    }, function(err, doc) {
         if (err) {
             console.log(err);
-        } else if (doc){
-            events.emit("apiSay", to, doc[_.random(doc.length-1)].dramaString);
+            events.emit("apiSay", options.to, err.message);
+        } else {
+            if (doc.length >= options.message && options.message >= 0) {
+                var nthItem = doc[options.message-1];
+                if (!nthItem.global) {
+                    events.emit("apiSay", options.to, util.format("[%s][%s]%s", nthItem.channel, options.message, nthItem.dramaString));
+                } else {
+                    events.emit("apiSay", options.to, util.format("[%s][%s]%s", "g", options.message, nthItem.dramaString));
+                }
+            } else {
+                events.emit("apiSay", options.to, util.format("There are only %s dramas in database available for [%s]. Specify lower number.", doc.length, options.to));
+            }
+        }
+    });
+}
+
+function callDrama(to) {
+    Drama.find({
+        $or: [{
+            channel: to,
+        }, {
+            global: true
+        }]
+    }, function(err, doc) {
+        if (err) {
+            console.log(err);
+        } else if (doc) {
+            events.emit("apiSay", to, doc[_.random(doc.length - 1)].dramaString);
         } else {
             events.emit("apiSay", to, doc.dramaString ? doc.dramaString : 'No dramas!');
         }
@@ -89,7 +115,14 @@ var method = function dramaMain(options) {
     var message = options.message ? options.message.trim() : '';
     var split = message.split(' ');
     var command = split[0];
-    if (message.length <= 0) {
+    var parsed = parseInt(command, 10);
+    if (!_.isNaN(parsed)) {
+        getNthDrama({
+            to: options.to,
+            from: options.from,
+            message: parsed
+        });
+    } else if (message.length <= 0) {
         callDrama(options.to);
     } else if (availableCommands[command]) {
         split.splice(0, 1);
@@ -99,7 +132,7 @@ var method = function dramaMain(options) {
             message: split
         });
     } else {
-        events.emit("apiSay", options.to, Object.keys(availableCommands).join(" "));
+        events.emit("apiSay", options.to, "Available sub-commands: " + Object.keys(availableCommands).join(" "));
     }
 };
 

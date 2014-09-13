@@ -35,7 +35,6 @@ function formatTitle(title, isRepost) {
         )) + '...');
 }
 
-
 function saveToDatabase(from, channel, link, title) {
     var lastSlash = _.lastIndexOf(link, '/');
 

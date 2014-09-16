@@ -1,6 +1,5 @@
 "use strict";
 
-var util = require('util');
 var fs = require('fs');
 var path = require('path');
 
@@ -20,21 +19,13 @@ function loadFile(currentDir, targetDir, encoding) {
     return fs.readFileSync(path.resolve(currentDir, targetDir), encoding);
 }
 
-// var tpl = loadFile(__dirname, './dramaTemplate.html');
+var tpl = loadFile(__dirname, './dramaTemplate.html');
 
 app.get('/', function (req, res) {
     Drama.find({}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
-            var tpl = loadFile(__dirname, './dramaTemplate.html');
-            var list = _.map(doc, function (item, iterator) {
-                if (!item.global) {
-                    return util.format("[%s][%s]Added by : %s, on: %s. Drama: %s", iterator, item.channel, item.addedBy, item.addDate, item.dramaString);
-                } else {
-                    return util.format("[%s][%s]Added by : %s, on: %s. Drama: %s", iterator, "g", item.addedBy, item.addDate, item.dramaString);
-                }
-            });
             var templated = _.template(tpl, {
                 doc: doc,
                 moment: moment

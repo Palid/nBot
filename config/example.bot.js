@@ -37,6 +37,10 @@ module.exports = {
             url: "mongodb://localhost/nBot",
             //* login: "login",
             //* password: "password"
+        },
+        webserver: {
+            url: 'http://example.com',
+            port: 3000
         }
     }
 };

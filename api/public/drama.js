@@ -6,7 +6,9 @@ var rek = require('rekuire');
 var mongoose = require('mongoose');
 var Drama = mongoose.model('Drama');
 
-var events = rek('/bot.js').events;
+var bot = rek('/bot.js');
+var events = bot.events;
+
 
 
 var availableCommands = {
@@ -21,7 +23,7 @@ var availableCommands = {
             addDate: Date.now(),
             global: globalFlag,
             dramaString: options.message.join(" ")
-        }, function(err) {
+        }, function (err) {
             if (err) {
                 console.log(err);
                 events.emit("apiSay", options.to, err.message);
@@ -31,29 +33,8 @@ var availableCommands = {
         });
     },
     list: function list(options) {
-        Drama.find({
-            $or: [{
-                channel: options.to,
-
-            }, {
-                global: true
-            }]
-        }, function(err, doc) {
-            if (err) {
-                console.log(err);
-                events.emit("apiSay", options.to, err.message);
-            } else {
-                var list = _.map(doc, function(item) {
-                    if (!item.global) {
-                        return util.format("[%s]%s", item.channel, item.dramaString);
-                    } else {
-                        return util.format("[%s]%s", "g", item.dramaString);
-                    }
-                });
-                events.emit("apiSay", options.to, "Now listing every saved drama string:");
-                events.emit("apiSay", options.to, list);
-            }
-        });
+        var webserver = bot.getOption('webserver');
+        events.emit("apiSay", options.to, util.format("All dramas are available at %s:%s", webserver.url, webserver.port));
     }
 };
 
@@ -66,13 +47,13 @@ function getNthDrama(options) {
         }, {
             global: true
         }]
-    }, function(err, doc) {
+    }, function (err, doc) {
         if (err) {
             console.log(err);
             events.emit("apiSay", options.to, err.message);
         } else {
             if (doc.length >= options.message && options.message >= 0) {
-                var nthItem = doc[options.message-1];
+                var nthItem = doc[options.message - 1];
                 if (!nthItem.global) {
                     events.emit("apiSay", options.to, util.format("[%s][%s]%s", nthItem.channel, options.message, nthItem.dramaString));
                 } else {
@@ -92,7 +73,7 @@ function callDrama(to) {
         }, {
             global: true
         }]
-    }, function(err, doc) {
+    }, function (err, doc) {
         if (err) {
             console.log(err);
         } else if (doc) {

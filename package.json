@@ -1,7 +1,7 @@
 {
   "name": "nBot",
-  "version": "0.3.1",
-  "codename": "Stupid Hamster",
+  "version": "0.4.0",
+  "codename": "Stupid Web Hamster",
   "description": "node.js IRC bot",
   "main": "bot.js",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Palid/nBot.git"
+    "url": "https://github.com/Palid/nBot/"
   },
   "author": "Dariusz 'Palid' Niemczyk",
   "license": "ISC",
@@ -24,7 +24,8 @@
     "mongoose": "~3.8.12",
     "rekuire": "^0.1.5",
     "request": "~2.36.0",
-    "tumblr": "~0.4.1"
+    "tumblr": "~0.4.1",
+    "express": "^4.9.0"
   },
   "devDependencies": {}
 }

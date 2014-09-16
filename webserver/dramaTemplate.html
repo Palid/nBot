@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <table>
+        <caption>Dramas list</caption>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Channel</th>
+                <th>Added by</th>
+                <th>Added on</th>
+                <th>Drama string</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% _.forEach(doc, function (item, index) { %>
+            <tr>
+                <td> <%= index %></td>
+                <td> <%= item.isGlobal ? "g" : item.channel %> </td>
+                <td> <%= item.addedBy %></td>
+                <td> <%= moment(item.addDate).lang('en').fromNow() %></td>
+                <td> <%= item.dramaString %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    <ul>
+    </ul>
+</body>
+</html>

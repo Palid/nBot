@@ -22,10 +22,10 @@
             <% _.forEach(doc, function (item, index) { %>
             <tr>
                 <td> <%= index %></td>
-                <td> <%= item.isGlobal ? "g" : item.channel %> </td>
-                <td> <%= item.addedBy %></td>
+                <td> <%- item.isGlobal ? "g" : item.channel %> </td>
+                <td> <%- item.addedBy %></td>
                 <td> <%= moment(item.addDate).lang('en').fromNow() %></td>
-                <td> <%= item.dramaString %></td>
+                <td> <%- item.dramaString %></td>
             </tr>
             <% }); %>
         </tbody>

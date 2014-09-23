@@ -9,8 +9,6 @@ var Drama = mongoose.model('Drama');
 var bot = rek('/bot.js');
 var events = bot.events;
 
-
-
 var availableCommands = {
     add: function add(options) {
         var globalFlag = options.message[0] === "global" ? true : false;
@@ -35,6 +33,10 @@ var availableCommands = {
     list: function list(options) {
         var webserver = bot.getOption('webserver');
         events.emit("apiSay", options.to, util.format("All dramas are available at %s:%s", webserver.url, webserver.port));
+    },
+    listChannel: function listChannel(options) {
+      var webserver = bot.getOption('webserver');
+      events.emit("apiSay", options.to, util.format("All dramas are available at %s:%s/%s", webserver.url, webserver.port, options.to.replace(/^#/, '')));
     }
 };
 

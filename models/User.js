@@ -35,7 +35,10 @@ var user = new Schema({
         }
     }],
     seen: [{
-        channel: String,
+        channel: {
+          type: String,
+          lowercase: true
+        },
         date: {
             type: Date,
             default: Date.now()

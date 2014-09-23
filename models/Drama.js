@@ -3,7 +3,10 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var drama = new Schema({
-    channel: String,
+    channel: {
+      type: String,
+      lowercase: true
+    },
     addedBy: String,
     addDate: {
         type: Date,

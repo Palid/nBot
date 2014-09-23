@@ -4,7 +4,10 @@ var mongoose = require('mongoose'),
 
 
 var link = new Schema({
-    channel: String,
+    channel: {
+      type: String,
+      lowercase: true
+    },
     count: Number,
     lastPost: {
         date: Date,

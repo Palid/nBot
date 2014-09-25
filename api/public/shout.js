@@ -14,11 +14,10 @@ var method = function shout(options) {
             console.dir(err);
             events.emit('apiSay', channel, "Error: " + err.message);
         }
-        console.log(data);
         if (data.length > 500) {
             events.emit('apiSay', channel, "String is too long.");
         } else {
-            events.emit('apiSay', channel, data.split('/n'));
+            events.emit('apiSay', channel, data.split('\n'));
         }
     });
 

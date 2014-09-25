@@ -41,6 +41,9 @@ module.exports = {
         webserver: {
             url: 'http://example.com',
             port: 3000
-        }
+        },
+        // in seconds
+        maxResponseTime: 10,
+        maxMessageRows: 5
     }
 };

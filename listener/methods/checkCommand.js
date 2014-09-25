@@ -1,10 +1,15 @@
 "use strict";
+
+var util = require('util');
+
 var _ = require('lodash');
 var rek = require('rekuire');
 var jsesc = require('jsesc');
 
 var bot = rek('/bot.js'),
     events = bot.events,
+    commandCharacter = bot.getOption('commandCharacter'),
+    maxResponseTime = bot.getOption('maxResponseTime'),
     client = rek('core/bot.js');
 
 var API = rek('api');
@@ -13,9 +18,112 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Command = mongoose.model('Command');
 
+function breakAroundSpace(str) {
+    var parts = [];
+    for (var match; match = str.match(/^[\s\S]{1,80}\S*/);) {
+        var prefix = match[0];
+        parts.push(prefix);
+        // Strip leading space.
+        str = str.trim();
+    }
+    if (str) {
+        parts.push(str);
+    }
+    return parts;
+}
+
+function createThrottle() {
+    var throttle = {};
+    throttle.__GLOBAL__ = {};
+    throttle.__GLOBAL__.messages = [];
+    throttle.__GLOBAL__.waitingForGo = false;
+    _.forEach(bot.getConfig('channels'), function (channel) {
+        throttle[channel] = {};
+        var currentThrottle = throttle[channel];
+        currentThrottle.messages = {};
+        currentThrottle.messages.current = [];
+        currentThrottle.messages.toResolve = [];
+        currentThrottle.waitingForGo = false;
+        currentThrottle.isPending = false;
+    });
+    return throttle;
+}
+
+
+function pushToThrottle(to, message) {
+    if (!antiSpam[to]) antiSpam[to] = [];
+    antiSpam.__GLOBAL__.messages.push(message);
+    antiSpam[to].messages.current.push(message);
+}
+
+function unloadQueue(to, unloadFlag) {
+    var currentThrottle = antiSpam[to];
+    if (
+        unloadFlag ||
+        (
+            (currentThrottle.messages.current.length || currentThrottle.messages.toResolve.length) > (bot.getOption('maxMessageRows') || 5)
+        )
+    ) {
+        if (currentThrottle.messages.toResolve.length === 0) {
+            currentThrottle.messages.toResolve = currentThrottle.messages.current;
+            currentThrottle.messages.current = [];
+        }
+        if (currentThrottle.waitingForGo) {
+            clearTimeout(currentThrottle.timeout);
+        }
+        client.say(to, util.format('(%ss)If you want me to continue, say: %sgo', maxResponseTime, commandCharacter));
+        currentThrottle.waitingForGo = true;
+        currentThrottle.timeout = setTimeout(function () {
+            currentThrottle.waitingForGo = false;
+        }, (maxResponseTime || 10) * 1000);
+    } else {
+        _.forEach(currentThrottle.messages.current, function (message, index) {
+            if (message.length < 300) {
+                client.say(to, currentThrottle.messages.current.shift());
+            } else {
+                _.forEach(breakAroundSpace(currentThrottle.messages.current.shift()), function (item) {
+                    currentThrottle.messages.current.push(item);
+                });
+                unloadQueue(to, true);
+            }
+        })
+    }
+}
+
+function goOn(to, options) {
+    if (!options) options = {};
+    var currentThrottle = antiSpam[to],
+        estimatedSize = currentThrottle.messages.toResolve.length - (bot.getOption('maxMessageRows') || 5),
+        finalSize = estimatedSize >= 0 ? estimatedSize : 0;
+    console.log(currentThrottle);
+    if (!currentThrottle.isPending) {
+        currentThrottle.isPending = true;
+        currentThrottle.waitingForGo = false;
+        clearTimeout(currentThrottle.timeout);
+        console.log(currentThrottle.messages.toResolve.length)
+        console.log(finalSize);
+        while (currentThrottle.messages.toResolve.length > finalSize) {
+            client.say(to, currentThrottle.messages.toResolve.shift());
+            console.log(currentThrottle.messages.toResolve.length);
+        }
+        currentThrottle.isPending = false;
+        if (currentThrottle.messages.toResolve.length > 0) unloadQueue(to);
+        else if (currentThrottle.messages.toResolve.length >= 5) {
+            client.say(to, util.format('(%ss)If you want me to continue, say: %sgo', maxResponseTime, commandCharacter));
+        }
+    } else if (!options.userActivated) {
+        setTimeout(function () {
+            goOn(to);
+        }, bot.getConfig('floodProtectionDelay'));
+    }
+}
+
+var antiSpam = createThrottle();
+
 function useApi(commandMap, from, to, body) {
     try {
         if (commandMap.options) {
+            antiSpam[to].push()
             API[commandMap.command].method({
                 from: commandMap.options.from ? commandMap.options.from : from,
                 to: commandMap.options.to ? commandMap.options.to : to,
@@ -35,24 +143,19 @@ function useApi(commandMap, from, to, body) {
 }
 
 events.on('apiSay', function (channel, message) {
-    if (_.isArray(message)) {
+    if (_.isArray(message) || _.isObject(message)) {
         _.forEach(message, function (property) {
-            client.say(channel, property);
+            pushToThrottle(channel, property);
         });
     } else {
-        if (message.length > 300) {
-            client.say(channel, "I don't want to flood the channel.");
-        } else {
-            client.say(channel, message);
-        }
-
+        pushToThrottle(channel, message);
     }
-
+    unloadQueue(channel);
 });
 
 events.on('apiCommand', function (response) {
-    var nickBool = !! response.nick,
-        messageBool = !! response.message;
+    var nickBool = !!response.nick,
+        messageBool = !!response.message;
     if (nickBool && messageBool) {
         return client.send(response.command, response.to, response.nick, response.message);
     } else if (messageBool) {
@@ -77,40 +180,45 @@ var method = function activateCommand(from, to, message, match) {
     var command = splitted[0].replace(match[0], '');
     var body = splitted.length >= 2 ? splitted.slice(1, splitted.length).join(" ") : "";
 
-    Command.findOne({
-        'aliases.alias': command,
-    }).exec()
-        .then(function (cmdDoc) {
-            if (!cmdDoc) {
-                client.say(to, "Command " + command + " not found");
-            } else {
-                var options = _.find(cmdDoc.aliases, function (item) {
-                    return item.alias === command && (item.options.data || item.options.to || item.options.from);
-                });
-                var commandMap = {
-                    command: cmdDoc.command,
-                    options: options ? options.options : undefined
-                };
-
-                if (cmdDoc.level > 0) {
-                    User.findOne({
-                        nick: from
-                    }, function (err, doc) {
-                        if (err) console.log(err);
-                        if (doc.permissions.level >= cmdDoc.level) {
-                            useApi(commandMap, from, to, body);
-                        } else {
-                            client.say(to, "Access denied. Your permissions level " +
-                                doc.permissions.level + " < " + cmdDoc.level
-                            );
-                        }
-                    });
-                } else {
-                    useApi(commandMap, from, to, body);
-                }
-
-            }
+    if (command === 'go') {
+        goOn(to, {
+            userActivated: true
         });
+    } else {
+        Command.findOne({
+            'aliases.alias': command,
+        }).exec()
+            .then(function (cmdDoc) {
+                if (!cmdDoc) {
+                    client.say(to, "Command " + command + " not found");
+                } else {
+                    var options = _.find(cmdDoc.aliases, function (item) {
+                        return item.alias === command && (item.options.data || item.options.to || item.options.from);
+                    });
+                    var commandMap = {
+                        command: cmdDoc.command,
+                        options: options ? options.options : undefined
+                    };
+
+                    if (cmdDoc.level > 0) {
+                        User.findOne({
+                            nick: from
+                        }, function (err, doc) {
+                            if (err) console.log(err);
+                            if (doc.permissions.level >= cmdDoc.level) {
+                                useApi(commandMap, from, to, body);
+                            } else {
+                                client.say(to, "Access denied. Your permissions level " +
+                                    doc.permissions.level + " < " + cmdDoc.level
+                                );
+                            }
+                        });
+                    } else {
+                        useApi(commandMap, from, to, body);
+                    }
+                }
+            });
+    }
 };
 
 module.exports = {

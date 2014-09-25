@@ -9,7 +9,8 @@ var jsesc = require('jsesc');
 var bot = rek('/bot.js'),
     events = bot.events,
     commandCharacter = bot.getOption('commandCharacter'),
-    maxResponseTime = bot.getOption('maxResponseTime'),
+    maxResponseTime = (bot.getOption('maxResponseTime') || 10),
+    maxMessageRows = (bot.getOption('maxMessageRows') || 5),
     client = rek('core/bot.js');
 
 var API = rek('api');
@@ -61,10 +62,10 @@ function unloadQueue(to, unloadFlag) {
     if (
         unloadFlag ||
         (
-            (currentThrottle.messages.current.length || currentThrottle.messages.toResolve.length) > (bot.getOption('maxMessageRows') || 5)
+            (currentThrottle.messages.current.length || currentThrottle.messages.toResolve.length) > maxMessageRows
         )
     ) {
-        if (currentThrottle.messages.toResolve.length === 0) {
+        if (currentThrottle.messages.toResolve.length === 0 || (currentThrottle.messages.current.length > 0 && currentThrottle.messages.toResolve.length > 0)) {
             currentThrottle.messages.toResolve = currentThrottle.messages.current;
             currentThrottle.messages.current = [];
         }
@@ -75,25 +76,26 @@ function unloadQueue(to, unloadFlag) {
         currentThrottle.waitingForGo = true;
         currentThrottle.timeout = setTimeout(function () {
             currentThrottle.waitingForGo = false;
-        }, (maxResponseTime || 10) * 1000);
+        }, maxResponseTime * 1000);
     } else {
-        _.forEach(currentThrottle.messages.current, function (message, index) {
+        while (currentThrottle.messages.current.length > 0) {
+            var message = currentThrottle.messages.current.shift();
             if (message.length < 300) {
-                client.say(to, currentThrottle.messages.current.shift());
+                client.say(to, message);
             } else {
-                _.forEach(breakAroundSpace(currentThrottle.messages.current.shift()), function (item) {
+                _.forEach(breakAroundSpace(message), function (item) {
                     currentThrottle.messages.current.push(item);
                 });
                 unloadQueue(to, true);
             }
-        })
+        }
     }
 }
 
 function goOn(to, options) {
     if (!options) options = {};
     var currentThrottle = antiSpam[to],
-        estimatedSize = currentThrottle.messages.toResolve.length - (bot.getOption('maxMessageRows') || 5),
+        estimatedSize = currentThrottle.messages.toResolve.length - maxMessageRows,
         finalSize = estimatedSize >= 0 ? estimatedSize : 0;
     if (!currentThrottle.isPending) {
         currentThrottle.isPending = true;
@@ -104,7 +106,7 @@ function goOn(to, options) {
         }
         currentThrottle.isPending = false;
         if (currentThrottle.messages.toResolve.length > 0) unloadQueue(to);
-        else if (currentThrottle.messages.toResolve.length >= 5) {
+        else if (currentThrottle.messages.toResolve.length >= maxMessageRows) {
             client.say(to, util.format('(%ss)If you want me to continue, say: %sgo', maxResponseTime, commandCharacter));
         }
     } else if (!options.userActivated) {

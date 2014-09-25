@@ -24,7 +24,7 @@ function breakAroundSpace(str) {
         var prefix = match[0];
         parts.push(prefix);
         // Strip leading space.
-        str = str.trim();
+        str = str.substring(prefix.length).trim();
     }
     if (str) {
         parts.push(str);
@@ -95,16 +95,12 @@ function goOn(to, options) {
     var currentThrottle = antiSpam[to],
         estimatedSize = currentThrottle.messages.toResolve.length - (bot.getOption('maxMessageRows') || 5),
         finalSize = estimatedSize >= 0 ? estimatedSize : 0;
-    console.log(currentThrottle);
     if (!currentThrottle.isPending) {
         currentThrottle.isPending = true;
         currentThrottle.waitingForGo = false;
         clearTimeout(currentThrottle.timeout);
-        console.log(currentThrottle.messages.toResolve.length)
-        console.log(finalSize);
         while (currentThrottle.messages.toResolve.length > finalSize) {
             client.say(to, currentThrottle.messages.toResolve.shift());
-            console.log(currentThrottle.messages.toResolve.length);
         }
         currentThrottle.isPending = false;
         if (currentThrottle.messages.toResolve.length > 0) unloadQueue(to);

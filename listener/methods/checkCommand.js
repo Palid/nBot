@@ -188,7 +188,7 @@ var method = function activateCommand(from, to, message, match) {
         }).exec()
             .then(function (cmdDoc) {
                 if (!cmdDoc) {
-                    client.say(to, "Command " + command + " not found");
+                    client.say(from, util.format("Command %s not found. Try: %slist", command, bot.getOption('commandCharacter')));
                 } else {
                     var options = _.find(cmdDoc.aliases, function (item) {
                         return item.alias === command && (item.options.data || item.options.to || item.options.from);

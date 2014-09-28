@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <h1>Logs for channel: <%= obj.channel %></h1>
+  <h3>Logs are refreshed every 60seconds.</h3>
+  <% _.forEach(obj.logs, function(log) { %>
+    <p><%- log %></p>
+  <% }); %>
+</body>

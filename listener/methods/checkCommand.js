@@ -52,7 +52,16 @@ function createThrottle() {
 
 
 function pushToThrottle(to, message) {
-    if (!antiSpam[to]) antiSpam[to] = [];
+  var currentObj = antiSpam[to];
+    if (!currentObj) {
+      antiSpam[to] = [];
+      currentObj = antiSpam[to];
+      currentObj.messages = {};
+      currentObj.messages.current = [];
+      currentObj.messages.toResolve = [];
+      currentObj.waitingForGo = false;
+      currentObj.isPending = false;
+    }
     antiSpam.__GLOBAL__.messages.push(message);
     antiSpam[to].messages.current.push(message);
 }

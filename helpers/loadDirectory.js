@@ -10,6 +10,11 @@ var BANNED = [
     '*__'
 ];
 
+function loadFile(targetDir, encoding) {
+  if (!encoding) encoding = "utf-8";
+  return fs.readFileSync(targetDir, encoding);
+}
+
 /**
  * loadDirectory loads whole directory as an object and exports it from module
  * @param  {String} fileList    List of all files(and directories) from current dir
@@ -53,7 +58,11 @@ function loadDirectory(fileList, dir, options) {
     if (options.results.length >= pending) {
         var resultsMap = {};
         _.forEach(options.results, function (property) {
+          if (options.require) {
             resultsMap[property.name] = require(property.directory);
+          } else {
+            resultsMap[property.name] = loadFile(property.directory);
+          }
         });
         if (options.returnDict) return resultsMap;
     }
@@ -88,7 +97,8 @@ function prepareFunction(destinationDir, required) {
         event: required.event,
         re: re,
         results: [],
-        returnDict: required.returnDict
+        returnDict: required.returnDict,
+        require: !_.isUndefined(required.require) ? required.require : true
     });
 
 }

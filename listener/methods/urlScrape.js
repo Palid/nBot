@@ -3,14 +3,14 @@
 var util = require('util');
 var _ = require('lodash');
 var rek = require('rekuire');
-
+var Entities = require('html-entities').XmlEntities,
+    entities = new Entities();
 
 //nBot
 var bot = rek('/bot.js');
 var events = bot.events;
 var logger = rek('helpers/log.js');
 var urlScrapeTitle = bot.getOption('urlScrapeTitle');
-
 
 //database
 var mongoose = require('mongoose');
@@ -26,7 +26,7 @@ var titleRepostLen = urlScrapeTitle.repost.length;
 var length = (80 - urlScrapeTitle.begin.length - 3);
 
 function formatTitle(title, isRepost) {
-    title = _.unescape(title);
+    title = entities.decode(title);
     return ((title.length <= 80) ? title :
         (title.substr(0,
             isRepost ?

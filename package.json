@@ -15,8 +15,10 @@
   "license": "ISC",
   "dependencies": {
     "500px": "~0.3.2",
+    "express": "^4.9.0",
     "figlet": "~1.0.8",
     "google": "~0.3.2",
+    "html-entities": "^1.1.1",
     "irc": "~0.3.6",
     "jsesc": "~0.4.3",
     "lodash": "~2.4.1",
@@ -24,8 +26,7 @@
     "mongoose": "~3.8.12",
     "rekuire": "^0.1.5",
     "request": "~2.36.0",
-    "tumblr": "~0.4.1",
-    "express": "^4.9.0"
+    "tumblr": "~0.4.1"
   },
   "devDependencies": {}
 }

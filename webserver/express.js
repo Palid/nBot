@@ -18,11 +18,6 @@ var bot = rek('/bot.js');
 var app = express();
 
 
-function loadFile(currentDir, targetDir, encoding) {
-  if (!encoding) encoding = "utf-8";
-  return fs.readFileSync(path.resolve(currentDir, targetDir), encoding);
-}
-
 function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -92,13 +87,18 @@ _.forEach(channels, function(channel) {
 var compiledHompage = _.template(templates.homepage, {
   channels: _.flatten(_.map(channels, function(item) {
     var channel = item.toLowerCase().replace(/^#/, '');
-    return _.map(allRoutes, function(route) {
-      return {
-        url: util.format('/%s/%s', route, channel),
-        name: util.format("%s: %s", capitalize(route), item)
-      };
-    });
-  }))
+      return _.map(allRoutes, function(route) {
+        var capitalRoute = capitalize(route);
+        return {
+          type: capitalRoute,
+          url: util.format('/%s/%s', route, channel),
+          name: util.format("%s", item)
+        };
+      });
+  })),
+  types: _.map(allRoutes, function(route) {
+    return capitalize(route);
+  })
 });
 
 

@@ -2,14 +2,30 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title>nBot's logs.</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-  <% _.forEach(channels, function(item) { %>
-    <a href="<%- item.url %>">
-      <%- item.name %>
-    </a>
-<% }); %>
+  <table>
+      <caption>Dramas list</caption>
+      <thead>
+          <tr>
+          <% _.forEach(types, function(type) { %>
+              <th><%= type %></th>
+          <% }); %>
+          </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <% _.forEach(channels, function(item) { %>
+            <td>
+              <a href="<%- item.url %>">
+                <%- item.name %>
+              </a>
+            </td>
+        <% }); %>
+        </tr>
+      </tbody>
+  </table>
 </body>

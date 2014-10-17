@@ -105,7 +105,8 @@ function saveToDatabase(from, channel, link, title) {
     });
 }
 
-function method(from, channel, data, match) {
+function Method(from, channel, data, match) {
+    var self = this;
 
     if (match) {
         var link = match[0],
@@ -124,7 +125,7 @@ function method(from, channel, data, match) {
             url = link;
         }
 
-        var r = request({
+        this.request = request({
             url: url,
             headers: {
                 'User-Agent': '(nBot)' + bot.getConfig('nick') + " autoTitle",
@@ -134,12 +135,12 @@ function method(from, channel, data, match) {
             if (err) {
                 console.log(err);
             } else if (resp.headers['content-type'].search('text/html') === -1) {
-                r.abort();
+                self.request.abort();
             }
         });
 
 
-        r.on('data', function (chunk) {
+        this.request.on('data', function (chunk) {
             buffer += chunk;
             var str = chunk.toString(),
                 match = titleRe.exec(str);
@@ -147,17 +148,21 @@ function method(from, channel, data, match) {
                 if (match[2].replace(/\s/, '').length > 0) {
                     saveToDatabase(from, channel, url, match[2]);
                 }
-                r.abort();
+                self.request.abort();
             }
             if (buffer.length > (20480)) {
                 console.log("Buffer was too long, aborted!");
-                r.abort();
+                self.request.abort();
             }
         });
     }
 }
 
+function getUrl(from, channel, data, match){
+    return new Method(from, channel, data, match);
+}
+
 module.exports = {
-    method: method,
+    method: getUrl,
     messageRe: /[-a-zA-Z0-9:_\+.~#?&//=]{1,256}\.[^@\ ][a-z]{1,12}\b(\/[-a-zA-Z0-9:%_\+.~#?&//=]*)?(:\d+)?/i
 };

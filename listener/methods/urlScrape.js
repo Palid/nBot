@@ -26,7 +26,7 @@ var titleRepostLen = urlScrapeTitle.repost.length;
 var length = (80 - urlScrapeTitle.begin.length - 3);
 
 function formatTitle(title, isRepost) {
-    title = entities.decode(title.trim()).replace(/[\r\n]/g,' ');
+    title = entities.decode(title.trim()).replace(/[\r\n]/g, ' ');
     return ((title.length <= 80) ? title :
         (title.substr(0,
             isRepost ?
@@ -105,64 +105,82 @@ function saveToDatabase(from, channel, link, title) {
     });
 }
 
-function Method(from, channel, data, match) {
-    var self = this;
+var scrapeStatus = {
+    queue: [],
+    isPending: false
+};
 
+function doRequest(url) {
+    var r = request({
+        url: url,
+        headers: {
+            'User-Agent': '(nBot)' + bot.getConfig('nick') + " autoTitle",
+            'Content-Type': 'text/plain'
+        }
+    }, function (err, resp) {
+        if (err) {
+            console.log(err);
+        } else if (resp.headers['content-type'].search('text/html') === -1) {
+            r.abort();
+            scrapeStatus.isPending = false;
+        }
+    });
+    return r;
+}
+
+function setListener(req, from, channel, url) {
+    var buffer = 0;
+    req.on('data', function (chunk) {
+        buffer += chunk;
+        var str = chunk.toString(),
+            match = titleRe.exec(str);
+        if (match && match[2]) {
+            if (match[2].replace(/\s/, '').length > 0) {
+                saveToDatabase(from, channel, url, match[2]);
+            }
+            req.abort();
+            scrapeStatus.isPending = false;
+            initiateScraping(from, channel);
+        }
+        if (buffer.length > (20480)) {
+            console.log("Buffer was too long, aborted!");
+            req.abort();
+            scrapeStatus.isPending = false;
+            initiateScraping(from, channel);
+        }
+    });
+}
+
+function initiateScraping(from, channel) {
+    if (!scrapeStatus.isPending && (scrapeStatus.queue.length >= 1)) {
+        scrapeStatus.isPending = true;
+        var url = scrapeStatus.queue.shift(),
+            r = doRequest(url);
+        setListener(r, from, channel, url);
+    }
+}
+
+function method(from, channel, data, match) {
     if (match) {
         var link = match[0],
-            www = link.search('www.'),
-            http = link.search('http://'),
-            https = link.search('https://'),
-            buffer = 0,
             url;
 
-
-        if (!www) {
+        if (!link.search('www.')) {
             url = link.replace('www.', 'http://');
-        } else if (http === -1 && https) {
+        } else if (link.search('http://') === -1 && link.search('https://')) {
             url = 'http://' + link;
         } else {
             url = link;
         }
 
-        this.request = request({
-            url: url,
-            headers: {
-                'User-Agent': '(nBot)' + bot.getConfig('nick') + " autoTitle",
-                'Content-Type': 'text/plain'
-            }
-        }, function (err, resp) {
-            if (err) {
-                console.log(err);
-            } else if (resp.headers['content-type'].search('text/html') === -1) {
-                self.request.abort();
-            }
-        });
+        scrapeStatus.queue.push(url);
+        initiateScraping(from, channel, url);
 
-
-        this.request.on('data', function (chunk) {
-            buffer += chunk;
-            var str = chunk.toString(),
-                match = titleRe.exec(str);
-            if (match && match[2]) {
-                if (match[2].replace(/\s/, '').length > 0) {
-                    saveToDatabase(from, channel, url, match[2]);
-                }
-                self.request.abort();
-            }
-            if (buffer.length > (20480)) {
-                console.log("Buffer was too long, aborted!");
-                self.request.abort();
-            }
-        });
     }
 }
 
-function getUrl(from, channel, data, match){
-    return new Method(from, channel, data, match);
-}
 
 module.exports = {
-    method: getUrl,
+    method: method,
     messageRe: /[-a-zA-Z0-9:_\+.~#?&//=]{1,256}\.[^@\ ][a-z]{1,12}\b(\/[-a-zA-Z0-9:%_\+.~#?&//=]*)?(:\d+)?/i
 };

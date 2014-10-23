@@ -120,12 +120,19 @@ function doRequest(url) {
     }, function (err, resp) {
         if (err) {
             console.log(err);
+            scrapeStatus.isPending = false;
         } else if (resp.headers['content-type'].search('text/html') === -1) {
             r.abort();
             scrapeStatus.isPending = false;
         }
     });
     return r;
+}
+
+function abortRequest(req, from, channel){
+    req.abort();
+    scrapeStatus.isPending = false;
+    initiateScraping(from, channel);
 }
 
 function setListener(req, from, channel, url) {
@@ -138,17 +145,16 @@ function setListener(req, from, channel, url) {
             if (match[2].replace(/\s/, '').length > 0) {
                 saveToDatabase(from, channel, url, match[2]);
             }
-            req.abort();
-            scrapeStatus.isPending = false;
-            initiateScraping(from, channel);
+            abortRequest(req, from, channel);
         }
         if (buffer.length > (20480)) {
             console.log("Buffer was too long, aborted!");
-            req.abort();
-            scrapeStatus.isPending = false;
-            initiateScraping(from, channel);
+            abortRequest(req, from, channel);
         }
     });
+    setTimeout(function(){
+        abortRequest(req, from, channel);
+    }, 3000);
 }
 
 function initiateScraping(from, channel) {
@@ -174,11 +180,10 @@ function method(from, channel, data, match) {
         }
 
         scrapeStatus.queue.push(url);
-        initiateScraping(from, channel, url);
+        initiateScraping(from, channel);
 
     }
 }
-
 
 module.exports = {
     method: method,

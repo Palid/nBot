@@ -32,11 +32,7 @@ var availableCommands = {
     },
     list: function list(options) {
         var webserver = bot.getOption('webserver');
-        events.emit("apiSay", options.to, util.format("All dramas are available at %s:%s", webserver.url, webserver.port));
-    },
-    listChannel: function listChannel(options) {
-      var webserver = bot.getOption('webserver');
-      events.emit("apiSay", options.to, util.format("All dramas are available at %s:%s/%s", webserver.url, webserver.port, options.to.replace(/^#/, '')));
+        events.emit("apiSay", options.to, util.format("All dramas are available at %s:%s/%s", webserver.url, webserver.port, options.to));
     }
 };
 

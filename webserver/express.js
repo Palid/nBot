@@ -43,27 +43,28 @@ _.forEach(channels, function(channel) {
   var cache,
     compiledTemplate;
 
-  app.route('/logs/' + replaced)
-    .get(function(req, res) {
-      if (!cache || (Date.now() - cache) > (1000 * 60)) {
-        fs.readFile(path.resolve(__dirname, util.format('../logs/channels/%s.log', lowerChan)), 'utf-8', function(err, logfile) {
-          if (err) {
-            res.send("Something wrong happened.");
-          } else {
-            compiledTemplate = _.template(templates.logs, {
-              logs: logfile.split('\r\n'),
-              channel: channel
-            });
-            console.log(compiledTemplate);
-            console.log(cache);
-            cache = Date.now();
-            res.send(compiledTemplate);
-          }
-        });
-      } else {
-        res.send(compiledTemplate);
-      }
-    });
+  // Commented till password protected
+  // app.route('/logs/' + replaced)
+  //   .get(function(req, res) {
+  //     if (!cache || (Date.now() - cache) > (1000 * 60)) {
+  //       fs.readFile(path.resolve(__dirname, util.format('../logs/channels/%s.log', lowerChan)), 'utf-8', function(err, logfile) {
+  //         if (err) {
+  //           res.send("Something wrong happened.");
+  //         } else {
+  //           compiledTemplate = _.template(templates.logs, {
+  //             logs: logfile.split('\r\n'),
+  //             channel: channel
+  //           });
+  //           console.log(compiledTemplate);
+  //           console.log(cache);
+  //           cache = Date.now();
+  //           res.send(compiledTemplate);
+  //         }
+  //       });
+  //     } else {
+  //       res.send(compiledTemplate);
+  //     }
+  //   });
 
   app.route('/drama/' + replaced)
     .get(function(req, res) {

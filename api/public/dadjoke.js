@@ -14,7 +14,7 @@ var dadJokesAmount;
 function setJokesAmount() {
     DadJoke.find({})
         .exec()
-        .then(function (doc){
+        .then(function (doc) {
             dadJokesAmount = doc.length;
         });
 }
@@ -27,7 +27,6 @@ var availableCommands = {
         if (options.message[0] === "global") {
             options.message.splice(0, 1);
         }
-        console.log("Len: %s", dadJokesAmount);
         DadJoke.create({
             channel: options.to,
             addedBy: options.from,
@@ -45,7 +44,7 @@ var availableCommands = {
             }
         });
     },
-    dodaj: function(options) {
+    dodaj: function (options) {
         return availableCommands.add(options);
     }
     // TODO
@@ -69,27 +68,20 @@ function getDadJoke(to) {
 }
 
 function getNthJoke(options) {
-    DadJoke.find({
-        $or: [{
-            channel: options.to,
-        }, {
-            global: true
-        }]
+    DadJoke.findOne({
+        jokeNumber: options.message
     }, function (err, doc) {
         if (err) {
             console.log(err);
             events.emit("apiSay", options.to, err.message);
-        } else {
-            if (doc.length >= options.message && options.message >= 0) {
-                var nthItem = doc[options.message - 1];
-                if (!nthItem.global) {
-                    events.emit("apiSay", options.to, util.format("[%s][%s]%s", nthItem.channel, options.message, nthItem.dramaString));
-                } else {
-                    events.emit("apiSay", options.to, util.format("[%s][%s]%s", "g", options.message, nthItem.dramaString));
-                }
+        } else if (doc) {
+            if (!doc.global) {
+                events.emit("apiSay", options.to, util.format("[%s][%s]%s", doc.channel, options.message, doc.joke));
             } else {
-                events.emit("apiSay", options.to, util.format("There are only %s dad jokes in database available for [%s]. Specify lower number.", doc.length, options.to));
+                events.emit("apiSay", options.to, util.format("[%s][%s]%s", "g", options.message, doc.joke));
             }
+        } else {
+            events.emit("apiSay", options.to, util.format("There are only %s dad jokes in database available for [%s]. Specify lower number.", doc.length, options.to));
         }
     });
 }

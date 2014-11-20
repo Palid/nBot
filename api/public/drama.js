@@ -9,28 +9,15 @@ var Drama = mongoose.model('Drama');
 var bot = rek('/bot.js');
 var events = bot.events;
 
+var common = require('./__dramaCommon.js');
+
 var availableCommands = {
-    add: function add(options) {
-        var globalFlag = options.message[0] === "global" ? true : false;
-        if (options.message[0] === "global") {
-            options.message.splice(0, 1);
-        }
-        Drama.create({
-            channel: options.to,
-            addedBy: options.from,
-            addDate: Date.now(),
-            global: globalFlag,
-            dramaString: options.message.join(" ")
-        }, function (err) {
-            if (err) {
-                console.log(err);
-                events.emit("apiSay", options.to, err.message);
-            } else {
-                events.emit("apiSay", options.to, "drama-string added!");
-            }
-        });
+    add: function(options){
+        options.Model = Drama;
+        options.emitOnSuccess = "drama-string added!";
+        common(options);
     },
-    list: function list(options) {
+    list: function(options) {
         var webserver = bot.getOption('webserver');
         events.emit("apiSay", options.to, util.format("All dramas are available at %s:%s/%s", webserver.url, webserver.port, options.to));
     }

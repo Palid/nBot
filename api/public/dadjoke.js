@@ -9,6 +9,8 @@ var DadJoke = mongoose.model('DadJoke');
 var bot = rek('/bot.js');
 var events = bot.events;
 
+var common = require('./__dramaCommon.js');
+
 var dadJokesAmount;
 
 function setJokesAmount() {
@@ -22,27 +24,10 @@ function setJokesAmount() {
 setJokesAmount();
 
 var availableCommands = {
-    add: function add(options) {
-        var globalFlag = options.message[0] === "global" ? true : false;
-        if (options.message[0] === "global") {
-            options.message.splice(0, 1);
-        }
-        DadJoke.create({
-            channel: options.to,
-            addedBy: options.from,
-            addDate: Date.now(),
-            global: globalFlag,
-            joke: options.message.join(" ").split("|"),
-            jokeNumber: dadJokesAmount ? dadJokesAmount : 0
-        }, function (err) {
-            if (err) {
-                console.log(err);
-                events.emit("apiSay", options.to, err.message);
-            } else {
-                setJokesAmount();
-                events.emit("apiSay", options.to, "Dad joke added!");
-            }
-        });
+    add: function(options){
+        options.Model = DadJoke;
+        options.emitOnSuccess  = 'Dad joke added!';
+        common.add(options);
     },
     dodaj: function (options) {
         return availableCommands.add(options);

@@ -76,7 +76,6 @@ function saveToDatabase(from, channel, link, title) {
             );
         } else {
             formattedTitle = formatTitle(title, title);
-
             logger({
                 timeStamp: true,
                 fileName: 'urls/' + channel + '\r\n',
@@ -89,7 +88,7 @@ function saveToDatabase(from, channel, link, title) {
                 )
             );
             Link.update({
-                link: link
+                _id: doc._id
             }, {
                 count: doc.count + 1,
                 lastPost: {

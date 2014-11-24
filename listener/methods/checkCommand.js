@@ -155,7 +155,7 @@ events.on('apiSay', function (channel, message) {
             pushToThrottle(channel, property);
         });
     } else {
-        pushToThrottle(channel, message);
+        pushToThrottle(channel, String(message));
     }
     unloadQueue(channel);
 });

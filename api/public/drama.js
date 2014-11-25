@@ -15,7 +15,7 @@ var availableCommands = {
     add: function(options){
         options.Model = Drama;
         options.emitOnSuccess = "drama-string added!";
-        common(options);
+        common.add(options);
     },
     list: function(options) {
         var webserver = bot.getOption('webserver');

@@ -27,7 +27,8 @@
     "mongoose": "^3.8.19",
     "rekuire": "^0.1.5",
     "request": "~2.36.0",
-    "tumblr": "~0.4.1"
+    "tumblr": "~0.4.1",
+    "xml2js": "^0.4.4"
   },
   "devDependencies": {}
 }

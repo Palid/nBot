@@ -37,8 +37,9 @@ function getNthDrama(options) {
             console.log(err);
             events.emit("apiSay", options.to, err.message);
         } else {
-            if (doc.length >= options.message && parseInt(options.message, 10) >= 0) {
-                var nthItem = doc[options.message - 1];
+          var msg = parseInt(options.message, 10);
+            if (doc.length >= options.message && msg >= 0) {
+                var nthItem = doc[msg ? msg - 1 : 0];
                 if (!nthItem.global) {
                     events.emit("apiSay", options.to, util.format("[%s][%s]%s", nthItem.channel, options.message, nthItem.dramaString));
                 } else {

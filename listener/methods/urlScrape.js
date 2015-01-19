@@ -120,7 +120,7 @@ function doRequest(url) {
         if (err) {
             console.log(err);
             scrapeStatus.isPending = false;
-        } else if (resp.headers['content-type'].search('text/html') === -1) {
+        } else if (resp.headers['content-type'] && resp.headers['content-type'].search('text/html') === -1) {
             r.abort();
             scrapeStatus.isPending = false;
         }

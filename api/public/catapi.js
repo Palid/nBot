@@ -48,12 +48,6 @@ var defaults = {
   ]
 };
 
-
-method({
-  channel: '#nbot',
-  message: 10
-});
-
 module.exports = {
   method: method,
   defaults: defaults

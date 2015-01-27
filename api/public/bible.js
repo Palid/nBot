@@ -21,10 +21,6 @@ var method = function bible(options) {
         }
         events.emit('apiSay', channel, message);
     });
-
-    return {
-        type: "async"
-    };
 };
 
 var defaults = {

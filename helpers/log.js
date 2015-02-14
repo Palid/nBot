@@ -86,6 +86,7 @@ var method = function logger(options) {
     }
     var dir = path.resolve(__dirname, "../logs/" + options.fileName + ".log");
     if (options.timeStamp) {
+        if (!_.isObject(options.timeStamp)) options.timeStamp = {};
         if (!options.timeStamp.delimiter) options.timeStamp.delimiter = " ";
         var dateTime = timeStamp(options.timeStamp);
         options.data = [

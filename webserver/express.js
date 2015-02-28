@@ -83,7 +83,7 @@ _.forEach(channels, function(channel) {
         });
 });
 
-var compiledHompage = _.template(templates.homepage, {
+var compiledHompage = _.template(templates.homepage)({
     channels: _.flatten(_.map(channels, function(item) {
         var channel = item.toLowerCase().replace(/^#/, '');
         return _.map(allRoutes, function(route) {

@@ -3,7 +3,7 @@ var rek = require('rekuire');
 var bot = rek('/bot.js');
 var events = bot.events,
     oauth = bot.getAuth('500px'),
-    API500px = require('500px').API500px,
+    API500px = require('500px'),
     api500px = new API500px(oauth.consumer_key);
 
 function getRandomPoster(len) {

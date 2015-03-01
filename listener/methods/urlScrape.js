@@ -78,7 +78,7 @@ function saveToDatabase(from, channel, link, title) {
             formattedTitle = formatTitle(title, title);
             logger({
                 timeStamp: true,
-                fileName: 'urls/' + channel + '\r\n',
+                fileName: 'urls/' + channel,
                 data: link
             });
             events.emit('apiSay', channel,

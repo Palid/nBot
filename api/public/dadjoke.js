@@ -43,7 +43,6 @@ function getDadJoke(to) {
     DadJoke.findOne({
         jokeNumber: Math.floor(Math.random() * dadJokesAmount)
     }, function (err, doc) {
-        console.log(doc);
         if (err) {
             console.log(err);
         } else {

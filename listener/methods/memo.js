@@ -21,7 +21,7 @@ var method = function sayMemo(from, to) {
                     events.emit('apiSay', to, memo);
                 });
                 doc.memo = [];
-                doc.save();
+                doc.update();
             }
         }
     });

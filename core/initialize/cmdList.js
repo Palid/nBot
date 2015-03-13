@@ -8,29 +8,29 @@ var Command = mongoose.model('Command');
 var method = function () {
     Command.find().exec().then(function (doc) {
         _.forEach(methods, function (item, key) {
-            var description = _.map(item.defaults.description, function (item, key) {
+            var description = _.map(item.defaults.description, function (value, childKey) {
                 return {
-                    lang: key,
-                    description: item
+                    lang: childKey,
+                    description: value
                 };
             });
-            var aliases = _.map(item.defaults.aliases, function (item) {
-                if (_.isObject(item)) {
+            var aliases = _.map(item.defaults.aliases, function (value) {
+                if (_.isObject(value)) {
                     return {
-                        alias: item.alias,
-                        options: item.options
+                        alias: value.alias,
+                        options: value.options
                     };
                 } else {
                     return {
-                        alias: item
+                        alias: value
                     };
                 }
             });
             aliases.push({
                 alias: key
             });
-            if (!_.findWhere(doc, {
-                command: key
+            if (!_.find(doc, function(docItem) {
+              return docItem.command === key;
             })) {
                 Command.create({
                     command: key,

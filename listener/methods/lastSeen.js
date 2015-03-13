@@ -4,10 +4,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
 var method = function logLastActivity(from, to, message) {
-  User.findOne({
-    nick: from
-  }).exec().then(function (err, doc) {
-    if (err) console.log(err);
+  User.findUser(from.trim()).exec().then(function (doc) {
     if (doc && doc.seen) {
       var channelIndex = _.findIndex(doc.seen, {
         channel: to

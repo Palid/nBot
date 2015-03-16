@@ -10,10 +10,19 @@ var events = rek('/bot.js').events,
   };
 
 function validateAndFormatLink(link) {
-  while (link.length < 5) {
-    link = '0' + link;
+  var url;
+  // new API
+  if (_.isObject(link)) {
+    url = link.id.toString();
+  } else {
+    // old API
+    url = link.toString();
   }
-  return link;
+  while (url.length < 5) {
+    url = '0' + url;
+  }
+
+  return url;
 }
 
 var method = function oBoobsApi(options) {
@@ -59,7 +68,6 @@ var defaults = {
     "tits"
   ]
 };
-
 
 module.exports = {
   method: method,

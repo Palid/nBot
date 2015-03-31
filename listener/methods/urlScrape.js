@@ -186,5 +186,5 @@ function method(from, channel, data, match) {
 
 module.exports = {
     method: method,
-    messageRe: /[-a-zA-Z0-9:_\+.~#?&//=]{1,256}\.[^@\ ][a-z]{1,12}\b(\/[-a-zA-Z0-9:%_\+.~#?&//=]*)?(:\d+)?/i
+    messageRe: /[-a-zA-Z0-9:_\+.~#?&//=]{1,256}\.[^@\ ][a-z]{1,12}\b(\/[-a-zA-Z0-9:%_\+.~#?&//=]*)?\?([a-zA-Z\d=])+/i
 };

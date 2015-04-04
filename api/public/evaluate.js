@@ -1,57 +1,42 @@
 "use strict";
-var cluster = require('cluster');
+var child_process = require('child_process');
 var rek = require('rekuire');
 var events = rek('/bot.js').events;
 
-cluster.setupMaster({
-    exec: "api/public/__evaluate.js",
-    args: process.argv.slice(2),
-    silent: false
-});
-
 var method = function evaluate(options) {
+  var child = child_process.fork('__evaluate.js');
 
-    //This will be fired when the forked process becomes online
-    cluster.once("online", function (worker) {
+  child.once("message", function(evaledString) {
+    clearTimeout(timer);
+    child.kill("SIGHUP");
+    events.emit('apiSay', options.to, evaledString);
+  });
 
-        worker.once("message", function (evaledString) {
-
-            clearTimeout(timer);
-            worker.destroy();
-            events.emit('apiSay', options.to, evaledString);
-
-        });
+  var timer = setTimeout(function() {
+    child.kill("SIGHUP");
+    events.emit('apiSay', options.to, "Execution timed out.");
+  }, 2000);
 
 
-        var timer = setTimeout(function () {
-            cluster.removeAllListeners();
-            worker.destroy();
-            events.emit('apiSay', options.to, "Execution timed out.");
-        }, 2000);
-
-    });
-
-    var worker = cluster.fork();
-
-    worker.send(options.message);
+  child.send(options.message);
 };
 
 var defaults = {
-    description: {
-        pl: ",eval [argumenty] - Ewaluuje wyrażenie. Dostępny JSowy obiekt Math.",
-        en: ",eval [arguments] - Evaluates the expression. Object Math is allowed."
-    },
-    aliases: [
-        'maths',
-        'math',
-        'eval',
-        'e',
-        'count'
-    ]
+  description: {
+    pl: ",eval [argumenty] - Ewaluuje wyrażenie. Dostępny JSowy obiekt Math.",
+    en: ",eval [arguments] - Evaluates the expression. Object Math is allowed."
+  },
+  aliases: [
+    'maths',
+    'math',
+    'eval',
+    'e',
+    'count'
+  ]
 };
 
 
 module.exports = {
-    method: method,
-    defaults: defaults
+  method: method,
+  defaults: defaults
 };

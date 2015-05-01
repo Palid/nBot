@@ -14,19 +14,14 @@
   "author": "Dariusz 'Palid' Niemczyk",
   "license": "ISC",
   "dependencies": {
-    "500px": "^0.5.1",
-    "express": "^4.9.0",
-    "figlet": "^1.1.0",
-    "google": "^0.6.0",
     "html-entities": "^1.1.1",
-    "irc": "^0.3.9",
+    "irc": "^0.3.12",
     "jsesc": "^0.5.0",
     "lodash": "^3.2.0",
     "moment": "^2.9.0",
-    "nedb": "^1.1.2",
+    "node-irc": "0.0.3",
     "rekuire": "^0.1.5",
     "request": "^2.53.0",
-    "tumblr": "~0.4.1",
     "xml2js": "^0.4.4"
   },
   "devDependencies": {}

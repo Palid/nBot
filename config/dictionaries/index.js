@@ -3,6 +3,7 @@ var rek = require('rekuire'),
 
 module.exports = loader(__dirname, {
     currentDir: __dirname,
-    type: '.js',
-    recursive: true
+    type: '.txt',
+    recursive: true,
+    require: false
 });

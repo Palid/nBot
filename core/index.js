@@ -11,13 +11,6 @@ var makeDirs = rek('helpers/makeDirs.js');
 // Initialize loading
 function init() {
 
-    // Load mongoose models
-    loadDir('../models', {
-        currentDir: __dirname,
-        type: '.js',
-        recursive: false,
-        returnDict: false
-    });
 
     // Create directories
     makeDirs({
@@ -26,15 +19,6 @@ function init() {
         urls: 'logs/urls',
         channels: 'logs/channels'
     });
-
-    console.info("Setting up database");
-    require('./initialize/dbSetup.js');
-
-    console.info("Initializing database");
-    require('./initialize/index.js');
-
-    console.info("Setting up commands database");
-    require('./initialize/cmdList.js');
 
     console.info("Initializing listener events");
     require('../listener/index.js');

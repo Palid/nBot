@@ -5,3 +5,4 @@ logs/
 .idea
 config/bot.js
 config/oAuth.js
+.DS_Store

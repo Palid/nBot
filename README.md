@@ -63,21 +63,17 @@ Adding new method is as easy as copying `example.method` file in `api` directory
 * `bible` Returns provided bible quote using [Bible API](http://labs.bible.org/api_web_service)
 * `catapi` Returns a link to random cat picture using [catapi](http://thecatapi.com/)
 * `dice` Returns called dice throws.
-* `dogecoin` Returns current dogecoin rates
-* `fivehundred_px` Returns link to a random picture from provided tag using [500px api](http://developers.500px.com/)
 * `google` Returns first google result for provided string
 * `help` Returns help for provided command
 * `list` Lists all currently available methods
 * `lmgtfy` Shows link to [Let Me Google This For You](http://lmgtfy.com) query
 * `memo` Creates memo for a `user`.
 * `message` Sends private message to a `user`
-* `niggr` Shortens URL using the [nig.gr url shortener](http://nig.gr)
 * `oboobs` Returns up to five links to pictures provided by [Open Boobs Project](http://oboobs.ru). NSFW!
 * `pick` Returns pick order of provided strings.
 * `say` Says the provided strings.
 * `seen` Returns date when `user` was last seen.
 * `shout` Shouts the provided string using [FIGLET](http://www.figlet.org/) 
-* `tumblr` Returns link to a random picture from provided tag using [Tumblr api][http://www.tumblr.com/docs/en/api/v2]
 
 #### Private ####
 * `invite` Invites user to current channel

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var util = require('util');
 
 var _ = require('lodash');
@@ -12,62 +12,62 @@ var events = bot.events;
 var common = require('./__dramaCommon.js');
 
 var availableCommands = {
-    add: function(options){
-        options.Model = Drama;
-        options.emitOnSuccess = "drama-string added!";
-        common.add(options);
-    },
-    list: function(options) {
-        var webserver = bot.getOption('webserver');
-        events.emit("apiSay", options.to, util.format("All dramas are available at %s:%s/%s", webserver.url, webserver.port, options.to));
-    }
+  add: function(options) {
+    options.Model = Drama;
+    options.emitOnSuccess = 'drama-string added!';
+    common.add(options);
+  },
+  list: function(options) {
+    var webserver = bot.getOption('webserver');
+    events.emit('apiSay', options.to, util.format('All dramas are available at %s:%s/%s', webserver.url, webserver.port, options.to));
+  }
 };
 
 
 function getNthDrama(options) {
-    Drama.find({
-        $or: [{
-            channel: options.to,
+  Drama.find({
+    $or: [{
+      channel: options.to,
 
-        }, {
-            global: true
-        }]
-    }, function (err, doc) {
-        if (err) {
-            console.log(err);
-            events.emit("apiSay", options.to, err.message);
+    }, {
+      global: true
+    }]
+  }, function (err, doc) {
+    if (err) {
+      console.log(err);
+      events.emit('apiSay', options.to, err.message);
+    } else {
+      var msg = parseInt(options.message, 10);
+      if (doc.length >= options.message && msg >= 0) {
+        var nthItem = doc[msg ? msg - 1 : 0];
+        if (!nthItem.global) {
+          events.emit('apiSay', options.to, util.format('[%s][%s]%s', nthItem.channel, options.message, nthItem.dramaString));
         } else {
-          var msg = parseInt(options.message, 10);
-            if (doc.length >= options.message && msg >= 0) {
-                var nthItem = doc[msg ? msg - 1 : 0];
-                if (!nthItem.global) {
-                    events.emit("apiSay", options.to, util.format("[%s][%s]%s", nthItem.channel, options.message, nthItem.dramaString));
-                } else {
-                    events.emit("apiSay", options.to, util.format("[%s][%s]%s", "g", options.message, nthItem.dramaString));
-                }
-            } else {
-                events.emit("apiSay", options.to, util.format("There are only %s dramas in database available for [%s]. Specify lower number.", doc.length, options.to));
-            }
+          events.emit('apiSay', options.to, util.format('[%s][%s]%s', 'g', options.message, nthItem.dramaString));
         }
-    });
+      } else {
+        events.emit('apiSay', options.to, util.format('There are only %s dramas in database available for [%s]. Specify lower number.', doc.length, options.to));
+      }
+    }
+  });
 }
 
 function callDrama(to) {
-    Drama.find({
-        $or: [{
-            channel: to,
-        }, {
-            global: true
-        }]
-    }, function (err, doc) {
-        if (err) {
-            console.log(err);
-        } else if (doc) {
-            events.emit("apiSay", to, doc[_.random(doc.length - 1)].dramaString);
-        } else {
-            events.emit("apiSay", to, doc.dramaString ? doc.dramaString : 'No dramas!');
-        }
-    });
+  Drama.find({
+    $or: [{
+      channel: to,
+    }, {
+      global: true
+    }]
+  }, function (err, dramasList) {
+    if (err) {
+      console.log(err);
+    } else if (dramasList && dramasList.length) {
+      events.emit('apiSay', to, _.sample(dramasList).dramaString);
+    } else {
+      events.emit('apiSay', to, 'No dramas!');
+    }
+  });
 }
 
 /**
@@ -79,44 +79,44 @@ function callDrama(to) {
  * @return {Emitter}        Returns an event when function's finished for parsing
  */
 var method = function dramaMain(options) {
-    var message = options.message ? options.message.trim() : '';
-    var split = message.split(' ');
-    var command = split[0];
-    var parsed = parseInt(command, 10);
-    if (!_.isNaN(parsed)) {
-        getNthDrama({
-            to: options.to,
-            from: options.from,
-            message: parsed
-        });
-    } else if (message.length <= 0) {
-        callDrama(options.to);
-    } else if (availableCommands[command]) {
-        split.splice(0, 1);
-        availableCommands[command]({
-            to: options.to,
-            from: options.from,
-            message: split
-        });
-    } else {
-        events.emit("apiSay", options.to, "Available sub-commands: " + Object.keys(availableCommands).join(" "));
-    }
+  var message = options.message ? options.message.trim() : '';
+  var split = message.split(' ');
+  var command = split[0];
+  var parsed = parseInt(command, 10);
+  if (!_.isNaN(parsed)) {
+    getNthDrama({
+      to: options.to,
+      from: options.from,
+      message: parsed
+    });
+  } else if (message.length <= 0) {
+    callDrama(options.to);
+  } else if (availableCommands[command]) {
+    split.splice(0, 1);
+    availableCommands[command]({
+      to: options.to,
+      from: options.from,
+      message: split
+    });
+  } else {
+    events.emit('apiSay', options.to, 'Available sub-commands: ' + Object.keys(availableCommands).join(' '));
+  }
 };
 
 //
 var defaults = {
-    description: {
-        pl: ",drama [komenda] - Zwraca losowy drama-string. Posiada trzy podkomendy: 'add','list",
-        en: ",drama [command] - Returns random drama-string. Has three sub-commands: 'add', 'list'"
-    },
-    aliases: [
-        "łiju",
-    ],
-    level: 0
+  description: {
+    pl: ",drama [komenda] - Zwraca losowy drama-string. Posiada trzy podkomendy: 'add','list",
+    en: ",drama [command] - Returns random drama-string. Has three sub-commands: 'add', 'list'"
+  },
+  aliases: [
+    'łiju',
+  ],
+  level: 0
 };
 
 
 module.exports = {
-    method: method,
-    defaults: defaults
+  method: method,
+  defaults: defaults
 };

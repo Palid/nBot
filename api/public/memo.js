@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var _ = require('lodash');
 var rek = require('rekuire');
 var events = rek('/bot.js').events;
@@ -14,66 +14,65 @@ var User = mongoose.model('User');
  * @return {Emitter}        Returns an event when function's finished for parsing
  */
 var method = function memo(options) {
+  var splitted = _.pull(options.message.split(' '), '');
+  var nick = splitted[0].toLowerCase();
+  var body = splitted.length >= 2 ? splitted.slice(1, splitted.length).join(' ') : '';
 
-    var splitted = _.pull(options.message.split(" "), "");
-    var nick = splitted[0].toLowerCase();
-    var body = splitted.length >= 2 ? splitted.slice(1, splitted.length).join(" ") : "";
-
-    User.findOne({
+  User.findOne({
+    $or: [{
+      nick: nick
+    }, {
+      'aliases.alias': nick
+    }]
+  }, function (err, doc) {
+    if (err) console.log(err);
+    if (doc && body !== '') {
+      User.update({
         $or: [{
-            nick: nick
+          nick: nick
         }, {
-            'aliases.alias': nick
+          'aliases.alias': nick
         }]
-    }, function (err, doc) {
+      }, {
+        $addToSet: {
+          memo: {
+            from: options.from,
+            date: Date.now(),
+            message: body
+          }
+        },
+      }, function (err) {
         if (err) console.log(err);
-        if (doc && body !== '') {
-            User.update({
-                $or: [{
-                    nick: nick
-                }, {
-                    'aliases.alias': nick
-                }]
-            }, {
-                $addToSet: {
-                    memo: {
-                        from: options.from,
-                        date: Date.now(),
-                        message: body
-                    }
-                },
-            }, function (err) {
-                if (err) console.log(err);
-                events.emit('apiSay',
+        events.emit('apiSay',
                     options.to,
-                    "Memo added for " + nick
+                    'Memo added for ' + nick
                 );
-            });
-        } else if (body === '') {
-            events.emit('apiSay',
+      });
+    } else if (body === '') {
+      events.emit('apiSay',
                 options.to,
                 "Memo can't be blank."
             );
-        } else {
-            events.emit('apiSay',
+    } else {
+      events.emit('apiSay',
                 options.to,
                 "I don't recognize this person."
             );
-        }
-    });
+    }
+  });
 };
 
 //
 var defaults = {
-    description: {
-        pl: ",memo [nick] [wiadomość] - Zostawia [wiadomość] dla [nick]",
-        en: ",memo [nick] [message] - Leaves [message] for [nick]"
-    },
-    aliases: []
+  description: {
+    pl: ',memo [nick] [wiadomość] - Zostawia [wiadomość] dla [nick]',
+    en: ',memo [nick] [message] - Leaves [message] for [nick]'
+  },
+  aliases: []
 };
 
 
 module.exports = {
-    method: method,
-    defaults: defaults
+  method: method,
+  defaults: defaults
 };

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var util = require('util');
 
@@ -6,12 +6,12 @@ var _ = require('lodash');
 var rek = require('rekuire');
 var jsesc = require('jsesc');
 
-var bot = rek('/bot.js'),
-  events = bot.events,
-  commandCharacter = bot.getOption('commandCharacter'),
-  maxResponseTime = (bot.getOption('maxResponseTime') || 10),
-  maxMessageRows = (bot.getOption('maxMessageRows') || 5),
-  client = rek('core/bot.js');
+var bot = rek('/bot.js');
+var events = bot.events;
+var commandCharacter = bot.getOption('commandCharacter');
+var maxResponseTime = (bot.getOption('maxResponseTime') || 10);
+var maxMessageRows = (bot.getOption('maxMessageRows') || 5);
+var client = rek('core/bot.js');
 
 var API = rek('api');
 
@@ -22,25 +22,28 @@ var Command = mongoose.model('Command');
 
 function Throttler() {
   var self = this;
-  this.__GLOBAL__ = {};
-  this.__GLOBAL__.messages = [];
-  this.__GLOBAL__.waitingForGo = false;
+  this.__GLOBAL__ = {
+    messages: [],
+    waitingForGo: false
+  };
   _.forEach(bot.getConfig('channels'), function (channel) {
-    self[channel] = {};
-    var currentThrottle = self[channel];
-    currentThrottle.messages = {};
-    currentThrottle.messages.current = [];
-    currentThrottle.messages.toResolve = [];
-    currentThrottle.waitingForGo = false;
-    currentThrottle.isPending = false;
+    var currentThrottle = {
+      messages: {
+        current: [],
+        toResolve: [],
+      },
+      waitingForGo: false,
+      isPending: false,
+    };
+    self[channel] = currentThrottle;
   });
 }
 
 var antiSpam = new Throttler();
 
 function breakAroundSpace(str) {
-  var parts = [],
-    match = str.match(/^[\s\S]{1,80}\S*/);
+  var parts = [];
+  var match = str.match(/^[\s\S]{1,80}\S*/);
   var prefix = match[0];
   parts.push(prefix);
   // Strip leading space.
@@ -130,7 +133,7 @@ function goOn(to, options) {
 function useApi(commandMap, from, to, body) {
   try {
     if (commandMap.options) {
-      antiSpam[to].push()
+      antiSpam[to].push();
       API[commandMap.command].method({
         from: commandMap.options.from ? commandMap.options.from : from,
         to: commandMap.options.to ? commandMap.options.to : to,
@@ -145,7 +148,7 @@ function useApi(commandMap, from, to, body) {
     }
   } catch (err) {
     console.log(err);
-    client.say(to, "Command " + commandMap.command + " exited with an error.");
+    client.say(to, 'Command ' + commandMap.command + ' exited with an error.');
   }
 }
 
@@ -183,9 +186,9 @@ events.on('apiCommand', function (response) {
  * @return {string} - may return an error
  */
 var method = function activateCommand(from, to, message, match) {
-  var splitted = _.pull(message.split(" "), "");
+  var splitted = _.pull(message.split(' '), '');
   var command = splitted[0].replace(match[0], '');
-  var body = splitted.length >= 2 ? splitted.slice(1, splitted.length).join(" ") : "";
+  var body = splitted.length >= 2 ? splitted.slice(1, splitted.length).join(' ') : '';
 
   if (command === 'go') {
     goOn(to, {
@@ -193,11 +196,11 @@ var method = function activateCommand(from, to, message, match) {
     });
   } else {
     Command.findOne({
-        'aliases.alias': command,
-      }).exec()
+      'aliases.alias': command,
+    }).exec()
       .then(function (cmdDoc) {
         if (!cmdDoc) {
-          client.say(from, util.format("Command %s not found. Try: %slist", command, bot.getOption('commandCharacter')));
+          client.say(from, util.format('Command %s not found. Try: %slist', command, bot.getOption('commandCharacter')));
         } else {
           var options = _.find(cmdDoc.aliases, function (item) {
             return item.alias === command && (item.options.data || item.options.to || item.options.from);
@@ -215,8 +218,8 @@ var method = function activateCommand(from, to, message, match) {
               if (doc.permissions.level >= cmdDoc.level) {
                 useApi(commandMap, from, to, body);
               } else {
-                client.say(to, "Access denied. Your permissions level " +
-                  doc.permissions.level + " < " + cmdDoc.level
+                client.say(to, 'Access denied. Your permissions level ' +
+                  doc.permissions.level + ' < ' + cmdDoc.level
                 );
               }
             });
@@ -230,6 +233,6 @@ var method = function activateCommand(from, to, message, match) {
 
 module.exports = {
   method: method,
-  messageRe: new RegExp("^[" + jsesc(bot.getOption('commandCharacter')) +
-    "]{" + bot.getOption('commandCharacter').length + "}")
+  messageRe: new RegExp('^[' + jsesc(bot.getOption('commandCharacter')) +
+    ']{' + bot.getOption('commandCharacter').length + '}')
 };

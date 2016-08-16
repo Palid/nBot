@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var vm = require('vm');
 var _ = require('lodash');
 
@@ -22,7 +22,6 @@ process.on('message', function clusterData(data) {
     }
   } catch (err) {
     console.log(err.stack);
-    process.send("Error: " + err.message);
+    process.send('Error: ' + err.message);
   }
-
 });

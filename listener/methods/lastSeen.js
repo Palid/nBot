@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var _ = require('lodash');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
@@ -35,8 +35,8 @@ var method = function logLastActivity(from, to, message) {
         'seen.channel': to
       }, {
         $set: {
-          "seen.$.message": message,
-          "seen.$.date": Date.now()
+          'seen.$.message': message,
+          'seen.$.date': Date.now()
         }
       }, function (err) {
         if (err) console.log(err);

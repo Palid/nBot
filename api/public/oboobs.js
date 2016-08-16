@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var util = require('util');
 var _ = require('lodash');
 var request = require('request');
@@ -47,25 +47,22 @@ var method = function oBoobsApi(options) {
         return util.format('http://media.oboobs.ru/noise/%s.jpg', validateAndFormatLink(item));
       });
       events.emit('apiSay', channel, resp);
-
     } else {
       events.emit('apiSay', channel, "Couldn't parse received JSON.");
-
     }
-
   });
 };
 
 var defaults = {
   description: {
-    pl: ",oboobs [liczba <= 5] - Zwraca [liczba] zdjęć cycków.. Używa http://api.oboobs.ru/",
-    en: ",oboobs [number <= 5] - Returns [amount] of boobies photos. Uses http://api.oboobs.ru/"
+    pl: ',oboobs [liczba <= 5] - Zwraca [liczba] zdjęć cycków.. Używa http://api.oboobs.ru/',
+    en: ',oboobs [number <= 5] - Returns [amount] of boobies photos. Uses http://api.oboobs.ru/'
   },
   aliases: [
-    "boobs",
-    "cycki",
-    "boobies",
-    "tits"
+    'boobs',
+    'cycki',
+    'boobies',
+    'tits'
   ]
 };
 

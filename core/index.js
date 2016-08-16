@@ -14,8 +14,7 @@ function init() {
   loadDir('../models', {
     currentDir: __dirname,
     type: '.js',
-    recursive: false,
-    returnDict: false
+    recursive: false
   });
 
     // Create directories

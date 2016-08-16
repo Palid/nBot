@@ -35,7 +35,7 @@ function Throttler() {
       waitingForGo: false,
       isPending: false,
     };
-    self[channel] = currentThrottle;
+    self[_.toLower(channel)] = currentThrottle;
   });
 }
 
@@ -72,6 +72,7 @@ function pushToThrottle(to, message) {
 
 function unloadQueue(to, unloadFlag) {
   var currentThrottle = antiSpam[to];
+  debugger;
   if (
     unloadFlag ||
     (

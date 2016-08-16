@@ -1,17 +1,16 @@
 'use strict';
-var fs = require('fs'),
-  path = require('path'),
-  _ = require('lodash');
+const fs = require('fs');
+const path = require('path');
+const _ = require('lodash');
 
-var BANNED = [
+const BANNED = [
   'index.js',
   '*example',
   'package.json',
   '*__'
 ];
 
-function loadFile(targetDir, encoding) {
-  if (!encoding) encoding = 'utf-8';
+function loadFile(targetDir, encoding = 'utf-8') {
   return fs.readFileSync(targetDir, encoding);
 }
 
@@ -26,7 +25,8 @@ function loadFile(targetDir, encoding) {
  * @return {Object}             Returns a dictionary of all required files.
  */
 function loadDirectory(fileList, dir, options) {
-  _.remove(fileList, function (item) {
+  const results = {};
+  _.remove(fileList, (item) => {
     var found = _.find(BANNED, function (value) {
       if (value[0] === '*') {
         return item.search(value.substring(1)) !== -1;
@@ -36,36 +36,27 @@ function loadDirectory(fileList, dir, options) {
     if (found) {
       return item;
     }
+    return undefined;
   });
-  var pending = fileList.length;
 
   _.forEach(fileList, function (file) {
-    var fileDir = dir + '/' + file;
-    var stat = fs.lstatSync(fileDir);
+    const pathToFile = `${dir}/${file}`;
+    const stat = fs.lstatSync(pathToFile);
     if (stat && stat.isDirectory() && options.recursive) {
-      loadDirectory(fs.readdirSync(fileDir), fileDir, options);
+      _.extend(results, loadDirectory(fs.readdirSync(pathToFile), pathToFile, options));
     } else {
       if (!_.isNull(file.match(options.re))) {
-        var name = file.replace(options.type, '');
-        options.results.push({
-          directory: fileDir,
-          name: name
-        });
+        var fileName = file.replace(options.type, '');
+        if (options.require) {
+          results[fileName] = require(pathToFile);
+        } else {
+          results[fileName] = loadFile(pathToFile);
+        }
       }
     }
   });
 
-  if (options.results.length >= pending) {
-    var resultsMap = {};
-    _.forEach(options.results, function (property) {
-      if (options.require) {
-        resultsMap[property.name] = require(property.directory);
-      } else {
-        resultsMap[property.name] = loadFile(property.directory);
-      }
-    });
-    if (options.returnDict) return resultsMap;
-  }
+  return results;
 }
 
 
@@ -76,28 +67,22 @@ function loadDirectory(fileList, dir, options) {
  * -       {String}     type            File extension to load
  * -       {String}     currentDir      __dirname
  * -       {Boolean}    recursive      Should it load recursively, or just flat
- * -       {String}     event           Event to emit after loading's finished
- * -       {Boolean}    returnDict      Should loader return hashmap
  * @return {function}   Callbacks helper function, loadDirectory
  */
 function prepareFunction(destinationDir, required) {
-  if (!required.type) throw "You didn't specify file type/extension!";
+  if (!required.type) throw new ReferenceError("You didn't specify file type/extension!");
   if (!required.currentDir || !destinationDir) {
-    throw "You didn't specify directories in loadDirectory!";
+    throw new ReferenceError("You didn't specify directories in loadDirectory!");
   }
-  if (_.isUndefined(required.returnDict)) required.returnDict = true;
 
-  var re = new RegExp('.+' + [required.type], 'g'),
-    dir = path.resolve(required.currentDir, destinationDir),
-    fileList = fs.readdirSync(dir);
+  const re = new RegExp(`.+[${required.type}]`, 'g');
+  const dir = path.resolve(required.currentDir, destinationDir);
+  const fileList = fs.readdirSync(dir);
 
   return loadDirectory(fileList, dir, {
     type: required.type,
     recursive: required.recursive,
-    event: required.event,
     re: re,
-    results: [],
-    returnDict: required.returnDict,
     require: !_.isUndefined(required.require) ? required.require : true
   });
 }

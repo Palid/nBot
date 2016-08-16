@@ -1,7 +1,7 @@
 {
   "name": "nBot",
-  "version": "0.6.0",
-  "codename": "Compatibility breaking hamster",
+  "version": "0.7.0",
+  "codename": "Resurrected hamster",
   "description": "node.js IRC bot",
   "main": "bot.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "html-entities": "^1.1.1",
     "irc": "^0.5.0",
     "jsesc": "^0.5.0",
-    "lodash": "^3.2.0",
+    "lodash": "^4.15.0",
     "moment": "^2.9.0",
     "mongoose": "^4.5.9",
     "rekuire": "^0.1.5",

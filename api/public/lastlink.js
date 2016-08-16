@@ -14,10 +14,13 @@ var method = function nameYourFunctionForDebugging(options) {
   } else if (limit > 5) {
     limit = 5;
   }
+  console.log(options);
   Link.find({
     channel: options.to
   }).sort('-lastPost').limit(limit).exec(function (err, links) {
     if (err) console.log(err);
+    console.log(err);
+    console.log(links);
     var linksMap = _.map(links, function (item) {
       return item.link;
     });

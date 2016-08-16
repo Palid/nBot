@@ -26,32 +26,43 @@ function validateAndFormatLink(link) {
 }
 
 var method = function oBoobsApi(options) {
-  var channel = options.to,
-    msg = parseInt(options.message, 10),
-    data = (!_.isNaN(msg) && msg <= 5) ? msg : 1;
+  const channel = options.to;
+  const msg = parseInt(options.message, 10);
+  const amount = (!_.isNaN(msg) && msg <= 5) ? msg : 1;
 
-  var r = request(defUrl + data, requestOptions, function (err, response, body) {
+  var r = request(`${defUrl}${amount}`, requestOptions, function (err, response, body) {
     if (err) {
       console.log(err);
       r.abort();
       events.emit('apiSay', channel, "Something's wrong with api.oboobs.ru.");
     }
-    var parsed, resp;
+    var parsed;
     try {
       parsed = JSON.parse(body);
-    } catch (err) {
-      console.log(err);
+    } catch (parseError) {
+      console.log(parseError);
     }
     if (parsed) {
-      resp = _.map(parsed, function (item) {
-        return util.format('http://media.oboobs.ru/noise/%s.jpg', validateAndFormatLink(item));
-      });
-      events.emit('apiSay', channel, resp);
+      _.chain(parsed)
+        .map(boobsObject => `http://media.oboobs.ru/noise/${validateAndFormatLink(boobsObject)}.jpg`)
+        .forEach(url => {
+          const req = request
+            .head(url)
+            .on('response', res => {
+              if (res.statusCode === 200) {
+                req.abort();
+                events.emit('apiSay', channel, url);
+              } else {
+                method(options);
+              }
+            });
+        }).value();
     } else {
       events.emit('apiSay', channel, "Couldn't parse received JSON.");
     }
   });
 };
+
 
 var defaults = {
   description: {

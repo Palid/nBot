@@ -44,6 +44,7 @@ module.exports = {
         },
         // in seconds
         maxResponseTime: 10,
-        maxMessageRows: 5
+        maxMessageRows: 5,
+        startupDelay: 0,
     }
 };

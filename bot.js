@@ -28,7 +28,8 @@ var bot = {
     }
 };
 module.exports = bot;
-
-require('./core/')();
+setTimeout(function() {
+  require('./core/')();
+}, config.startupDelay || 0);
 
 

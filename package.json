@@ -1,7 +1,7 @@
 {
   "name": "nBot",
-  "version": "0.7.0",
-  "codename": "Resurrected hamster",
+  "version": "0.7.0-czarnobyl",
+  "codename": "mutated hamster",
   "description": "node.js IRC bot",
   "main": "bot.js",
   "scripts": {

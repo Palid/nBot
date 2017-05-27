@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  nbot:
+    restart: always
+    build: .
+    ports:
+      - "6667:6667"
+    links:
+      - mongo
+  mongo:
+    restart: always
+    image: mongo
+    volumes:
+      - mongodb:/data/db
+
+volumes:
+  mongodb:
+    external:
+      name: nbot-mongodb

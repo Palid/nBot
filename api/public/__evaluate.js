@@ -5,7 +5,7 @@ var _ = require('lodash');
 var context = {};
 //The runner.js is ran in a separate process and just listens for the message which contains code to be executed
 process.on('message', function clusterData(data) {
-  var ctx, response;
+  var ctx, response, parsed;
 
   ctx = vm.createContext(context);
 
@@ -17,6 +17,13 @@ process.on('message', function clusterData(data) {
         return String(item).replace(/[\r\n]/g, '').trim();
       });
       process.send(map);
+    } else if (_.isObject(response)){
+      try {
+        process.send(JSON.stringify(response).replace(/[\r\n]/g, '').replace(/"/g, '').trim());
+      } catch (e) {
+        console.log(e.stack);
+        process.send('Error: ' + e.message);
+      }
     } else {
       process.send(String(response).replace(/[\r\n]/g, '').trim());
     }

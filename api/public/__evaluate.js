@@ -1,8 +1,13 @@
 'use strict';
 var vm = require('vm');
 var _ = require('lodash');
+var moment = require('moment');
 
-var context = {};
+var context = {
+  _: _,
+  lodash: _,
+  moment: moment,
+};
 //The runner.js is ran in a separate process and just listens for the message which contains code to be executed
 process.on('message', function clusterData(data) {
   var ctx, response, parsed;

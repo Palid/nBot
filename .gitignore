@@ -6,5 +6,4 @@ logs/
 config/bot.js
 config/oAuth.js
 .DS_Store
-*.tern_port
 .tern_port

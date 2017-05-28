@@ -21,7 +21,7 @@ process.on('message', function clusterData(data) {
       var map = _.map(response, function(item) {
         return String(item).replace(/[\r\n]/g, '').trim();
       });
-      process.send(map);
+      process.send(JSON.stringify(response));
     } else if (_.isObject(response)){
       try {
         process.send(JSON.stringify(response).replace(/[\r\n]/g, '').replace(/"/g, '').trim());

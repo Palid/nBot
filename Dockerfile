@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:10
 MAINTAINER Dariusz Niemczyk <palid@o2.pl>
 LABEL description="nBot"
 
@@ -10,4 +10,4 @@ EXPOSE 6667
 
 RUN npm install
 
-CMD ["node", "bot.js"]
+CMD ["sleep 20s", "node", "bot.js"]

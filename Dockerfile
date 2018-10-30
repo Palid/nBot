@@ -10,4 +10,4 @@ EXPOSE 6667
 
 RUN npm install
 
-CMD ["sleep 20s", "node", "bot.js"]
+CMD ["sleep 5s", "node", "bot.js"]

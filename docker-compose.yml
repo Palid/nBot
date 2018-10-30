@@ -12,7 +12,7 @@ services:
       - mongo
   mongo:
     restart: unless-stopped
-    image: mongo
+    image: mongo:3.2
     volumes:
       - mongodb:/data/db
 

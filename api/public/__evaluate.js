@@ -1,15 +1,21 @@
 'use strict';
 var vm = require('vm');
+var fs = require('fs');
+var path = require('path');
 
-//The runner.js is ran in a separate process and just listens for the message which contains code to be executed
+var lodash = fs.readFileSync(path.join(__dirname, './__lodash.js'));
+var moment = fs.readFileSync(path.join(__dirname, './__moment.js'));
+
+
 process.on('message', function clusterData(data) {
   var ctx, response, parsed;
 
   ctx = vm.createContext({});
 
+  var extendedDataWithLibraries = `;${lodash};${moment};${data}`;
 
   try {
-    response = vm.runInNewContext(data, ctx);
+    response = vm.runInNewContext(extendedDataWithLibraries, ctx);
     if (Array.isArray(response)) {
       var map = response.map(function(item) {
         return String(item).replace(/[\r\n]/g, '').trim();

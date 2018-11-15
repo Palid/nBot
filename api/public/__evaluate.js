@@ -5,7 +5,7 @@ var vm = require('vm');
 process.on('message', function clusterData(data) {
   var ctx, response, parsed;
 
-  ctx = vm.createContext(context);
+  ctx = vm.createContext({});
 
 
   try {

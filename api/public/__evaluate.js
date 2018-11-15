@@ -10,7 +10,7 @@ var moment = fs.readFileSync(path.join(__dirname, './__moment.js'));
 process.on('message', function clusterData(data) {
   var ctx, response, parsed;
 
-  ctx = vm.createContext({});
+  ctx = vm.createContext(null);
 
   var extendedDataWithLibraries = `;${lodash};${moment};${data}`;
 

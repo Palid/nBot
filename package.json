@@ -18,7 +18,7 @@
     "html-entities": "^1.1.1",
     "irc": "matrix-org/node-irc",
     "jsesc": "^0.5.0",
-    "lodash": "^4.15.0",
+    "lodash": "^4.17.13",
     "moment": "^2.9.0",
     "mongoose": "^4.5.9",
     "rekuire": "^0.1.5",
